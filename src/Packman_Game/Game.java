@@ -14,51 +14,75 @@ import Geom.Point3D;
 
 public class Game {
 	/**
-	 * This class represents game- list of packmans and fruits.
+	 * This class represents game- list of packmans fruits ghosts and boxs.
 	 * Game can be saved on scv file and can be read from csv file.
 	 * @author Bar Genish
 	 * @author Elyashiv Deri
 	 */
-	private ArrayList<Fruit> array=new ArrayList<>();
-	private ArrayList<Packman>arr=new ArrayList<>();
+	private ArrayList<Fruit> Fruitarr=new ArrayList<>();
+	private ArrayList<Packman>Packmanarr=new ArrayList<>();
+	private ArrayList<Ghost>Ghostarr=new ArrayList<>();
+	private ArrayList<Box>Boxarr=new ArrayList<>();
 	public String GameName;//for the test.
-	public Game(ArrayList<Packman>arr,ArrayList<Fruit> array) {//constracors
-		this.arr=arr;	
-		this.array=array;
+	public Game(ArrayList<Packman>arr,ArrayList<Fruit> array,ArrayList<Ghost>ghostarray,ArrayList<Box>boxarr) {//constracors
+		setFruitArr(array);
+		setBoxarr(boxarr);
+		setGhostarr(ghostarray);
+		setPackmanArr(arr);
 	}
 	public Game() {
-		arr=new ArrayList<>();
-		array=new ArrayList<>();
+		Fruitarr=new ArrayList<>();
+		Packmanarr=new ArrayList<>();
+		Boxarr=new ArrayList<>();
+		Ghostarr=new ArrayList<>();
 	}
 	public Game(Game g) {
-		arr=g.arr;
-		array=g.array;
+		Fruitarr=g.getFruitArr();
+		Packmanarr=g.getPackmanArr();
+		Boxarr=g.getBoxarr();
+		Ghostarr=g.getGhostarr();
 	}
-	public ArrayList<Packman> getArr() {//getters and setters
-		return arr;
+	public ArrayList<Packman> getPackmanArr() {//getters and setters
+		return Packmanarr;
 	}
-	public void setArr(ArrayList<Packman> arr) {
-		this.arr = arr;
+	public void setPackmanArr(ArrayList<Packman> packarr) {
+		this.Packmanarr = packarr;
 	}
-	public ArrayList<Fruit> getArray() {
-		return array;
+	public ArrayList<Fruit> getFruitArr() {
+		return Fruitarr;
 	}
-	public void setArray(ArrayList<Fruit> array) {
-		this.array = array;
+	public void setFruitArr(ArrayList<Fruit> fruitarray) {
+		this.Fruitarr = fruitarray;
+	}
+	public ArrayList<Ghost> getGhostarr() {
+		return Ghostarr;
+	}
+	public void setGhostarr(ArrayList<Ghost> ghostarr) {
+		Ghostarr = ghostarr;
+	}
+	public ArrayList<Box> getBoxarr() {
+		return Boxarr;
+	}
+	public void setBoxarr(ArrayList<Box> boxarr) {
+		Boxarr = boxarr;
 	}
 	/**
 	 * write the Game as string(helps to save the game in csv file).
 	 * @return string of the Game.
 	 */
 	public String toString() {
-		String s="Type,id,Lat,Lon,Alt,Speed/Weight,Radius,"+arr.size()+","+array.size()+"\n";
-		for(int i=0;i<arr.size();i++) {
-			s+="P,"+arr.get(i).toString()+"\n";
+		String s="Type,ID,Lat,Lon,Alt,Speed/Weight,Radius,"+Packmanarr.size()+","+Fruitarr.size()+Boxarr.size()+"\n";
+		for(int i=0;i<Packmanarr.size();i++) {
+			s+="P,"+Packmanarr.get(i).toString()+"\n";
 		}
-		for(int i=0;i<array.size();i++) {
-			try {
-				s+="F,"+array.get(i).toString()+"\n";
-			}catch(IndexOutOfBoundsException e) {}
+		for(int i=0;i<Ghostarr.size();i++) {
+			s+="G,"+Ghostarr.get(i).toString()+"\n";
+		}
+		for(int i=0;i<Fruitarr.size();i++) {
+			s+="F,"+Fruitarr.get(i).toString()+"\n";
+		}
+		for(int i=0;i<Boxarr.size();i++) {
+			s+="B,"+Boxarr.get(i).toString()+"\n";
 		}
 		return s;
 	}
@@ -78,11 +102,14 @@ public class Game {
 			while ((line = br.readLine()) != null) 
 			{
 				String[] userInfo = line.split(cvsSplitBy);
-				if(userInfo[0].equals("P")) {
-					g.arr.add(new Packman(Integer.parseInt(userInfo[1]), new Point3D(userInfo[2]+","+userInfo[3]+","+userInfo[4]),Double.parseDouble(userInfo[5]),Double.parseDouble(userInfo[6])));
-				}
+				if(userInfo[0].equals("P")) 
+					g.Packmanarr.add(new Packman(Integer.parseInt(userInfo[1]), new Point3D(userInfo[2]+","+userInfo[3]+","+userInfo[4]),Double.parseDouble(userInfo[5]),Double.parseDouble(userInfo[6])));
+				else if(userInfo[0].equals("B"))
+					g.Boxarr.add(new Box(Integer.parseInt(userInfo[1]),new Point3D(userInfo[2]+","+userInfo[3]+","+userInfo[4]),new Point3D(userInfo[5]+","+userInfo[6]+","+userInfo[7])));
 				else if(userInfo[0].equals("F"))
-					g.array.add(new Fruit(Integer.parseInt(userInfo[1]), new Point3D(userInfo[2]+","+userInfo[3]+","+userInfo[4]),Double.parseDouble(userInfo[5])));
+					g.Fruitarr.add(new Fruit(Integer.parseInt(userInfo[1]), new Point3D(userInfo[2]+","+userInfo[3]+","+userInfo[4]),Double.parseDouble(userInfo[5])));
+				else if(userInfo[0].equals("G"))
+					g.Ghostarr.add(new Ghost(Integer.parseInt(userInfo[1]),new Point3D(userInfo[2]+","+userInfo[3]+","+userInfo[4]),Double.parseDouble(userInfo[5]),Double.parseDouble(userInfo[6])));
 			}
 
 		} catch (IOException e) 
