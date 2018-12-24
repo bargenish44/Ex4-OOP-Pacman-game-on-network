@@ -28,6 +28,7 @@ public class MyFrame implements ActionListener{
 	private ImageIcon playerimage;
 	private int counter=0;
 	private int ghostcounter=0;
+	private int boxcounter=0;
 	private String choose="";
 	private int count=0;
 	private JMenuItem load;
@@ -185,6 +186,9 @@ public class MyFrame implements ActionListener{
 		 * You can add new Fruit if you use mouse right click on screen.
 		 * @param e - MouseEvent by the button that you use it create new Packman/fruit.
 		 */
+
+		int counterboxes=0;
+		int x1,x2,y1,y2=-1;
 		@Override
 		public void mouseClicked(MouseEvent e) {
 			if(choose.equals("packman")) {
@@ -321,6 +325,32 @@ public class MyFrame implements ActionListener{
 				}
 				else 
 					System.out.println("you quit before crete new player");
+			}
+			else if(choose.equals("box")) {//לסדר אם שמים קודם ס גדול ואז קטן כנל לגבי y.
+				//לסדר גם את זה שאם ממשיכים ללחוץ רק לחיצה אחת אז הוא שם חדש הוא לא מחייב 2.
+				System.out.println("For new Box click first the uperleft point, than the rightdown");
+				if(counterboxes==0) {
+					x1=e.getX();
+					y1=e.getY();
+					counterboxes++;
+				}
+				else if(counterboxes==1) {
+					x2=e.getX();
+					y2=e.getY();
+					counterboxes--;
+				}
+				if(counterboxes>=3)counterboxes=0;
+				if(counterboxes<0)counterboxes=1;
+				if(x1!=-1&&x2!=-1&&y1!=-1&&y2!=-1) {
+					Point3D p=map.PixelToCoords(x1, y1, 0,width,hight);
+					Point3D p2=map.PixelToCoords(x2, y2, 0,width,hight);
+					Boxarr.add(new Box(boxcounter,new Point3D(p.x(),p2.y(),0),new Point3D(p2.x(),p.y(),0)));
+					x1=-1;
+					y1=-1;
+					counterboxes=0;
+					repaint();
+				}
+
 			}
 		}
 		@Override
