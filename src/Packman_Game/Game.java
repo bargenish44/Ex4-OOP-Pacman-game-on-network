@@ -71,7 +71,7 @@ public class Game {
 	 * @return string of the Game.
 	 */
 	public String toString() {
-		String s="Type,ID,Lat,Lon,Alt,Speed/Weight,Radius,"+Packmanarr.size()+","+Fruitarr.size()+Boxarr.size()+"\n";
+		String s="Type,ID,Lat,Lon,Alt,Speed/Weight,Radius,"+Packmanarr.size()+","+Fruitarr.size()+","+Boxarr.size()+"\n";
 		for(int i=0;i<Packmanarr.size();i++) {
 			s+="P,"+Packmanarr.get(i).toString()+"\n";
 		}
