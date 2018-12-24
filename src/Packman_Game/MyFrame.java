@@ -6,8 +6,6 @@ import java.util.ArrayList;
 import javax.imageio.ImageIO;
 import java.awt.event.*;
 import javax.swing.*;
-
-import Geom.Path;
 import Geom.Point3D;
 
 public class MyFrame implements ActionListener{
@@ -22,12 +20,15 @@ public class MyFrame implements ActionListener{
 	private ArrayList<Fruit>Fruitarrtemp=new ArrayList<>();
 	private ArrayList<Ghost>Ghostarr=new ArrayList<>();
 	private ArrayList<Box>Boxarr=new ArrayList<>();
+	private Player player;
 	private boolean ans=false;
 	private ImageIcon packmanimage;
 	private ImageIcon cherryimage;
 	private ImageIcon ghostimage;
+	private ImageIcon playerimage;
 	private int counter=0;
-	//	private Color[] colors = {Color.BLUE,Color.GREEN,Color.ORANGE,Color.red,Color.YELLOW,Color.GRAY};
+	private int ghostcounter=0;
+	private String choose="";
 	private int count=0;
 	private JMenuItem load;
 	private JMenuBar menubar;
@@ -37,8 +38,14 @@ public class MyFrame implements ActionListener{
 	private JMenuItem about_the_game;
 	private JMenuItem reload;
 	private JMenuItem Save_as_kml;
+	private JMenuItem addpackman;
+	private JMenuItem addfruit;
+	private JMenuItem addghost;
+	private JMenuItem addbox;
+	private JMenuItem addplayer;
 	private JMenu menu2;
 	private JMenu menu;
+	private JMenu menu3;
 	private Image img;
 	private int width;
 	private int hight;
@@ -56,6 +63,7 @@ public class MyFrame implements ActionListener{
 			packmanimage=new ImageIcon("pacman.jpg");
 			cherryimage=new ImageIcon("cherry.png");
 			ghostimage=new ImageIcon("ghost.png");
+			playerimage=new ImageIcon("player.png");
 			frame = new JFrame("OOP-EX3");
 			menubar = new JMenuBar();
 			menu = new JMenu("Help");
@@ -83,6 +91,23 @@ public class MyFrame implements ActionListener{
 			run.addActionListener(this);
 			menu2.add(run);
 			menubar.add(menu2);
+			menu3=new JMenu("Add");
+			addpackman=new JMenuItem("Packman");
+			addpackman.addActionListener(this);
+			addfruit=new JMenuItem("Fruit");
+			addfruit.addActionListener(this);
+			addghost=new JMenuItem("Ghost");
+			addghost.addActionListener(this);
+			addbox=new JMenuItem("Box");
+			addbox.addActionListener(this);
+			addplayer=new JMenuItem("Player");
+			addplayer.addActionListener(this);
+			menu3.add(addbox);
+			menu3.add(addfruit);
+			menu3.add(addpackman);
+			menu3.add(addghost);
+			menu3.add(addplayer);
+			menubar.add(menu3);
 			frame.setJMenuBar(menubar);
 			frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 			frame.setLayout(new BorderLayout());
@@ -130,39 +155,29 @@ public class MyFrame implements ActionListener{
 			g.drawImage(img, 0, 0,this.getWidth(),this.getHeight(),null);
 			for(int i=0;i<Packmanarr.size();i++) {
 				Point3D p=map.CoordsToPixel(Packmanarr.get(i).getOrinet(),width,hight);
-				g.drawImage(packmanimage.getImage(), p.ix()-25, p.iy()-25,50,50,null);
+				g.drawImage(packmanimage.getImage(), p.ix()-15, p.iy()-15,30,30,null);
 			}
 			for(int i=0;i<Fruitarr.size();i++) {
 				Point3D p=map.CoordsToPixel(Fruitarr.get(i).getOrient(),width,hight);
-				g.drawImage(cherryimage.getImage(), p.ix()-25, p.iy()-25,50,50,null);
+				g.drawImage(cherryimage.getImage(), p.ix()-15, p.iy()-15,30,30,null);
 			}
 			for(int i=0;i<Ghostarr.size();i++) {
 				Point3D p=map.CoordsToPixel(Ghostarr.get(i).getPos(),width,hight);
-				g.drawImage(ghostimage.getImage(), p.ix()-25, p.iy()-25,50,50,null);
+				g.drawImage(ghostimage.getImage(), p.ix()-15, p.iy()-15,30,30,null);
 			}
+			try {
+				Point3D p=map.CoordsToPixel(player.getOrinet(),width,hight);
+				g.drawImage(playerimage.getImage(), p.ix()-15, p.iy()-15,30,30,null);
+			}catch(NullPointerException e) {}
 			//			for(int i=0;i<Boxarr.size();i++) {
-			//				Point3D p=map.CoordsToPixel(Boxarr.get(i).ge,width,hight);
-			//				g.drawImage(cherryimage.getImage(), p.ix()-25, p.iy()-25,50,50,null);
-			//			}
-			//			if(ans) {
-			//				int count=0;
-			//				for(int i=0;i<Packmanarr.size();i++) {
-			//					Packman tmp=new Packman(Packmanarr.get(i));
-			//					Point3D p=map.CoordsToPixel(tmp.getOrinet(),width,hight);
-			//					tmp.setOrinet(p);
-			//					if(tmp.getPath().getArr().size()>0) {
-			//						if(count==6)
-			//							count=0;
-			//						for(int j=1;j<tmp.getPath().getArr().size();j++) {
-			//							Point3D p1=map.CoordsToPixel(tmp.getPath().getArr().get(j-1),width,hight);
-			//							Point3D p2=map.CoordsToPixel(tmp.getPath().getArr().get(j),width,hight);
-			//							g.setColor(colors[count]);
-			//							g.drawLine(p1.ix(), p1.iy(),p2.ix(),p2.iy());
-			//						}
-			//						count++;
-			//					}
-			//				}
-			//			}
+			//				Point3D p=map.CoordsToPixel(Boxarr.get(i).getLeftDown(),width,hight);
+			//				Point3D p2=map.CoordsToPixel(Boxarr.get(i).getRightUp(),width,hight);
+			//				g.drawRoundRect(p.ix(), p.iy(), width, hight, Math.abs(p.ix()-p2.ix()), Math.abs(p.iy()-p2.iy()));
+			//				g.drawRect(p.ix(), p.iy(), width, hight);
+			//				g.fillRect(p.ix(), p.iy(), width, hight);
+			//				g.drawRect(p2.ix(), p2.iy(), width, hight);
+			//				g.fillRect(p2.ix(), p2.iy(), width, hight);
+			//		}
 		}
 		/**
 		 * This is the mouseClicked func.
@@ -172,14 +187,13 @@ public class MyFrame implements ActionListener{
 		 */
 		@Override
 		public void mouseClicked(MouseEvent e) {
-			if(e.getButton() == MouseEvent.BUTTON1) {
-				int x = e.getX();
-				int y = e.getY();
-				System.out.println("left click you create new packman X: " + x + " Y: " + y);
+			if(choose.equals("packman")) {
+				int x=e.getX();
+				int y=e.getY();
+				System.out.println("You create new packman X: " + x + " Y: " + y);
 				String test1= JOptionPane.showInputDialog("Please input packman speed : ");
-				double speed=-1,radius=-1,high=0;
+				double speed=-1,radius=-1;
 				boolean ans=true;
-				boolean ans2=true;
 				try {
 					speed=Double.parseDouble(test1);
 				}catch (NullPointerException n) {ans=false;}
@@ -206,36 +220,21 @@ public class MyFrame implements ActionListener{
 					}
 				}
 				if(ans) {
-					String test3=JOptionPane.showInputDialog("Please input packman high above ground : ");
-					try {
-						high=Double.parseDouble(test3);
-					}catch (NullPointerException n) {ans=false;}
-					catch(Exception a) {ans2=false;}
-					while(!ans2&&ans) {
-						test3= JOptionPane.showInputDialog("Please input packman high above ground(0 or lrager) : ");
-						try {
-							high=Double.parseDouble(test3);
-						}catch (NullPointerException n) {ans=false;}
-						catch(Exception a) {ans2=false;}
-					}
-				}
-				if(ans) {
-					Point3D p=map.PixelToCoords(x, y, high,width,hight);
-					Packmanarr.add(new Packman(count,p.x(),p.y(),high, speed, radius));
+					Point3D p=map.PixelToCoords(x, y, 0,width,hight);
+					Packmanarr.add(new Packman(count,p.x(),p.y(),0, speed, radius));
 					count++;
 					repaint();
 				}
 				else 
 					System.out.println("you quit before crete new packman");
 			}
-			else if(e.getButton() == MouseEvent.BUTTON3) {
+			else if(choose.equals("fruit")) {
 				int x = e.getX();
 				int y = e.getY();
-				System.out.println("right click you create new fruit X: " + x + " Y: " + y);
+				System.out.println("You create new fruit X: " + x + " Y: " + y);
 				String test1= JOptionPane.showInputDialog("Please input fruit weight : ");
-				double weight=-1,high=0;
+				double weight=-1;
 				boolean ans=true;
-				boolean ans2=true;
 				try {
 					weight=Double.parseDouble(test1);
 				}catch(NullPointerException n) {ans=false;}
@@ -248,29 +247,83 @@ public class MyFrame implements ActionListener{
 					catch(Exception a) {weight=-1;}
 				}
 				if(ans) {
-					String test2=JOptionPane.showInputDialog("Please input fruit high  : ");
-					try {
-						high=Double.parseDouble(test2);
-					}catch (NullPointerException n) {ans=false;}
-					catch(Exception a) {ans2=false;}
-					while(!ans2&&ans) {
-						test2= JOptionPane.showInputDialog("Please input valid packman high  : ");
-						try {
-							high=Double.parseDouble(test2);
-						}catch (NullPointerException n) {ans=false;}
-						catch(Exception a) {ans2=false;}
-					}
-				}
-				if(ans) {
-					Point3D p=map.PixelToCoords(x, y,high,width,hight);
-					Fruitarr.add(new Fruit(counter,p.x(),p.y(),high,weight));
+					Point3D p=map.PixelToCoords(x, y,0,width,hight);
+					Fruitarr.add(new Fruit(counter,p.x(),p.y(),0,weight));
 					counter++;
 					repaint();			
 				}
 				else
 					System.out.println("you quit before crete new fruit");
 			}
+			else if(choose.equals("ghost")) {
+				int x = e.getX();
+				int y = e.getY();
+				System.out.println("You create new ghost X: " + x + " Y: " + y);
+				String test1= JOptionPane.showInputDialog("Please input ghost speed : ");//לברר על מהירות ורדיוס
+				double speed=-1;
+				boolean ans=true;
+				try {
+					speed=Double.parseDouble(test1);
+				}catch(NullPointerException n) {ans=false;}
+				catch(Exception a) {speed=-1;}
+				while(speed<=0&&ans) {
+					test1= JOptionPane.showInputDialog("Please input ghost speed(larger than 0) : ");
+					try {
+						speed=Double.parseDouble(test1);
+					}catch (NullPointerException n) {ans=false;}
+					catch(Exception a) {speed=-1;}
+				}
+				if(ans) {
+					Point3D p=map.PixelToCoords(x, y,0,width,hight);
+					Ghostarr.add(new Ghost(ghostcounter,new Point3D(p.x(),p.y(),0),speed,1));//רדיוס 1?
+					ghostcounter++;
+					repaint();			
+				}
+				else
+					System.out.println("you quit before crete new ghost");
+			}
+			else if(choose.equals("player")) {
+				int x = e.getX();
+				int y = e.getY();
+				System.out.println("You create new player X: " + x + " Y: " + y);
+				String test1= JOptionPane.showInputDialog("Please input player speed : ");
+				double speed=-1,radius=-1;
+				boolean ans=true;
+				try {
+					speed=Double.parseDouble(test1);
+				}catch (NullPointerException n) {ans=false;}
+				catch(Exception a) {speed=-1;}
+				while(speed<=0&&ans) {
+					test1= JOptionPane.showInputDialog("Please input player speed(larger than 0) : ");	
+					try {
+						speed=Double.parseDouble(test1);
+					}catch (NullPointerException n) {ans=false;}
+					catch(Exception a) {speed=-1;}
+				}
+				if(ans) {
+					String test2= JOptionPane.showInputDialog("Please input player radius : ");
+					try {
+						radius=Double.parseDouble(test2);
+					}catch (NullPointerException n) {ans=false;}
+					catch(Exception a) {radius=-1;}
+					while(radius<=0&&ans) {
+						test2= JOptionPane.showInputDialog("Please input player radius(larger than 0) : ");
+						try {
+							radius=Double.parseDouble(test2);
+						}catch (NullPointerException n) {ans=false;}
+						catch(Exception a) {radius=-1;}
+					}
+				}
+				if(ans) {
+					Point3D p=map.PixelToCoords(x, y, 0,width,hight);
+					player=new Player(p.x(),p.y(),0, speed, radius);
+					repaint();
+				}
+				else 
+					System.out.println("you quit before crete new player");
+			}
 		}
+
 		@Override
 		public void mouseEntered(MouseEvent e) {
 		}
@@ -312,7 +365,7 @@ public class MyFrame implements ActionListener{
 			g.save(new Game(Packmanarr,Fruitarr,Ghostarr,Boxarr));
 		}
 		if(e.getSource()==run) {
-			play_Sound("pacman.wav");
+			//			play_Sound("pacman.wav");
 			Packmanarrtemp.clear();
 			for(int i=0;i<Packmanarr.size();i++) 
 				Packmanarrtemp.add(new Packman(Packmanarr.get(i)));
@@ -375,17 +428,27 @@ public class MyFrame implements ActionListener{
 			if(ans)System.out.println("saved int data folder under name:mygamekml.kml");
 			else System.out.println("Ops something went weong");
 		}
+		if(e.getSource()==addbox) 
+			choose="box";
+		if(e.getSource()==addplayer) 
+			choose="player";
+		if(e.getSource()==addfruit) 
+			choose="fruit";
+		if(e.getSource()==addghost)
+			choose="ghost";
+		if(e.getSource()==addpackman)
+			choose="packman";
 		panel.repaint();
 	}
 	/**
 	 * This func is responsible for play specific music.
 	 * @param path - the path of the files that we want to play.
 	 */	
-	public void play_Sound(String path) {
-		try {
-			PlaySound p = new PlaySound(path);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
+	//	public void play_Sound(String path) {
+	//		try {
+	//			PlaySound p = new PlaySound(path);
+	//		} catch (IOException e) {
+	//			e.printStackTrace();
+	//		}
+	//	}
 }
