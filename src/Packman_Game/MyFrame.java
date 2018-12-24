@@ -169,15 +169,15 @@ public class MyFrame implements ActionListener{
 				Point3D p=map.CoordsToPixel(player.getOrinet(),width,hight);
 				g.drawImage(playerimage.getImage(), p.ix()-15, p.iy()-15,30,30,null);
 			}catch(NullPointerException e) {}
-			//			for(int i=0;i<Boxarr.size();i++) {
-			//				Point3D p=map.CoordsToPixel(Boxarr.get(i).getLeftDown(),width,hight);
-			//				Point3D p2=map.CoordsToPixel(Boxarr.get(i).getRightUp(),width,hight);
-			//				g.drawRoundRect(p.ix(), p.iy(), width, hight, Math.abs(p.ix()-p2.ix()), Math.abs(p.iy()-p2.iy()));
-			//				g.drawRect(p.ix(), p.iy(), width, hight);
-			//				g.fillRect(p.ix(), p.iy(), width, hight);
-			//				g.drawRect(p2.ix(), p2.iy(), width, hight);
-			//				g.fillRect(p2.ix(), p2.iy(), width, hight);
-			//		}
+			Graphics2D g2=(Graphics2D)g;
+			for(int i=0;i<Boxarr.size();i++) {
+				Point3D p=map.CoordsToPixel(Boxarr.get(i).getLeftDown(),width,hight);
+				Point3D p2=map.CoordsToPixel(Boxarr.get(i).getRightUp(),width,hight);
+				g2.setColor(Color.black);
+				g2.drawRect(p2.ix(), p.iy(),Math.abs(p2.ix()-p.ix()) ,Math.abs(p2.iy()-p.iy()));
+				g2.fillRect(p2.ix(), p.iy(),Math.abs(p2.ix()-p.ix()) ,Math.abs(p2.iy()-p.iy()));
+
+			}
 		}
 		/**
 		 * This is the mouseClicked func.
@@ -323,19 +323,15 @@ public class MyFrame implements ActionListener{
 					System.out.println("you quit before crete new player");
 			}
 		}
-
 		@Override
 		public void mouseEntered(MouseEvent e) {
 		}
-
 		@Override
 		public void mouseExited(MouseEvent e) {
 		}
-
 		@Override
 		public void mousePressed(MouseEvent e) {
 		}
-
 		@Override
 		public void mouseReleased(MouseEvent e) {
 		}
@@ -365,13 +361,9 @@ public class MyFrame implements ActionListener{
 			g.save(new Game(Packmanarr,Fruitarr,Ghostarr,Boxarr));
 		}
 		if(e.getSource()==run) {
-			//			play_Sound("pacman.wav");
 			Packmanarrtemp.clear();
 			for(int i=0;i<Packmanarr.size();i++) 
 				Packmanarrtemp.add(new Packman(Packmanarr.get(i)));
-			//			Fruitarrtemp.clear();
-			//			for(int i=0;i<Fruitarr.size();i++) 
-			//				Fruitarrtemp.add(new Fruit(Fruitarr.get(i)));
 			Game g=new Game(Packmanarr, Fruitarr,Ghostarr,Boxarr);
 			ShortestPathAlg s=new ShortestPathAlg();
 			System.out.println(s.Shortalgo(g));
@@ -440,15 +432,4 @@ public class MyFrame implements ActionListener{
 			choose="packman";
 		panel.repaint();
 	}
-	/**
-	 * This func is responsible for play specific music.
-	 * @param path - the path of the files that we want to play.
-	 */	
-	//	public void play_Sound(String path) {
-	//		try {
-	//			PlaySound p = new PlaySound(path);
-	//		} catch (IOException e) {
-	//			e.printStackTrace();
-	//		}
-	//	}
 }
