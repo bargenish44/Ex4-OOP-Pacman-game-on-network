@@ -36,10 +36,10 @@ public class ShortestPathAlg {
 		int packmanindex=0;
 		int fruitindex=0;
 		double tmp=0;
-		while(!g.getArray().isEmpty()) {
-			for(int i=0;i<g.getArr().size();i++) {
-				for(int j=0;j<g.getArray().size();j++) {
-					tmp=Calculatetime(g.getArr().get(i),g.getArray().get(j));
+		while(!g.getFruitArr().isEmpty()) {
+			for(int i=0;i<g.getPackmanArr().size();i++) {
+				for(int j=0;j<g.getFruitArr().size();j++) {
+					tmp=Calculatetime(g.getPackmanArr().get(i),g.getFruitArr().get(j));
 					if(tmp<min) {
 						min=tmp;
 						packmanindex=i;
@@ -47,15 +47,15 @@ public class ShortestPathAlg {
 					}
 				}
 			}
-			g.getArr().get(packmanindex).setScore(g.getArray().get(fruitindex).getWeight());
-			Point3D pacP = g.getArr().get(packmanindex).getOrinet();
-			Point3D fruP = g.getArray().get(fruitindex).getOrient();
+			g.getPackmanArr().get(packmanindex).setScore(g.getFruitArr().get(fruitindex).getWeight());
+			Point3D pacP = g.getPackmanArr().get(packmanindex).getOrinet();
+			Point3D fruP = g.getFruitArr().get(fruitindex).getOrient();
 			Map m=new Map();
-			double dist = m.distance3d(pacP, fruP)-g.getArr().get(packmanindex).getRadius();
+			double dist = m.distance3d(pacP, fruP)-g.getPackmanArr().get(packmanindex).getRadius();
 			if(dist<=0)dist=0;
-			double speed = g.getArr().get(packmanindex).getSpeed();
+			double speed = g.getPackmanArr().get(packmanindex).getSpeed();
 			Point3D step = calcStepVec(pacP, fruP, dist,speed);
-			Packman pTemp = g.getArr().get(packmanindex);
+			Packman pTemp = g.getPackmanArr().get(packmanindex);
 			Point3D next=new Point3D(fruP);
 			for(int i = 0;i<(dist/speed);i++) {
 				if(i==0)
@@ -65,33 +65,33 @@ public class ShortestPathAlg {
 				pTemp.getPath().getArr().add(next);
 			}
 			pTemp.setOrinet(next);
-			g.getArray().get(fruitindex).setTime(next.getTime());
-			fruittmp.add(new Fruit(g.getArray().get(fruitindex)));
-			g.getArray().remove(fruitindex);
+			g.getFruitArr().get(fruitindex).setTime(next.getTime());
+			fruittmp.add(new Fruit(g.getFruitArr().get(fruitindex)));
+			g.getFruitArr().remove(fruitindex);
 			min=Double.MAX_VALUE;
 			time+=dist/speed;
 		}
 		Packman p;
-		for(int i=0;i<g.getArr().size();i++) {
-			p=g.getArr().get(i);
-			for(int j=0;j<g.getArr().get(i).getPath().getArr().size();j++) {
+		for(int i=0;i<g.getPackmanArr().size();i++) {
+			p=g.getPackmanArr().get(i);
+			for(int j=0;j<g.getPackmanArr().get(i).getPath().getArr().size();j++) {
 				try {
 					p.getPath().getArr().get(j).setTime(p.getPath().getArr().get(j+1).getTime());
 				}catch(Exception e) {}
 			}
 		}
-		for(int i=0;i<g.getArr().size();i++) {
+		for(int i=0;i<g.getPackmanArr().size();i++) {
 			try {
-				g.getArr().get(i).setTime(g.getArr().get(i).getPath().getArr().get(0).getTime());
+				g.getPackmanArr().get(i).setTime(g.getPackmanArr().get(i).getPath().getArr().get(0).getTime());
 			}catch(Exception e) {}
-			for(int j=0;j<g.getArr().get(i).getPath().getArr().size();j++) {
+			for(int j=0;j<g.getPackmanArr().get(i).getPath().getArr().size();j++) {
 				try {
-					g.getArr().get(i).getPath().getArr().get(j).setTime(g.getArr().get(i).getPath().getArr().get(j+1).getTime());
+					g.getPackmanArr().get(i).getPath().getArr().get(j).setTime(g.getPackmanArr().get(i).getPath().getArr().get(j+1).getTime());
 				} catch(Exception e) {}
 			}
 		}
 		for(int i=0;i<fruittmp.size();i++) {
-			g.getArray().add(new Fruit(fruittmp.get(i)));
+			g.getFruitArr().add(new Fruit(fruittmp.get(i)));
 		}
 		return time;
 	}

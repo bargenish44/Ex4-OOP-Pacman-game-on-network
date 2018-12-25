@@ -33,8 +33,8 @@ public class Path2KML {
 		try{
 			FileWriter fw = new FileWriter("data\\mygamekml.kml");
 			BufferedWriter bw = new BufferedWriter(fw);
-			for(int i=0;i<g.getArray().size();i++) {
-				Fruit tmp=g.getArray().get(i);
+			for(int i=0;i<g.getFruitArr().size();i++) {
+				Fruit tmp=g.getFruitArr().get(i);
 				String kmlelement ="<Placemark>\n" +
 						"<name>fruit"+tmp.getID()+"</name>\n" +
 						"<description>Type: Fruit\nlat: "+tmp.getOrient().y()+"\nlon :"+tmp.getOrient().x()+"\nAlt: "+tmp.getOrient().z()+"\nWeight: "+tmp.getWeight()+ "</description>\n" +
@@ -48,8 +48,8 @@ public class Path2KML {
 						"</Placemark>";
 				content.add(kmlelement);
 			}
-			for(int i=0;i<g.getArr().size();i++) {
-				Packman tmp=g.getArr().get(i);
+			for(int i=0;i<g.getPackmanArr().size();i++) {
+				Packman tmp=g.getPackmanArr().get(i);
 				String kmlelement ="<Placemark>\n" +
 						"<name>Packman"+tmp.getID()+"</name>\n" +
 						"<description>Type: Packman\nlat: "+tmp.getOrinet().y()+"\nlon :"+tmp.getOrinet().x()+"\nAlt: "+tmp.getOrinet().z()+"\nSpeed: "+tmp.getSpeed()+"\nRadius: "+tmp.getRadius()+"\nScore: "+tmp.getScore()+
@@ -66,19 +66,19 @@ public class Path2KML {
 				content.add(kmlelement);
 			}
 			Time start=new Time(time);
-			for(int i=0;i<g.getArr().size();i++) {
-				Packman tmp=g.getArr().get(i);
-				for(int j=0;j<g.getArr().get(i).getPath().getArr().size();j++) {
+			for(int i=0;i<g.getPackmanArr().size();i++) {
+				Packman tmp=g.getPackmanArr().get(i);
+				for(int j=0;j<g.getPackmanArr().get(i).getPath().getArr().size();j++) {
 					if(j==0)
 						start=tmp.getTime();
 					else
 						start=tmp.getPath().getArr().get(j-1).getTime();
 				}
 			}
-			for(int i=0;i<g.getArr().size();i++) {
-				Packman tmp=g.getArr().get(i);
+			for(int i=0;i<g.getPackmanArr().size();i++) {
+				Packman tmp=g.getPackmanArr().get(i);
 				Time ends=new Time(maxtime);
-				for(int j=0;j<g.getArr().get(i).getPath().getArr().size();j++) {
+				for(int j=0;j<g.getPackmanArr().get(i).getPath().getArr().size();j++) {
 					//					try {
 					ends=tmp.getPath().getArr().get(j).getTime();
 					//					} catch(Exception e) {}
