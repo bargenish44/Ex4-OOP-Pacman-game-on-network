@@ -6,6 +6,8 @@ import java.util.ArrayList;
 import javax.imageio.ImageIO;
 import java.awt.event.*;
 import javax.swing.*;
+
+import Coords.MyCoords;
 import Geom.Point3D;
 
 public class MyFrame implements ActionListener{
@@ -44,6 +46,7 @@ public class MyFrame implements ActionListener{
 	private JMenuItem addghost;
 	private JMenuItem addbox;
 	private JMenuItem addplayer;
+	private JMenuItem azimuth;
 	private JMenu menu2;
 	private JMenu menu;
 	private JMenu menu3;
@@ -82,6 +85,9 @@ public class MyFrame implements ActionListener{
 			Save_as_kml=new JMenuItem("Save as kml");
 			Save_as_kml.addActionListener(this);
 			menu2.add(Save_as_kml);
+			azimuth=new JMenuItem("Azimuth");
+			azimuth.addActionListener(this);
+			menu2.add(azimuth);
 			load=new JMenuItem("Load");
 			load.addActionListener(this);
 			menu2.add(load);
@@ -352,6 +358,14 @@ public class MyFrame implements ActionListener{
 				}
 
 			}
+			else if(choose.equals("azimuth")) {
+				MyCoords my=new MyCoords();
+				int x=e.getX();
+				int y=e.getY();
+				Point3D p=new Point3D(x,y,0);
+				p=map.PixelToCoords(x, y, 0, width, hight);
+				System.out.println(my.azimuth_elevation_dist(player.getOrinet(),p)[0]);
+			}
 		}
 		@Override
 		public void mouseEntered(MouseEvent e) {
@@ -460,6 +474,9 @@ public class MyFrame implements ActionListener{
 			choose="ghost";
 		if(e.getSource()==addpackman)
 			choose="packman";
+		if(e.getSource()==azimuth) {
+			choose="azimuth";
+		}
 		panel.repaint();
 	}
 }
