@@ -365,7 +365,6 @@ public class MyFrame implements ActionListener{
 				Point3D p=new Point3D(x,y,0);
 				p=map.PixelToCoords(x, y, 0, width, hight);
 				System.out.println(my.azimuth_elevation_dist(player.getOrinet(),p)[0]);
-				System.out.println("!");
 			}
 		}
 		@Override
