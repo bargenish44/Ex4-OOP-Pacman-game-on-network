@@ -1,15 +1,6 @@
 package Coords;
 
 import Geom.Point3D;
-
-import java.util.Hashtable;
-
-import java.util.Map;
-
-import com.sun.javafx.geom.AreaOp.AddOp;
-
-import com.sun.javafx.scene.paint.GradientUtils.Point;
-
 import Coords.coords_converter;
 
 /**
