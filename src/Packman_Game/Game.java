@@ -23,8 +23,16 @@ public class Game {
 	private ArrayList<Packman>Packmanarr=new ArrayList<>();
 	private ArrayList<Ghost>Ghostarr=new ArrayList<>();
 	private ArrayList<Box>Boxarr=new ArrayList<>();
+	private Player player;
 	public String GameName;//for the test.
-	public Game(ArrayList<Packman>arr,ArrayList<Fruit> array,ArrayList<Ghost>ghostarray,ArrayList<Box>boxarr) {//constracors
+	public Game(ArrayList<Packman>arr,ArrayList<Fruit> array,ArrayList<Ghost>ghostarray,ArrayList<Box>boxarr,Player player) {//constracors
+		setFruitArr(array);
+		setBoxarr(boxarr);
+		setGhostarr(ghostarray);
+		setPackmanArr(arr);
+		setPlayer(player);
+	}
+	public Game(ArrayList<Packman>arr,ArrayList<Fruit> array,ArrayList<Ghost>ghostarray,ArrayList<Box>boxarr) {
 		setFruitArr(array);
 		setBoxarr(boxarr);
 		setGhostarr(ghostarray);
@@ -72,6 +80,9 @@ public class Game {
 	 */
 	public String toString() {
 		String s="Type,ID,Lat,Lon,Alt,Speed/Weight,Radius,"+Packmanarr.size()+","+Fruitarr.size()+","+Boxarr.size()+"\n";
+		try {
+			s+="M,"+player.toString()+"\n";
+		}catch(NullPointerException e) {}
 		for(int i=0;i<Packmanarr.size();i++) {
 			s+="P,"+Packmanarr.get(i).toString()+"\n";
 		}
@@ -104,6 +115,8 @@ public class Game {
 				String[] userInfo = line.split(cvsSplitBy);
 				if(userInfo[0].equals("P")) 
 					g.Packmanarr.add(new Packman(Integer.parseInt(userInfo[1]), new Point3D(userInfo[2]+","+userInfo[3]+","+userInfo[4]),Double.parseDouble(userInfo[5]),Double.parseDouble(userInfo[6])));
+				else if(userInfo[0].equals("M")) 
+					g.setPlayer(new Player(Integer.parseInt(userInfo[1]), new Point3D(userInfo[2]+","+userInfo[3]+","+userInfo[4]),Double.parseDouble(userInfo[5]),Double.parseDouble(userInfo[6])));
 				else if(userInfo[0].equals("B"))
 					g.Boxarr.add(new Box(Integer.parseInt(userInfo[1]),new Point3D(userInfo[2]+","+userInfo[3]+","+userInfo[4]),new Point3D(userInfo[5]+","+userInfo[6]+","+userInfo[7])));
 				else if(userInfo[0].equals("F"))
@@ -141,5 +154,11 @@ public class Game {
 		pw.write(g.toString());
 		pw.close();
 		System.out.println("saved: "+newfilepath);
+	}
+	public Player getPlayer() {
+		return player;
+	}
+	public void setPlayer(Player player) {
+		this.player = player;
 	}
 }

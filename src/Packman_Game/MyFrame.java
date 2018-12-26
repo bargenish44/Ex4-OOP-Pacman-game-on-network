@@ -327,7 +327,7 @@ public class MyFrame implements ActionListener{
 				}
 				if(ans) {
 					Point3D p=map.PixelToCoords(x, y, 0,width,hight);
-					player=new Player(p.x(),p.y(),0, speed, radius);
+					player=new Player(0,p.x(),p.y(),0, speed, radius);
 					repaint();
 				}
 				else 

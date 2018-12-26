@@ -10,25 +10,29 @@ public class Player {
 	 * @author Bar Genish
 	 * @author Elyashiv Deri
 	 */
+	private int ID;
 	private Point3D orinet;
 	private double speed;
 	private double Radius;
 	private Path path;
 	private double score=0;
 
-	public Player(double x,double y,double z, double speed, double Radius) {//constractors
+	public Player(int id,double x,double y,double z, double speed, double Radius) {//constractors
+		setID(id);
 		setOrinet(new Point3D(x, y, z));
 		setSpeed(speed);
 		setRadius(Radius);
 		setPath(new Path());
 	}
-	public Player(Point3D p,double speed,double Raduis) {
+	public Player(int id,Point3D p,double speed,double Raduis) {
+		setID(id);
 		setOrinet(p);
 		setSpeed(speed);
 		setRadius(Raduis);
 		setPath(new Path());
 	}
 	public Player(Player ot) {
+		setID(ot.ID);
 		setOrinet(ot.getOrinet());
 		setSpeed(ot.getSpeed());
 		setRadius(ot.getRadius());
@@ -68,11 +72,17 @@ public class Player {
 	public void resetScore() {
 		this.score=0;
 	}
+	public int getID() {
+		return ID;
+	}
+	public void setID(int iD) {
+		ID = iD;
+	}
 	/**
-	 * write the Packman as string.
-	 * @return string of the Packman.
+	 * write the Player as string.
+	 * @return string of the Player.
 	 */
 	public String toString() {
-		return "Player pos is: "+orinet.toString()+", Player speed is: "+speed+", Player radius is: "+Radius+", Player score is: "+getScore();
+		return ID+","+orinet.toString()+","+speed+","+Radius;
 	}
 }
