@@ -131,6 +131,24 @@ public class Game {
 		}
 		return g;
 	}
+	public Game loadstring(ArrayList<String>str) 
+	{
+		Game g=new Game();
+		for(int i=0;i<str.size();i++) {
+			String[] userInfo = str.get(i).split(",");
+			if(userInfo[0].equals("P")) 
+				g.Packmanarr.add(new Packman(Integer.parseInt(userInfo[1]), new Point3D(userInfo[2]+","+userInfo[3]+","+userInfo[4]),Double.parseDouble(userInfo[5]),Double.parseDouble(userInfo[6])));
+			else if(userInfo[0].equals("M")) 
+				g.setPlayer(new Player(Integer.parseInt(userInfo[1]), new Point3D(userInfo[2]+","+userInfo[3]+","+userInfo[4]),Double.parseDouble(userInfo[5]),Double.parseDouble(userInfo[6])));
+			else if(userInfo[0].equals("B"))
+				g.Boxarr.add(new Box(Integer.parseInt(userInfo[1]),new Point3D(userInfo[2]+","+userInfo[3]+","+userInfo[4]),new Point3D(userInfo[5]+","+userInfo[6]+","+userInfo[7])));
+			else if(userInfo[0].equals("F"))
+				g.Fruitarr.add(new Fruit(Integer.parseInt(userInfo[1]), new Point3D(userInfo[2]+","+userInfo[3]+","+userInfo[4]),Double.parseDouble(userInfo[5])));
+			else if(userInfo[0].equals("G"))
+				g.Ghostarr.add(new Ghost(Integer.parseInt(userInfo[1]),new Point3D(userInfo[2]+","+userInfo[3]+","+userInfo[4]),Double.parseDouble(userInfo[5]),Double.parseDouble(userInfo[6])));
+		}
+		return g;
+	}
 	/**
 	 * This function make a new csv file with all the game details. 
 	 * @param g the Game that we want to saved his details on csv.
