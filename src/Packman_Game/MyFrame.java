@@ -24,6 +24,7 @@ public class MyFrame implements ActionListener{
 	private ArrayList<Box>Boxarr=new ArrayList<>();
 	private Player player;
 	private boolean ans=false;
+	private double angle=0;
 	private ImageIcon packmanimage;
 	private ImageIcon cherryimage;
 	private ImageIcon ghostimage;
@@ -85,9 +86,6 @@ public class MyFrame implements ActionListener{
 			Save_as_kml=new JMenuItem("Save as kml");
 			Save_as_kml.addActionListener(this);
 			menu2.add(Save_as_kml);
-			azimuth=new JMenuItem("Azimuth");
-			azimuth.addActionListener(this);
-			menu2.add(azimuth);
 			load=new JMenuItem("Load");
 			load.addActionListener(this);
 			menu2.add(load);
@@ -99,6 +97,8 @@ public class MyFrame implements ActionListener{
 			menu2.add(run);
 			menubar.add(menu2);
 			menu3=new JMenu("Add");
+			azimuth=new JMenuItem("Azimuth");
+			azimuth.addActionListener(this);
 			addpackman=new JMenuItem("Packman");
 			addpackman.addActionListener(this);
 			addfruit=new JMenuItem("Fruit");
@@ -114,6 +114,7 @@ public class MyFrame implements ActionListener{
 			menu3.add(addpackman);
 			menu3.add(addghost);
 			menu3.add(addplayer);
+			menu3.add(azimuth);
 			menubar.add(menu3);
 			frame.setJMenuBar(menubar);
 			frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -364,7 +365,8 @@ public class MyFrame implements ActionListener{
 				int y=e.getY();
 				Point3D p=new Point3D(x,y,0);
 				p=map.PixelToCoords(x, y, 0, width, hight);
-				System.out.println(my.azimuth_elevation_dist(player.getOrinet(),p)[0]);
+				angle=my.azimuth_elevation_dist(player.getOrinet(),p)[0];
+				System.out.println(angle);
 			}
 		}
 		@Override
