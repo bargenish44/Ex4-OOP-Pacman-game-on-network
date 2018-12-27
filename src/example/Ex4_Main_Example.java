@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import Geom.Point3D;
 import Packman_Game.Game;
+import Packman_Game.Map;
 import Robot.Play;
 
 /*
@@ -36,6 +37,10 @@ public class Ex4_Main_Example {
 		// 3)Get the GPS coordinates of the "arena"
 		String map_data = play1.getBoundingBox();
 		System.out.println("Bounding Box info: "+map_data);
+		String []str=map_data.split(",");
+		Map map=new Map();
+		map.setRightDown(new Point3D(str[2]+","+str[3]+","+str[4]));
+		map.setLeftUp(new Point3D(str[5]+","+str[6]+","+str[7]));
 
 		// 4) get the game-board data
 		ArrayList<String> board_data = play1.getBoard();

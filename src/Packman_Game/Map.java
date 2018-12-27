@@ -13,8 +13,8 @@ public class Map {
 	private Point3D RightDown;
 	private String map;
 	public Map() {//constractors
-		leftUp = new Point3D(32.105770,  35.202469);
-		RightDown = new Point3D(32.101899, 35.211588);
+		leftUp = new Point3D(32.105728,  35.212416);
+		RightDown = new Point3D(32.101898, 35.202369);
 		this.setMap("Ariel1.png");
 	}
 	public Map(Point3D leftUp,Point3D rightDown,String map) {
