@@ -124,6 +124,7 @@ public class MyFrame implements ActionListener{
 			frame.pack();
 			frame.setLocationRelativeTo(null);
 			frame.setVisible(true);
+			//Packmanarr.add(new Packman(0, 35.205974,32.103813,0,10,10));
 
 		} catch (IOException | HeadlessException exp) {
 			exp.printStackTrace();
@@ -198,6 +199,8 @@ public class MyFrame implements ActionListener{
 		int x1,x2,y1,y2=-1;
 		@Override
 		public void mouseClicked(MouseEvent e) {
+			System.out.println(width+","+hight);
+			
 			if(choose.equals("packman")) {
 				int x=e.getX();
 				int y=e.getY();

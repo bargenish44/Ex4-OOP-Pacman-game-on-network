@@ -63,7 +63,7 @@ public class Point3D implements Geom_element, Serializable {
 	}
 
 	public String toString() {
-		return ""+_x+","+_y+","+_z;
+		return ""+_y+","+_x+","+_z;
 	}
 
 	public double distance2D(Point3D p2) { 

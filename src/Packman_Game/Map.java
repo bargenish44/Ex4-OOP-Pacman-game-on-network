@@ -13,8 +13,8 @@ public class Map {
 	private Point3D RightDown;
 	private String map;
 	public Map() {//constractors
-		leftUp = new Point3D(32.105728,  35.212416);
-		RightDown = new Point3D(32.101898, 35.202369);
+		RightDown = new Point3D(35.212416,32.101898,0);
+		leftUp = new Point3D(35.202369,32.105728,0);
 		this.setMap("Ariel1.png");
 	}
 	public Map(Point3D leftUp,Point3D rightDown,String map) {
@@ -50,8 +50,8 @@ public class Map {
 	 * @return Point3D the point that we convert(int coordinations).
 	 */
 	public Point3D PixelToCoords(int x, int y,double high,int width,int hight) {
-		double YCoords = (((hight-(double)y)*RightDown.y())+((double)y*leftUp.y()))/hight;
-		double XCoords = (((width-(double)x)*RightDown.x())+((double)x*leftUp.x()))/width;
+		double YCoords = (((hight-(double)y)*leftUp.y())+((double)y*RightDown.y()))/hight;
+		double XCoords = (((width-(double)x)*leftUp.x())+((double)x*RightDown.x()))/width;
 		Point3D p2=new Point3D(XCoords,YCoords,high);
 		return p2;
 	}
@@ -63,8 +63,8 @@ public class Map {
 	 * @return Point3D the point that we convert(int pixels).
 	 */
 	public Point3D CoordsToPixel(Point3D p,int width,int hight) {
-		int widthcoords=(int) (width*((p.x()-RightDown.x())/(leftUp.x()-RightDown.x())));
-		int Heightcoords=(int) (hight*(RightDown.y()-p.y())/((RightDown.y()-leftUp.y())));
+		int widthcoords=(int) (width*((p.x()-leftUp.x())/(RightDown.x()-leftUp.x())));
+		int Heightcoords=(int) (hight*(leftUp.y()-p.y())/((leftUp.y()-RightDown.y())));
 		Point3D p2=new Point3D(widthcoords,Heightcoords,p.z());
 		return p2;
 	}
