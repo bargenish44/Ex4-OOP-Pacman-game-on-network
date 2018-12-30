@@ -69,7 +69,7 @@ public class MyFrame implements ActionListener{
 			cherryimage=new ImageIcon("cherry.png");
 			ghostimage=new ImageIcon("ghost.png");
 			playerimage=new ImageIcon("player.png");
-			frame = new JFrame("OOP-EX3");
+			frame = new JFrame("OOP-EX4");
 			menubar = new JMenuBar();
 			menu = new JMenu("Help");
 			menubar.add(menu);
@@ -170,6 +170,8 @@ public class MyFrame implements ActionListener{
 				Point3D p=map.CoordsToPixel(Fruitarr.get(i).getOrient(),width,hight);
 				g.drawImage(cherryimage.getImage(), p.ix()-15, p.iy()-15,30,30,null);
 			}
+
+
 			for(int i=0;i<Ghostarr.size();i++) {
 				Point3D p=map.CoordsToPixel(Ghostarr.get(i).getPos(),width,hight);
 				g.drawImage(ghostimage.getImage(), p.ix()-15, p.iy()-15,30,30,null);
@@ -177,8 +179,10 @@ public class MyFrame implements ActionListener{
 			try {
 				Point3D p=map.CoordsToPixel(player.getOrinet(),width,hight);
 				g.drawImage(playerimage.getImage(), p.ix()-15, p.iy()-15,30,30,null);
-			}catch(NullPointerException e) {}
+			}
+			catch(NullPointerException e) {}
 			Graphics2D g2=(Graphics2D)g;
+			
 			for(int i=0;i<Boxarr.size();i++) {
 				Point3D p=map.CoordsToPixel(Boxarr.get(i).getLeftDown(),width,hight);
 				Point3D p2=map.CoordsToPixel(Boxarr.get(i).getRightUp(),width,hight);
@@ -187,7 +191,61 @@ public class MyFrame implements ActionListener{
 				g2.fillRect(p2.ix(), p.iy(),Math.abs(p2.ix()-p.ix()) ,Math.abs(p2.iy()-p.iy()));
 
 			}
+
+
+			if (ans) {
+			
+				//שיצור רק טרד אחד
+			ans = false;
+				Thread t = new Thread()
+				{
+					
+					public void run() 
+					{
+						
+						//מחשב את כמות הצעדים של הפקמן
+						int count=getmathpath(Packmanarr);
+						//כדי לבצע דיסדנס
+						MyCoords mc = new MyCoords();
+						//לולאה שרצה על הפקמנים
+						for (int j = 0; j < count; j++)
+						{
+							//לולאה שרצה על הצעדים
+							for (int i = 0; i < Packmanarr.size(); i++) 
+							{
+								try
+								{
+									//הצעד הבא
+									Packmanarr.get(i).setOrinet(Packmanarr.get(i).getPath().getArr().get(j));
+									//לולאה שרצה על הפירות
+									for ( int k = 0; k < Packmanarr.size(); k++) {
+										//תנאי מחיקה לכל פרי
+										if(mc.distance3d(Packmanarr.get(i).getOrinet(),Fruitarr.get(k).getOrient())<3) {
+											Fruitarr.remove(k);
+										}
+									}
+								}
+								catch (Exception e) {
+								}
+							}
+							frame.repaint();
+							try {
+								Thread.sleep(10);
+							} catch (InterruptedException e) {
+
+								e.printStackTrace();
+							}
+						}
+
+						ans = false;
+					}
+				};
+
+				t.start();
+			}
 		}
+	
+
 		/**
 		 * This is the mouseClicked func.
 		 * You can add new Packmans if you use mouse left click on screen.
@@ -200,7 +258,7 @@ public class MyFrame implements ActionListener{
 		@Override
 		public void mouseClicked(MouseEvent e) {
 			System.out.println(width+","+hight);
-			
+
 			if(choose.equals("packman")) {
 				int x=e.getX();
 				int y=e.getY();
@@ -483,5 +541,13 @@ public class MyFrame implements ActionListener{
 			choose="azimuth";
 		}
 		panel.repaint();
+	}
+	public int getmathpath(ArrayList<Packman>arr) {
+		int count=0;
+		for(int i=0;i<arr.size();i++) {
+			if(arr.get(i).getPath().getArr().size()>count)
+				count=arr.get(i).getPath().getArr().size();
+		}
+		return count;
 	}
 }
