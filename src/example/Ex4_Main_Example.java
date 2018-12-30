@@ -1,10 +1,10 @@
 package example;
 
 import java.util.ArrayList;
-
 import Geom.Point3D;
 import Packman_Game.Game;
 import Packman_Game.Map;
+import Packman_Game.MyFrame;
 import Robot.Play;
 
 /*
@@ -27,20 +27,20 @@ import Robot.Play;
 public class Ex4_Main_Example {
 	public static void main(String[] args) {
 		// 1) Create a "play" from a file (attached to Ex4)
-		String file_name = "data/Ex4_OOP_example6.csv";
+		String file_name = "data/Ex4_OOP_example9.csv";
 		Play play1 = new Play(file_name);
 		Game g=new Game();
 
 		// 2) Set your ID's - of all the group members
-		play1.setIDs(9876,543,21);
+		play1.setIDs(3131,745,83);
 
 		// 3)Get the GPS coordinates of the "arena"
 		String map_data = play1.getBoundingBox();
 		System.out.println("Bounding Box info: "+map_data);
 		String []str=map_data.split(",");
 		Map map=new Map();
-		map.setRightDown(new Point3D(str[2]+","+str[3]+","+str[4]));
-		map.setLeftUp(new Point3D(str[5]+","+str[6]+","+str[7]));
+		map.setRightDown(new Point3D(str[3]+","+str[2]+","+str[4]));
+		map.setLeftUp(new Point3D(str[6]+","+str[5]+","+str[7]));
 
 		// 4) get the game-board data
 		ArrayList<String> board_data = play1.getBoard();
@@ -53,7 +53,10 @@ public class Ex4_Main_Example {
 
 		// 5) Set the "player" init location - should be a valid location
 		play1.setInitLocation(32.1040,35.2061);
-		g.getPlayer().setOrinet(new Point3D(32.1040,35.2061));
+		g.getPlayer().setOrinet(new Point3D(35.2061,32.1040));
+		MyFrame frames=new MyFrame(g,map);
+		
+
 
 		//		// 6) Start the "server"
 		//		play1.start(); // default max time is 100 seconds (1000*100 ms).
