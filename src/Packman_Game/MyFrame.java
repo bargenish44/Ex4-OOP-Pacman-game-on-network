@@ -124,7 +124,7 @@ public class MyFrame implements ActionListener{
 			frame.pack();
 			frame.setLocationRelativeTo(null);
 			frame.setVisible(true);
-			//Packmanarr.add(new Packman(0, 35.205974,32.103813,0,10,10));
+			
 
 		} catch (IOException | HeadlessException exp) {
 			exp.printStackTrace();
@@ -182,7 +182,7 @@ public class MyFrame implements ActionListener{
 			}
 			catch(NullPointerException e) {}
 			Graphics2D g2=(Graphics2D)g;
-			
+
 			for(int i=0;i<Boxarr.size();i++) {
 				Point3D p=map.CoordsToPixel(Boxarr.get(i).getLeftDown(),width,hight);
 				Point3D p2=map.CoordsToPixel(Boxarr.get(i).getRightUp(),width,hight);
@@ -194,32 +194,22 @@ public class MyFrame implements ActionListener{
 
 
 			if (ans) {
-			
-				//שיצור רק טרד אחד
-			ans = false;
+				ans = false;
 				Thread t = new Thread()
 				{
-					
+
 					public void run() 
 					{
-						
-						//מחשב את כמות הצעדים של הפקמן
 						int count=getmathpath(Packmanarr);
-						//כדי לבצע דיסדנס
 						MyCoords mc = new MyCoords();
-						//לולאה שרצה על הפקמנים
 						for (int j = 0; j < count; j++)
 						{
-							//לולאה שרצה על הצעדים
 							for (int i = 0; i < Packmanarr.size(); i++) 
 							{
 								try
 								{
-									//הצעד הבא
 									Packmanarr.get(i).setOrinet(Packmanarr.get(i).getPath().getArr().get(j));
-									//לולאה שרצה על הפירות
 									for ( int k = 0; k < Packmanarr.size(); k++) {
-										//תנאי מחיקה לכל פרי
 										if(mc.distance3d(Packmanarr.get(i).getOrinet(),Fruitarr.get(k).getOrient())<3) {
 											Fruitarr.remove(k);
 										}
@@ -237,14 +227,14 @@ public class MyFrame implements ActionListener{
 							}
 						}
 
-						ans = false;
+					ans = false;
 					}
 				};
 
 				t.start();
 			}
 		}
-	
+
 
 		/**
 		 * This is the mouseClicked func.
@@ -487,7 +477,7 @@ public class MyFrame implements ActionListener{
 				score=Packmanarr.get(i).getScore();
 				System.out.println("Packman: "+i+" ,distance is: "+dist+" , score is: "+score);
 			}
-			Fruitarr.clear();
+
 			ans=true;
 		}
 		if(e.getSource()==how_to_run)
