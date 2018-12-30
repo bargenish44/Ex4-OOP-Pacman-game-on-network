@@ -137,15 +137,15 @@ public class Game {
 		for(int i=0;i<str.size();i++) {
 			String[] userInfo = str.get(i).split(",");
 			if(userInfo[0].equals("P")) 
-				g.Packmanarr.add(new Packman(Integer.parseInt(userInfo[1]), new Point3D(userInfo[3]+","+userInfo[2]+","+userInfo[4]),Double.parseDouble(userInfo[5]),Double.parseDouble(userInfo[6])));
+				g.Packmanarr.add(new Packman(Integer.parseInt(userInfo[1]), new Point3D(userInfo[2]+","+userInfo[3]+","+userInfo[4]),Double.parseDouble(userInfo[5]),Double.parseDouble(userInfo[6])));
 			else if(userInfo[0].equals("M")) 
-				g.setPlayer(new Player(Integer.parseInt(userInfo[1]), new Point3D(userInfo[3]+","+userInfo[2]+","+userInfo[4]),Double.parseDouble(userInfo[5]),Double.parseDouble(userInfo[6])));
+				g.setPlayer(new Player(Integer.parseInt(userInfo[1]), new Point3D(userInfo[2]+","+userInfo[3]+","+userInfo[4]),Double.parseDouble(userInfo[5]),Double.parseDouble(userInfo[6])));
 			else if(userInfo[0].equals("B"))
-				g.Boxarr.add(new Box(Integer.parseInt(userInfo[1]),new Point3D(userInfo[3]+","+userInfo[2]+","+userInfo[4]),new Point3D(userInfo[6]+","+userInfo[5]+","+userInfo[7])));
+				g.Boxarr.add(new Box(Integer.parseInt(userInfo[1]),new Point3D(userInfo[2]+","+userInfo[3]+","+userInfo[4]),new Point3D(userInfo[5]+","+userInfo[6]+","+userInfo[7])));
 			else if(userInfo[0].equals("F"))
-				g.Fruitarr.add(new Fruit(Integer.parseInt(userInfo[1]), new Point3D(userInfo[3]+","+userInfo[2]+","+userInfo[4]),Double.parseDouble(userInfo[5])));
+				g.Fruitarr.add(new Fruit(Integer.parseInt(userInfo[1]), new Point3D(userInfo[2]+","+userInfo[3]+","+userInfo[4]),Double.parseDouble(userInfo[5])));
 			else if(userInfo[0].equals("G"))
-				g.Ghostarr.add(new Ghost(Integer.parseInt(userInfo[1]),new Point3D(userInfo[3]+","+userInfo[2]+","+userInfo[4]),Double.parseDouble(userInfo[5]),Double.parseDouble(userInfo[6])));
+				g.Ghostarr.add(new Ghost(Integer.parseInt(userInfo[1]),new Point3D(userInfo[2]+","+userInfo[3]+","+userInfo[4]),Double.parseDouble(userInfo[5]),Double.parseDouble(userInfo[6])));
 		}
 		return g;
 	}

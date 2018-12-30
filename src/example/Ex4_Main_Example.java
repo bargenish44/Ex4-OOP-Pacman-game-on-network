@@ -30,7 +30,7 @@ public class Ex4_Main_Example {
 		String file_name = "data/Ex4_OOP_example9.csv";
 		Play play1 = new Play(file_name);
 		Game g=new Game();
-
+		boolean ans=false;
 		// 2) Set your ID's - of all the group members
 		play1.setIDs(3131,745,83);
 
@@ -39,8 +39,6 @@ public class Ex4_Main_Example {
 		System.out.println("Bounding Box info: "+map_data);
 		String []str=map_data.split(",");
 		Map map=new Map();
-		map.setRightDown(new Point3D(str[3]+","+str[2]+","+str[4]));
-		map.setLeftUp(new Point3D(str[6]+","+str[5]+","+str[7]));
 
 		// 4) get the game-board data
 		ArrayList<String> board_data = play1.getBoard();
@@ -55,36 +53,44 @@ public class Ex4_Main_Example {
 		play1.setInitLocation(32.1040,35.2061);
 		g.getPlayer().setOrinet(new Point3D(35.2061,32.1040));
 		MyFrame frames=new MyFrame(g,map);
+
+
+				// 6) Start the "server"
+				play1.start(); // default max time is 100 seconds (1000*100 ms).
 		
+				// 7) "Play" as long as there are "fruits" and time
+				for(int i=0;i<10;i++) {
+					// 7.1) this is the main command to the player (on the server side)
 
-
-		//		// 6) Start the "server"
-		//		play1.start(); // default max time is 100 seconds (1000*100 ms).
-		//
-		//		// 7) "Play" as long as there are "fruits" and time
-		//		for(int i=0;i<10;i++) {
-		//
-		//			// 7.1) this is the main command to the player (on the server side)
-		//			play1.rotate(36*i); 
-		//			System.out.println("***** "+i+"******");
-		//
-		//			// 7.2) get the current score of the game
-		//			String info = play1.getStatistics();
-		//			System.out.println(info);
-		//			// 7.3) get the game-board current state
-		//			board_data = play1.getBoard();
-		//			for(int a=0;a<board_data.size();a++) {
-		//				System.out.println(board_data.get(a));
-		//			}
-		//			System.out.println();
-		//		}
-		//		// 8) stop the server - not needed in the real implementation.
-		//		play1.stop();
-		//		System.out.println("**** Done Game (user stop) ****");
-		//
-		//		// 9) print the data & save to the course DB
-		//		String info = play1.getStatistics();
-		//		System.out.println(info);
-		System.out.println(g.toString());
+					play1.rotate(g.getPlayer().getAzimuth());
+					System.out.println("***** "+i+"******");
+		
+					// 7.2) get the current score of the game
+					String info = play1.getStatistics();
+					System.out.println(info);
+					// 7.3) get the game-board current state
+					board_data = play1.getBoard();
+					for(int a=0;a<board_data.size();a++) {
+						System.out.println(board_data.get(a));
+					}
+					System.out.println();
+					g=g.loadstring(board_data);
+					frames.setGame(g);
+//					ans=false;
+					try {
+						Thread.sleep(100);
+					} catch (InterruptedException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				}
+				// 8) stop the server - not needed in the real implementation.
+				play1.stop();
+				System.out.println("**** Done Game (user stop) ****");
+		
+				// 9) print the data & save to the course DB
+				String info = play1.getStatistics();
+				System.out.println(info);
+//		System.out.println(g.toString());
 	}
 }

@@ -16,6 +16,7 @@ public class Player {
 	private double Radius;
 	private Path path;
 	private double score=0;
+	private double azimuth=0;
 
 	public Player(int id,double x,double y,double z, double speed, double Radius) {//constractors
 		setID(id);
@@ -84,5 +85,11 @@ public class Player {
 	 */
 	public String toString() {
 		return ID+","+orinet.toString()+","+speed+","+Radius;
+	}
+	public double getAzimuth() {
+		return azimuth;
+	}
+	public void setAzimuth(double azimuth) {
+		this.azimuth = azimuth;
 	}
 }

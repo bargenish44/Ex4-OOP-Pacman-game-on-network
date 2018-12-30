@@ -16,6 +16,7 @@ public class MyFrame implements ActionListener{
 	 * @author Bar Genish
 	 * @author Elyashiv Deri
 	 */
+	private Game game;
 	private ArrayList<Packman>Packmanarr=new ArrayList<>();
 	private ArrayList<Fruit>Fruitarr=new ArrayList<>();
 	private ArrayList<Packman>Packmanarrtemp=new ArrayList<>();
@@ -57,6 +58,7 @@ public class MyFrame implements ActionListener{
 	private JFrame frame;
 	private Map map;
 	private ImagePanel panel;
+	private int anss=-1;
 
 	public static void main(String[] args) {
 		new MyFrame();
@@ -124,11 +126,92 @@ public class MyFrame implements ActionListener{
 			frame.pack();
 			frame.setLocationRelativeTo(null);
 			frame.setVisible(true);
-			
+			game=new Game();
 
 		} catch (IOException | HeadlessException exp) {
 			exp.printStackTrace();
 		}
+
+	}
+	public MyFrame(Game g,Map map){//constractor
+		try {
+			this.map=map;
+			game=g;
+			img = ImageIO.read(new File(this.map.getMap()));
+			Packmanarr=g.getPackmanArr();
+			Fruitarr=g.getFruitArr();
+			Ghostarr=g.getGhostarr();
+			Boxarr=g.getBoxarr();
+			player=g.getPlayer();
+			packmanimage=new ImageIcon("pacman.jpg");
+			cherryimage=new ImageIcon("cherry.png");
+			ghostimage=new ImageIcon("ghost.png");
+			playerimage=new ImageIcon("player.png");
+			frame = new JFrame("OOP-EX3");
+			menubar = new JMenuBar();
+			menu = new JMenu("Help");
+			menubar.add(menu);
+			about_the_game=new JMenuItem("About the game");
+			about_the_game.addActionListener(this);
+			menu.add(about_the_game);
+			how_to_run =new JMenuItem("How to run");
+			how_to_run.addActionListener(this);
+			menu.add(how_to_run);
+			menu2=new JMenu("Option");
+			reload=new JMenuItem("Reload");
+			reload.addActionListener(this);
+			menu2.add(reload);
+			Save_as_kml=new JMenuItem("Save as kml");
+			Save_as_kml.addActionListener(this);
+			menu2.add(Save_as_kml);
+			load=new JMenuItem("Load");
+			load.addActionListener(this);
+			menu2.add(load);
+			save=new JMenuItem("Save");
+			save.addActionListener(this);
+			menu2.add(save);
+			run=new JMenuItem("Run");
+			run.addActionListener(this);
+			menu2.add(run);
+			menubar.add(menu2);
+			menu3=new JMenu("Add");
+			azimuth=new JMenuItem("Azimuth");
+			azimuth.addActionListener(this);
+			addpackman=new JMenuItem("Packman");
+			addpackman.addActionListener(this);
+			addfruit=new JMenuItem("Fruit");
+			addfruit.addActionListener(this);
+			addghost=new JMenuItem("Ghost");
+			addghost.addActionListener(this);
+			addbox=new JMenuItem("Box");
+			addbox.addActionListener(this);
+			addplayer=new JMenuItem("Player");
+			addplayer.addActionListener(this);
+			menu3.add(addbox);
+			menu3.add(addfruit);
+			menu3.add(addpackman);
+			menu3.add(addghost);
+			menu3.add(addplayer);
+			menu3.add(azimuth);
+			menubar.add(menu3);
+			frame.setJMenuBar(menubar);
+			frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+			frame.setLayout(new BorderLayout());
+			panel = new  ImagePanel(img);
+			frame.add(panel);
+			frame.pack();
+			frame.setLocationRelativeTo(null);
+			frame.setVisible(true);
+
+		} catch (IOException | HeadlessException exp) {
+			exp.printStackTrace();
+		}
+	}
+	public int getAnss() {
+		return this.anss;
+	}
+	public void setGame(Game g) {
+		game=g;
 	}
 
 	class ImagePanel extends JPanel implements MouseListener{
@@ -227,7 +310,7 @@ public class MyFrame implements ActionListener{
 							}
 						}
 
-					ans = false;
+						ans = false;
 					}
 				};
 
@@ -418,6 +501,7 @@ public class MyFrame implements ActionListener{
 				p=map.PixelToCoords(x, y, 0, width, hight);
 				angle=my.azimuth_elevation_dist(player.getOrinet(),p)[0];
 				System.out.println(angle);
+				player.setAzimuth(angle);
 			}
 		}
 		@Override
@@ -529,6 +613,7 @@ public class MyFrame implements ActionListener{
 			choose="packman";
 		if(e.getSource()==azimuth) {
 			choose="azimuth";
+			anss++;
 		}
 		panel.repaint();
 	}
