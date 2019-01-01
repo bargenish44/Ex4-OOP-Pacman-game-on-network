@@ -17,17 +17,13 @@ public class MyFrame implements ActionListener{
 	 * @author Elyashiv Deri
 	 */
 	private Game game;
-	//	private ArrayList<Packman>Packmanarr=new ArrayList<>();
-	//	private ArrayList<Fruit>Fruitarr=new ArrayList<>();
 	private ArrayList<Packman>Packmanarrtemp=new ArrayList<>();
 	private ArrayList<Fruit>Fruitarrtemp=new ArrayList<>();
-	//	private ArrayList<Ghost>Ghostarr=new ArrayList<>();
-	//	private ArrayList<Box>Boxarr=new ArrayList<>();
 	private Player player;
 	private boolean ans=false;
 	private double angle=0;
 	private ImageIcon packmanimage,cherryimage,ghostimage,playerimage;
-	private int counter=0,count=0,boxcounter=0,ghostcounter=0,azimuthcount=0;
+	private int counter=0,count=0,boxcounter=0,ghostcounter=0,azimuthcount=-1;
 	private String choose="";
 	private JMenuItem load,save,run,how_to_run,about_the_game,reload,Save_as_kml,addpackman,addfruit,addghost,addbox,addplayer,Play_alone,StartGame,azimuth;
 	private JMenuBar menubar;
@@ -39,10 +35,10 @@ public class MyFrame implements ActionListener{
 	private ImagePanel panel;
 	private Play play1;
 	private String map_data,info,file_name;
-	private String []str;
+	private String[]str;
 	private ArrayList<String> board_data;
 	private MyCoords mycords;
-	private boolean gameruns=false;
+//	private boolean gameruns=false;
 
 	public static void main(String[] args) {
 		new MyFrame();
@@ -177,7 +173,7 @@ public class MyFrame implements ActionListener{
 				g.drawImage(ghostimage.getImage(), p.ix()-15, p.iy()-15,30,30,null);
 			}
 			try {
-				Point3D p=map.CoordsToPixel(player.getOrinet(),width,hight);
+				Point3D p=map.CoordsToPixel(game.getPlayer().getOrinet(),width,hight);
 				g.drawImage(playerimage.getImage(), p.ix()-15, p.iy()-15,30,30,null);
 			}
 			catch(NullPointerException e) {}
@@ -412,16 +408,16 @@ public class MyFrame implements ActionListener{
 			}
 			else if(choose.equals("Play_alone")) {
 				if(!play1.isRuning())
-					System.out.println("you should start game first");
+					System.out.println("You should start game first");
 				else {
-					for(int i=0;i<10;i++) {
+					if(azimuthcount<10) {
 						int x=e.getX();
 						int y=e.getY();
 						Point3D p=new Point3D(x,y,0);
 						p=map.PixelToCoords(x, y, 0, width, hight);
-						angle=mycords.azimuth_elevation_dist(player.getOrinet(),p)[0];
+						angle=mycords.azimuth_elevation_dist(game.getPlayer().getOrinet(),p)[0];
 						System.out.println(angle);
-						player.setAzimuth(angle);
+						game.getPlayer().setAzimuth(angle);
 						play1.rotate(game.getPlayer().getAzimuth());
 						System.out.println("***** "+game.getPlayer().getAzimuth()+"******");
 
@@ -436,20 +432,19 @@ public class MyFrame implements ActionListener{
 						System.out.println();
 						game=game.loadstring(board_data);
 						azimuthcount++;
+						System.out.println(play1.getStatistics());
 						frame.repaint();
-						try {
-							Thread.sleep(100);
-						} catch (InterruptedException e1) {
-							// TODO Auto-generated catch block
-							e1.printStackTrace();
-						}
 					}
-					play1.stop();
-					System.out.println("**** Done Game (user stop) ****");
+					while(azimuthcount>=10&&play1.isRuning()) 
+						azimuthcount-=10;
+					if(!play1.isRuning()&&azimuthcount!=-1) {
+						play1.stop();
+						System.out.println("**** Done Game (user stop) ****");
 
-					// 9) print the data & save to the course DB
-					String info = play1.getStatistics();
-					System.out.println(info);
+						// 9) print the data & save to the course DB
+						String info = play1.getStatistics();
+						System.out.println(info);
+					}
 				}
 			}
 		}
@@ -563,6 +558,7 @@ public class MyFrame implements ActionListener{
 			System.out.println("Init Player Location should be set using the bounding box info");
 			play1.setInitLocation(32.1040,35.2061);
 			game.getPlayer().setOrinet(new Point3D(35.2061,32.1040));
+			azimuthcount=0;
 			play1.start();
 		}
 		if(e.getSource()==addbox) 
@@ -575,8 +571,10 @@ public class MyFrame implements ActionListener{
 			choose="ghost";
 		if(e.getSource()==addpackman)
 			choose="packman";
-		if(e.getSource()==Play_alone) 
+		if(e.getSource()==Play_alone)
 			choose="Play_alone";
+//		if(e.getSource()==azimuth)
+//			choose="azimuth";
 		panel.repaint();
 	}
 	public int getmathpath(ArrayList<Packman>arr) {
