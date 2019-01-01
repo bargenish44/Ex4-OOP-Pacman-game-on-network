@@ -55,42 +55,34 @@ public class Ex4_Main_Example {
 		MyFrame frames=new MyFrame(g,map);
 
 
-				// 6) Start the "server"
-				play1.start(); // default max time is 100 seconds (1000*100 ms).
-		
-				// 7) "Play" as long as there are "fruits" and time
-				for(int i=0;i<10;i++) {
-					// 7.1) this is the main command to the player (on the server side)
+		// 6) Start the "server"
+		play1.start(); // default max time is 100 seconds (1000*100 ms).
 
-					play1.rotate(g.getPlayer().getAzimuth());
-					System.out.println("***** "+i+"******");
-		
-					// 7.2) get the current score of the game
-					String info = play1.getStatistics();
-					System.out.println(info);
-					// 7.3) get the game-board current state
-					board_data = play1.getBoard();
-					for(int a=0;a<board_data.size();a++) {
-						System.out.println(board_data.get(a));
-					}
-					System.out.println();
-					g=g.loadstring(board_data);
-					frames.setGame(g);
-//					ans=false;
-					try {
-						Thread.sleep(100);
-					} catch (InterruptedException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-				}
-				// 8) stop the server - not needed in the real implementation.
-				play1.stop();
-				System.out.println("**** Done Game (user stop) ****");
-		
-				// 9) print the data & save to the course DB
-				String info = play1.getStatistics();
-				System.out.println(info);
-//		System.out.println(g.toString());
+		// 7) "Play" as long as there are "fruits" and time
+		for(int i=0;i<10;i++) {
+			// 7.1) this is the main command to the player (on the server side)
+
+			play1.rotate(g.getPlayer().getAzimuth());
+			System.out.println("***** "+i+"******");
+
+			// 7.2) get the current score of the game
+			String info = play1.getStatistics();
+			System.out.println(info);
+			// 7.3) get the game-board current state
+			board_data = play1.getBoard();
+			for(int a=0;a<board_data.size();a++) {
+				System.out.println(board_data.get(a));
+			}
+			System.out.println();
+			g=g.loadstring(board_data);
+			frames.setGame(g);
+		}
+		// 8) stop the server - not needed in the real implementation.
+		play1.stop();
+		System.out.println("**** Done Game (user stop) ****");
+
+		// 9) print the data & save to the course DB
+		String info = play1.getStatistics();
+		System.out.println(info);
 	}
 }

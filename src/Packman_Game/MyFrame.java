@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import javax.imageio.ImageIO;
 import java.awt.event.*;
 import javax.swing.*;
-
+import Robot.Play;
 import Coords.MyCoords;
 import Geom.Point3D;
 
@@ -17,54 +17,42 @@ public class MyFrame implements ActionListener{
 	 * @author Elyashiv Deri
 	 */
 	private Game game;
-	private ArrayList<Packman>Packmanarr=new ArrayList<>();
-	private ArrayList<Fruit>Fruitarr=new ArrayList<>();
+	//	private ArrayList<Packman>Packmanarr=new ArrayList<>();
+	//	private ArrayList<Fruit>Fruitarr=new ArrayList<>();
 	private ArrayList<Packman>Packmanarrtemp=new ArrayList<>();
 	private ArrayList<Fruit>Fruitarrtemp=new ArrayList<>();
-	private ArrayList<Ghost>Ghostarr=new ArrayList<>();
-	private ArrayList<Box>Boxarr=new ArrayList<>();
+	//	private ArrayList<Ghost>Ghostarr=new ArrayList<>();
+	//	private ArrayList<Box>Boxarr=new ArrayList<>();
 	private Player player;
 	private boolean ans=false;
 	private double angle=0;
-	private ImageIcon packmanimage;
-	private ImageIcon cherryimage;
-	private ImageIcon ghostimage;
-	private ImageIcon playerimage;
-	private int counter=0;
-	private int ghostcounter=0;
-	private int boxcounter=0;
+	private ImageIcon packmanimage,cherryimage,ghostimage,playerimage;
+	private int counter=0,count=0,boxcounter=0,ghostcounter=0,azimuthcount=0;
 	private String choose="";
-	private int count=0;
-	private JMenuItem load;
+	private JMenuItem load,save,run,how_to_run,about_the_game,reload,Save_as_kml,addpackman,addfruit,addghost,addbox,addplayer,Play_alone,StartGame,azimuth;
 	private JMenuBar menubar;
-	private JMenuItem save;
-	private JMenuItem run;
-	private JMenuItem how_to_run;
-	private JMenuItem about_the_game;
-	private JMenuItem reload;
-	private JMenuItem Save_as_kml;
-	private JMenuItem addpackman;
-	private JMenuItem addfruit;
-	private JMenuItem addghost;
-	private JMenuItem addbox;
-	private JMenuItem addplayer;
-	private JMenuItem azimuth;
-	private JMenu menu2;
-	private JMenu menu;
-	private JMenu menu3;
+	private JMenu menu2,menu,menu3;
 	private Image img;
-	private int width;
-	private int hight;
+	private int width,hight;
 	private JFrame frame;
 	private Map map;
 	private ImagePanel panel;
-	private int anss=-1;
+	private Play play1;
+	private String map_data,info,file_name;
+	private String []str;
+	private ArrayList<String> board_data;
+	private MyCoords mycords;
+	private boolean gameruns=false;
 
 	public static void main(String[] args) {
 		new MyFrame();
 	}
 	public MyFrame(){//constractor
 		try {
+			mycords=new MyCoords();
+			file_name = "data/Ex4_OOP_example9.csv";
+			play1 = new Play(file_name);
+			play1.setIDs(3131,745,83);
 			map=new Map();
 			img = ImageIO.read(new File(map.getMap()));
 			packmanimage=new ImageIcon("pacman.jpg");
@@ -96,7 +84,13 @@ public class MyFrame implements ActionListener{
 			menu2.add(save);
 			run=new JMenuItem("Run");
 			run.addActionListener(this);
+			StartGame=new JMenuItem("Start Game");
+			StartGame.addActionListener(this);
+			Play_alone=new JMenuItem("Play alone");
+			Play_alone.addActionListener(this);
 			menu2.add(run);
+			menu2.add(Play_alone);
+			menu2.add(StartGame);
 			menubar.add(menu2);
 			menu3=new JMenu("Add");
 			azimuth=new JMenuItem("Azimuth");
@@ -133,83 +127,6 @@ public class MyFrame implements ActionListener{
 		}
 
 	}
-	public MyFrame(Game g,Map map){//constractor
-		try {
-			this.map=map;
-			game=g;
-			img = ImageIO.read(new File(this.map.getMap()));
-			Packmanarr=g.getPackmanArr();
-			Fruitarr=g.getFruitArr();
-			Ghostarr=g.getGhostarr();
-			Boxarr=g.getBoxarr();
-			player=g.getPlayer();
-			packmanimage=new ImageIcon("pacman.jpg");
-			cherryimage=new ImageIcon("cherry.png");
-			ghostimage=new ImageIcon("ghost.png");
-			playerimage=new ImageIcon("player.png");
-			frame = new JFrame("OOP-EX3");
-			menubar = new JMenuBar();
-			menu = new JMenu("Help");
-			menubar.add(menu);
-			about_the_game=new JMenuItem("About the game");
-			about_the_game.addActionListener(this);
-			menu.add(about_the_game);
-			how_to_run =new JMenuItem("How to run");
-			how_to_run.addActionListener(this);
-			menu.add(how_to_run);
-			menu2=new JMenu("Option");
-			reload=new JMenuItem("Reload");
-			reload.addActionListener(this);
-			menu2.add(reload);
-			Save_as_kml=new JMenuItem("Save as kml");
-			Save_as_kml.addActionListener(this);
-			menu2.add(Save_as_kml);
-			load=new JMenuItem("Load");
-			load.addActionListener(this);
-			menu2.add(load);
-			save=new JMenuItem("Save");
-			save.addActionListener(this);
-			menu2.add(save);
-			run=new JMenuItem("Run");
-			run.addActionListener(this);
-			menu2.add(run);
-			menubar.add(menu2);
-			menu3=new JMenu("Add");
-			azimuth=new JMenuItem("Azimuth");
-			azimuth.addActionListener(this);
-			addpackman=new JMenuItem("Packman");
-			addpackman.addActionListener(this);
-			addfruit=new JMenuItem("Fruit");
-			addfruit.addActionListener(this);
-			addghost=new JMenuItem("Ghost");
-			addghost.addActionListener(this);
-			addbox=new JMenuItem("Box");
-			addbox.addActionListener(this);
-			addplayer=new JMenuItem("Player");
-			addplayer.addActionListener(this);
-			menu3.add(addbox);
-			menu3.add(addfruit);
-			menu3.add(addpackman);
-			menu3.add(addghost);
-			menu3.add(addplayer);
-			menu3.add(azimuth);
-			menubar.add(menu3);
-			frame.setJMenuBar(menubar);
-			frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-			frame.setLayout(new BorderLayout());
-			panel = new  ImagePanel(img);
-			frame.add(panel);
-			frame.pack();
-			frame.setLocationRelativeTo(null);
-			frame.setVisible(true);
-
-		} catch (IOException | HeadlessException exp) {
-			exp.printStackTrace();
-		}
-	}
-	public int getAnss() {
-		return this.anss;
-	}
 	public void setGame(Game g) {
 		game=g;
 	}
@@ -245,18 +162,18 @@ public class MyFrame implements ActionListener{
 		public void paintComponent(Graphics g) {
 			super.paintComponent(g);
 			g.drawImage(img, 0, 0,this.getWidth(),this.getHeight(),null);
-			for(int i=0;i<Packmanarr.size();i++) {
-				Point3D p=map.CoordsToPixel(Packmanarr.get(i).getOrinet(),width,hight);
+			for(int i=0;i<game.getPackmanArr().size();i++) {
+				Point3D p=map.CoordsToPixel(game.getPackmanArr().get(i).getOrinet(),width,hight);
 				g.drawImage(packmanimage.getImage(), p.ix()-15, p.iy()-15,30,30,null);
 			}
-			for(int i=0;i<Fruitarr.size();i++) {
-				Point3D p=map.CoordsToPixel(Fruitarr.get(i).getOrient(),width,hight);
+			for(int i=0;i<game.getFruitArr().size();i++) {
+				Point3D p=map.CoordsToPixel(game.getFruitArr().get(i).getOrient(),width,hight);
 				g.drawImage(cherryimage.getImage(), p.ix()-15, p.iy()-15,30,30,null);
 			}
 
 
-			for(int i=0;i<Ghostarr.size();i++) {
-				Point3D p=map.CoordsToPixel(Ghostarr.get(i).getPos(),width,hight);
+			for(int i=0;i<game.getGhostarr().size();i++) {
+				Point3D p=map.CoordsToPixel(game.getGhostarr().get(i).getPos(),width,hight);
 				g.drawImage(ghostimage.getImage(), p.ix()-15, p.iy()-15,30,30,null);
 			}
 			try {
@@ -266,9 +183,9 @@ public class MyFrame implements ActionListener{
 			catch(NullPointerException e) {}
 			Graphics2D g2=(Graphics2D)g;
 
-			for(int i=0;i<Boxarr.size();i++) {
-				Point3D p=map.CoordsToPixel(Boxarr.get(i).getLeftDown(),width,hight);
-				Point3D p2=map.CoordsToPixel(Boxarr.get(i).getRightUp(),width,hight);
+			for(int i=0;i<game.getBoxarr().size();i++) {
+				Point3D p=map.CoordsToPixel(game.getBoxarr().get(i).getLeftDown(),width,hight);
+				Point3D p2=map.CoordsToPixel(game.getBoxarr().get(i).getRightUp(),width,hight);
 				g2.setColor(Color.black);
 				g2.drawRect(p2.ix(), p.iy(),Math.abs(p2.ix()-p.ix()) ,Math.abs(p2.iy()-p.iy()));
 				g2.fillRect(p2.ix(), p.iy(),Math.abs(p2.ix()-p.ix()) ,Math.abs(p2.iy()-p.iy()));
@@ -283,18 +200,18 @@ public class MyFrame implements ActionListener{
 
 					public void run() 
 					{
-						int count=getmathpath(Packmanarr);
+						int count=getmathpath(game.getPackmanArr());
 						MyCoords mc = new MyCoords();
 						for (int j = 0; j < count; j++)
 						{
-							for (int i = 0; i < Packmanarr.size(); i++) 
+							for (int i = 0; i < game.getPackmanArr().size(); i++) 
 							{
 								try
 								{
-									Packmanarr.get(i).setOrinet(Packmanarr.get(i).getPath().getArr().get(j));
-									for ( int k = 0; k < Packmanarr.size(); k++) {
-										if(mc.distance3d(Packmanarr.get(i).getOrinet(),Fruitarr.get(k).getOrient())<3) {
-											Fruitarr.remove(k);
+									game.getPackmanArr().get(i).setOrinet(game.getPackmanArr().get(i).getPath().getArr().get(j));
+									for ( int k = 0; k < game.getPackmanArr().size(); k++) {
+										if(mc.distance3d(game.getPackmanArr().get(i).getOrinet(),game.getFruitArr().get(k).getOrient())<3) {
+											game.getFruitArr().remove(k);
 										}
 									}
 								}
@@ -366,7 +283,7 @@ public class MyFrame implements ActionListener{
 				}
 				if(ans) {
 					Point3D p=map.PixelToCoords(x, y, 0,width,hight);
-					Packmanarr.add(new Packman(count,p.x(),p.y(),0, speed, radius));
+					game.getPackmanArr().add(new Packman(count,p.x(),p.y(),0, speed, radius));
 					count++;
 					repaint();
 				}
@@ -393,7 +310,7 @@ public class MyFrame implements ActionListener{
 				}
 				if(ans) {
 					Point3D p=map.PixelToCoords(x, y,0,width,hight);
-					Fruitarr.add(new Fruit(counter,p.x(),p.y(),0,weight));
+					game.getFruitArr().add(new Fruit(counter,p.x(),p.y(),0,weight));
 					counter++;
 					repaint();			
 				}
@@ -420,7 +337,7 @@ public class MyFrame implements ActionListener{
 				}
 				if(ans) {
 					Point3D p=map.PixelToCoords(x, y,0,width,hight);
-					Ghostarr.add(new Ghost(ghostcounter,new Point3D(p.x(),p.y(),0),speed,1));//רדיוס 1?
+					game.getGhostarr().add(new Ghost(ghostcounter,new Point3D(p.x(),p.y(),0),speed,1));//רדיוס 1?
 					ghostcounter++;
 					repaint();			
 				}
@@ -485,7 +402,7 @@ public class MyFrame implements ActionListener{
 				if(x1!=-1&&x2!=-1&&y1!=-1&&y2!=-1) {
 					Point3D p=map.PixelToCoords(x1, y1, 0,width,hight);
 					Point3D p2=map.PixelToCoords(x2, y2, 0,width,hight);
-					Boxarr.add(new Box(boxcounter,new Point3D(p.x(),p2.y(),0),new Point3D(p2.x(),p.y(),0)));
+					game.getBoxarr().add(new Box(boxcounter,new Point3D(p.x(),p2.y(),0),new Point3D(p2.x(),p.y(),0)));
 					x1=-1;
 					y1=-1;
 					counterboxes=0;
@@ -493,15 +410,47 @@ public class MyFrame implements ActionListener{
 				}
 
 			}
-			else if(choose.equals("azimuth")) {
-				MyCoords my=new MyCoords();
-				int x=e.getX();
-				int y=e.getY();
-				Point3D p=new Point3D(x,y,0);
-				p=map.PixelToCoords(x, y, 0, width, hight);
-				angle=my.azimuth_elevation_dist(player.getOrinet(),p)[0];
-				System.out.println(angle);
-				player.setAzimuth(angle);
+			else if(choose.equals("Play_alone")) {
+				if(!play1.isRuning())
+					System.out.println("you should start game first");
+				else {
+					for(int i=0;i<10;i++) {
+						int x=e.getX();
+						int y=e.getY();
+						Point3D p=new Point3D(x,y,0);
+						p=map.PixelToCoords(x, y, 0, width, hight);
+						angle=mycords.azimuth_elevation_dist(player.getOrinet(),p)[0];
+						System.out.println(angle);
+						player.setAzimuth(angle);
+						play1.rotate(game.getPlayer().getAzimuth());
+						System.out.println("***** "+game.getPlayer().getAzimuth()+"******");
+
+						// 7.2) get the current score of the game
+						info = play1.getStatistics();
+						System.out.println(info);
+						// 7.3) get the game-board current state
+						board_data = play1.getBoard();
+						for(int a=0;a<board_data.size();a++) {
+							System.out.println(board_data.get(a));
+						}
+						System.out.println();
+						game=game.loadstring(board_data);
+						azimuthcount++;
+						frame.repaint();
+						try {
+							Thread.sleep(100);
+						} catch (InterruptedException e1) {
+							// TODO Auto-generated catch block
+							e1.printStackTrace();
+						}
+					}
+					play1.stop();
+					System.out.println("**** Done Game (user stop) ****");
+
+					// 9) print the data & save to the course DB
+					String info = play1.getStatistics();
+					System.out.println(info);
+				}
 			}
 		}
 		@Override
@@ -531,34 +480,34 @@ public class MyFrame implements ActionListener{
 				File selectedFile = fileChooser.getSelectedFile();
 				Game g=new Game();
 				g=new Game(g.load(selectedFile.toString()));
-				Packmanarr=g.getPackmanArr();
-				Fruitarr=g.getFruitArr();
-				Ghostarr=g.getGhostarr();
-				Boxarr=g.getBoxarr();
+				game.setPackmanArr(g.getPackmanArr());
+				game.setFruitArr(g.getFruitArr());
+				game.setGhostarr(g.getGhostarr());
+				game.setBoxarr(g.getBoxarr());
 			}
 		}
 		if(e.getSource()==save) {
 			Game g=new Game();
-			g.save(new Game(Packmanarr,Fruitarr,Ghostarr,Boxarr));
+			g.save(new Game(game.getPackmanArr(),game.getFruitArr(),game.getGhostarr(),game.getBoxarr()));
 		}
 		if(e.getSource()==run) {
 			Packmanarrtemp.clear();
-			for(int i=0;i<Packmanarr.size();i++) 
-				Packmanarrtemp.add(new Packman(Packmanarr.get(i)));
-			Game g=new Game(Packmanarr, Fruitarr,Ghostarr,Boxarr);
+			for(int i=0;i<game.getPackmanArr().size();i++) 
+				Packmanarrtemp.add(new Packman(game.getPackmanArr().get(i)));
+			Game g=new Game(game.getPackmanArr(), game.getFruitArr(),game.getGhostarr(),game.getBoxarr());
 			ShortestPathAlg s=new ShortestPathAlg();
 			System.out.println(s.Shortalgo(g));
-			Packmanarr=g.getPackmanArr();
-			Fruitarr=g.getFruitArr();
+			game.setPackmanArr(g.getPackmanArr());
+			game.setFruitArr(g.getFruitArr());
 			Fruitarrtemp.clear();
-			for(int i=0;i<Fruitarr.size();i++) {
-				Fruitarrtemp.add(new Fruit(Fruitarr.get(i)));
+			for(int i=0;i<game.getFruitArr().size();i++) {
+				Fruitarrtemp.add(new Fruit(game.getFruitArr().get(i)));
 			}
 			double dist=0;
 			double score=0;
-			for(int i=0;i<Packmanarr.size();i++) {
-				dist=Packmanarr.get(i).getPath().GetDist();	
-				score=Packmanarr.get(i).getScore();
+			for(int i=0;i<game.getPackmanArr().size();i++) {
+				dist=game.getPackmanArr().get(i).getPath().GetDist();	
+				score=game.getPackmanArr().get(i).getScore();
 				System.out.println("Packman: "+i+" ,distance is: "+dist+" , score is: "+score);
 			}
 
@@ -580,26 +529,41 @@ public class MyFrame implements ActionListener{
 					"About the game", JOptionPane.PLAIN_MESSAGE);
 		}
 		if(e.getSource()==reload) {
-			Fruitarr.clear();
+			game.getFruitArr().clear();
 			for(int i=0;i<Fruitarrtemp.size();i++) {
-				Fruitarr.add(new Fruit(Fruitarrtemp.get(i)));
+				game.getFruitArr().add(new Fruit(Fruitarrtemp.get(i)));
 			}
-			Packmanarr.clear();
+			game.getPackmanArr().clear();
 			for(int i=0;i<Packmanarrtemp.size();i++) {
-				Packmanarr.add(new Packman(Packmanarrtemp.get(i)));
+				game.getPackmanArr().add(new Packman(Packmanarrtemp.get(i)));
 			}
 			ans=false;
 		}
 		if(e.getSource()==Save_as_kml) {
-			Fruitarr.clear();
-			for(int i=0;i<Packmanarr.size();i++) {
-				Packmanarr.get(i).setOrinet(Packmanarrtemp.get(i).getOrinet());
+			game.getFruitArr().clear();
+			for(int i=0;i<game.getPackmanArr().size();i++) {
+				game.getPackmanArr().get(i).setOrinet(Packmanarrtemp.get(i).getOrinet());
 			}
-			Game g=new Game(Packmanarr,Fruitarrtemp,Ghostarr,Boxarr);
+			Game g=new Game(game.getPackmanArr(),Fruitarrtemp,game.getGhostarr(),game.getBoxarr());
 			Path2KML p2k=new Path2KML();
 			ans=p2k.path2kml(g);
 			if(ans)System.out.println("saved int data folder under name:mygamekml.kml");
 			else System.out.println("Ops something went weong");
+		}
+		if(e.getSource()==StartGame) {
+			map_data = play1.getBoundingBox();
+			System.out.println("Bounding Box info: "+map_data);
+			str=map_data.split(",");
+			board_data = play1.getBoard();
+			for(int i=0;i<board_data.size();i++) {
+				System.out.println(board_data.get(i));
+			}
+			System.out.println();
+			game=game.loadstring(board_data);
+			System.out.println("Init Player Location should be set using the bounding box info");
+			play1.setInitLocation(32.1040,35.2061);
+			game.getPlayer().setOrinet(new Point3D(35.2061,32.1040));
+			play1.start();
 		}
 		if(e.getSource()==addbox) 
 			choose="box";
@@ -611,10 +575,8 @@ public class MyFrame implements ActionListener{
 			choose="ghost";
 		if(e.getSource()==addpackman)
 			choose="packman";
-		if(e.getSource()==azimuth) {
-			choose="azimuth";
-			anss++;
-		}
+		if(e.getSource()==Play_alone) 
+			choose="Play_alone";
 		panel.repaint();
 	}
 	public int getmathpath(ArrayList<Packman>arr) {

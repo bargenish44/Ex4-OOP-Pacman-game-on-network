@@ -24,6 +24,7 @@ public class Player {
 		setSpeed(speed);
 		setRadius(Radius);
 		setPath(new Path());
+		setAzimuth(0);
 	}
 	public Player(int id,Point3D p,double speed,double Raduis) {
 		setID(id);
@@ -31,6 +32,7 @@ public class Player {
 		setSpeed(speed);
 		setRadius(Raduis);
 		setPath(new Path());
+		setAzimuth(0);
 	}
 	public Player(Player ot) {
 		setID(ot.ID);
@@ -79,17 +81,17 @@ public class Player {
 	public void setID(int iD) {
 		ID = iD;
 	}
+	public double getAzimuth() {
+		return azimuth;
+	}
+	public void setAzimuth(double azimuth) {
+		this.azimuth = azimuth;
+	}
 	/**
 	 * write the Player as string.
 	 * @return string of the Player.
 	 */
 	public String toString() {
 		return ID+","+orinet.toString()+","+speed+","+Radius;
-	}
-	public double getAzimuth() {
-		return azimuth;
-	}
-	public void setAzimuth(double azimuth) {
-		this.azimuth = azimuth;
 	}
 }
