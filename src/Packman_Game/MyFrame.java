@@ -19,13 +19,13 @@ public class MyFrame implements ActionListener{
 	private Game game;
 	private ArrayList<Packman>Packmanarrtemp=new ArrayList<>();
 	private ArrayList<Fruit>Fruitarrtemp=new ArrayList<>();
-	private Player player;
 	private boolean ans=false;
+	private boolean playerinsert=false;;
 	private double angle=0;
 	private ImageIcon packmanimage,cherryimage,ghostimage,playerimage;
 	private int counter=0,count=0,boxcounter=0,ghostcounter=0,azimuthcount=-1;
 	private String choose="";
-	private JMenuItem load,save,run,how_to_run,about_the_game,reload,Save_as_kml,addpackman,addfruit,addghost,addbox,addplayer,Play_alone,StartGame,azimuth;
+	private JMenuItem load,save,run,how_to_run,about_the_game,reload,Save_as_kml,addpackman,addfruit,addghost,addbox,addplayer,Play_alone,StartGame,Play_automatic;
 	private JMenuBar menubar;
 	private JMenu menu2,menu,menu3;
 	private Image img;
@@ -35,13 +35,12 @@ public class MyFrame implements ActionListener{
 	private ImagePanel panel;
 	private Play play1;
 	private String map_data,info,file_name;
-	private String[]str;
 	private ArrayList<String> board_data;
 	private MyCoords mycords;
-//	private boolean gameruns=false;
+	private boolean gameruns=false;
 
 	public static void main(String[] args) {
-		new MyFrame();   
+		new MyFrame();
 	}
 	public MyFrame(){//constractor
 		try {
@@ -78,19 +77,20 @@ public class MyFrame implements ActionListener{
 			save=new JMenuItem("Save");
 			save.addActionListener(this);
 			menu2.add(save);
-			run=new JMenuItem("Run");
+			run=new JMenuItem("Run(eats the fruits)");
 			run.addActionListener(this);
 			StartGame=new JMenuItem("Start Game");
 			StartGame.addActionListener(this);
 			Play_alone=new JMenuItem("Play alone");
 			Play_alone.addActionListener(this);
+			Play_automatic=new JMenuItem("Play automatic");
+			Play_automatic.addActionListener(this);
 			menu2.add(run);
 			menu2.add(Play_alone);
+			menu2.add(Play_automatic);
 			menu2.add(StartGame);
 			menubar.add(menu2);
 			menu3=new JMenu("Add");
-			azimuth=new JMenuItem("Azimuth");
-			azimuth.addActionListener(this);
 			addpackman=new JMenuItem("Packman");
 			addpackman.addActionListener(this);
 			addfruit=new JMenuItem("Fruit");
@@ -106,7 +106,6 @@ public class MyFrame implements ActionListener{
 			menu3.add(addpackman);
 			menu3.add(addghost);
 			menu3.add(addplayer);
-			menu3.add(azimuth);
 			menubar.add(menu3);
 			frame.setJMenuBar(menubar);
 			frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -187,13 +186,16 @@ public class MyFrame implements ActionListener{
 				g2.fillRect(p2.ix(), p.iy(),Math.abs(p2.ix()-p.ix()) ,Math.abs(p2.iy()-p.iy()));
 
 			}
-
-
+			if(play1.isRuning()) {
+				g.setColor(Color.CYAN);
+				int fontSize=20;
+				g.setFont(new Font("TimesRoman", Font.BOLD, fontSize));
+				g.drawString(play1.getStatistics(), 15, 15);
+			}
 			if (ans) {
 				ans = false;
 				Thread t = new Thread()
 				{
-
 					public void run() 
 					{
 						int count=getmathpath(game.getPackmanArr());
@@ -341,44 +343,61 @@ public class MyFrame implements ActionListener{
 					System.out.println("you quit before crete new ghost");
 			}
 			else if(choose.equals("player")) {
-				int x = e.getX();
-				int y = e.getY();
-				System.out.println("You create new player X: " + x + " Y: " + y);
-				String test1= JOptionPane.showInputDialog("Please input player speed : ");
-				double speed=-1,radius=-1;
-				boolean ans=true;
-				try {
-					speed=Double.parseDouble(test1);
-				}catch (NullPointerException n) {ans=false;}
-				catch(Exception a) {speed=-1;}
-				while(speed<=0&&ans) {
-					test1= JOptionPane.showInputDialog("Please input player speed(larger than 0) : ");	
+				if(gameruns) {
+					int x = e.getX();
+					int y = e.getY();
+					Point3D p=map.PixelToCoords(x, y, 0,width,hight);
+					play1.setInitLocation(p.y(),p.x());
+					game.setPlayer(new Player(0,p.x(),p.y(),0, 20, 1));
+					board_data = play1.getBoard();
+					for(int a=0;a<board_data.size();a++) {
+						System.out.println(board_data.get(a));
+					}
+					System.out.println();
+					playerinsert=true;
+					play1.start();
+					repaint();
+				}
+				else {
+					int x = e.getX();
+					int y = e.getY();
+					System.out.println("You create new player X: " + x + " Y: " + y);
+					String test1= JOptionPane.showInputDialog("Please input player speed : ");
+					double speed=-1,radius=-1;
+					boolean ans=true;
 					try {
 						speed=Double.parseDouble(test1);
 					}catch (NullPointerException n) {ans=false;}
 					catch(Exception a) {speed=-1;}
-				}
-				if(ans) {
-					String test2= JOptionPane.showInputDialog("Please input player radius : ");
-					try {
-						radius=Double.parseDouble(test2);
-					}catch (NullPointerException n) {ans=false;}
-					catch(Exception a) {radius=-1;}
-					while(radius<=0&&ans) {
-						test2= JOptionPane.showInputDialog("Please input player radius(larger than 0) : ");
+					while(speed<=0&&ans) {
+						test1= JOptionPane.showInputDialog("Please input player speed(larger than 0) : ");	
+						try {
+							speed=Double.parseDouble(test1);
+						}catch (NullPointerException n) {ans=false;}
+						catch(Exception a) {speed=-1;}
+					}
+					if(ans) {
+						String test2= JOptionPane.showInputDialog("Please input player radius : ");
 						try {
 							radius=Double.parseDouble(test2);
 						}catch (NullPointerException n) {ans=false;}
 						catch(Exception a) {radius=-1;}
+						while(radius<=0&&ans) {
+							test2= JOptionPane.showInputDialog("Please input player radius(larger than 0) : ");
+							try {
+								radius=Double.parseDouble(test2);
+							}catch (NullPointerException n) {ans=false;}
+							catch(Exception a) {radius=-1;}
+						}
 					}
+					if(ans) {
+						Point3D p=map.PixelToCoords(x, y, 0,width,hight);
+						game.setPlayer(new Player(0,p.x(),p.y(),0, speed, radius));
+						repaint();
+					}
+					else 
+						System.out.println("you quit before crete new player");
 				}
-				if(ans) {
-					Point3D p=map.PixelToCoords(x, y, 0,width,hight);
-					player=new Player(0,p.x(),p.y(),0, speed, radius);
-					repaint();
-				}
-				else 
-					System.out.println("you quit before crete new player");
 			}
 			else if(choose.equals("box")) {//לסדר אם שמים קודם ס גדול ואז קטן כנל לגבי y.
 				//לסדר גם את זה שאם ממשיכים ללחוץ רק לחיצה אחת אז הוא שם חדש הוא לא מחייב 2.
@@ -407,10 +426,13 @@ public class MyFrame implements ActionListener{
 
 			}
 			else if(choose.equals("Play_alone")) {
-				if(!play1.isRuning())
+				if(!gameruns)
 					System.out.println("You should start game first");
 				else {
-					if(azimuthcount<10) {
+					if(!playerinsert) {
+						System.out.println("You should insert player first");
+					}
+					else if(azimuthcount<10) {
 						int x=e.getX();
 						int y=e.getY();
 						Point3D p=new Point3D(x,y,0);
@@ -548,7 +570,6 @@ public class MyFrame implements ActionListener{
 		if(e.getSource()==StartGame) {
 			map_data = play1.getBoundingBox();
 			System.out.println("Bounding Box info: "+map_data);
-			str=map_data.split(",");
 			board_data = play1.getBoard();
 			for(int i=0;i<board_data.size();i++) {
 				System.out.println(board_data.get(i));
@@ -556,10 +577,8 @@ public class MyFrame implements ActionListener{
 			System.out.println();
 			game=game.loadstring(board_data);
 			System.out.println("Init Player Location should be set using the bounding box info");
-			play1.setInitLocation(32.1040,35.2061);
-			game.getPlayer().setOrinet(new Point3D(35.2061,32.1040));
 			azimuthcount=0;
-			play1.start();
+			gameruns=true;
 		}
 		if(e.getSource()==addbox) 
 			choose="box";
@@ -571,10 +590,9 @@ public class MyFrame implements ActionListener{
 			choose="ghost";
 		if(e.getSource()==addpackman)
 			choose="packman";
-		if(e.getSource()==Play_alone)
+		if(e.getSource()==Play_alone) { 
 			choose="Play_alone";
-//		if(e.getSource()==azimuth)
-//			choose="azimuth";
+		}
 		panel.repaint();
 	}
 	public int getmathpath(ArrayList<Packman>arr) {
