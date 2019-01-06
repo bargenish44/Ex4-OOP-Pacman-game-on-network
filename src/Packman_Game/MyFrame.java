@@ -41,7 +41,7 @@ public class MyFrame implements ActionListener{
 	private ArrayList<String> board_data;
 	private MyCoords mycords;
 	private boolean gameruns=false;
-	private JMenuItem cheak;
+	//	private JMenuItem cheak;
 
 	public static void main(String[] args) {
 		new MyFrame();
@@ -49,7 +49,7 @@ public class MyFrame implements ActionListener{
 	public MyFrame(){//constractor
 		try {
 			mycords=new MyCoords();
-			file_name = "data/Ex4_OOP_example9.csv";
+			file_name = "data/Ex4_OOP_example1.csv";
 			play1 = new Play(file_name);
 			play1.setIDs(3131,745,83);
 			map=new Map();
@@ -89,9 +89,9 @@ public class MyFrame implements ActionListener{
 			Play_alone.addActionListener(this);
 			Play_automatic=new JMenuItem("Play automatic");
 			Play_automatic.addActionListener(this);
-			cheak=new JMenuItem("cheack");
-			cheak.addActionListener(this);
-			menu2.add(cheak);
+			//			cheak=new JMenuItem("cheack");
+			//			cheak.addActionListener(this);
+			//			menu2.add(cheak);
 			menu2.add(run);
 			menu2.add(Play_alone);
 			menu2.add(Play_automatic);
@@ -193,7 +193,7 @@ public class MyFrame implements ActionListener{
 				g2.fillRect(p2.ix(), p.iy(),Math.abs(p2.ix()-p.ix()) ,Math.abs(p2.iy()-p.iy()));
 
 			}
-			if(play1.isRuning()) {
+			if(gameruns) {
 				g.setColor(Color.CYAN);
 				int fontSize=20;
 				g.setFont(new Font("TimesRoman", Font.BOLD, fontSize));
@@ -231,7 +231,6 @@ public class MyFrame implements ActionListener{
 								e.printStackTrace();
 							}
 						}
-
 						ans = false;
 					}
 				};
@@ -239,8 +238,6 @@ public class MyFrame implements ActionListener{
 				t.start();
 			}
 		}
-
-
 		/**
 		 * This is the mouseClicked func.
 		 * You can add new Packmans if you use mouse left click on screen.
@@ -600,7 +597,21 @@ public class MyFrame implements ActionListener{
 		if(e.getSource()==Play_alone) { 
 			choose="Play_alone";
 		}
-		if(e.getSource()==cheak) {
+		//		if(e.getSource()==cheak) {
+		//			findbestpoint find=new findbestpoint(game);
+		//			Point3D p=find.findspot(width, hight);
+		//			play1.setInitLocation(p.y(),p.x());
+		//			game.setPlayer(new Player(0,p.x(),p.y(),0, 20, 1));
+		//			board_data = play1.getBoard();
+		//			for(int a=0;a<board_data.size();a++) {
+		//				System.out.println(board_data.get(a));
+		//			}
+		//			System.out.println();
+		//			playerinsert=true;
+		//			play1.start();
+		//			frame.repaint();
+		//		}
+		if(e.getSource()==Play_automatic) {
 			findbestpoint find=new findbestpoint(game);
 			Point3D p=find.findspot(width, hight);
 			play1.setInitLocation(p.y(),p.x());
@@ -613,32 +624,42 @@ public class MyFrame implements ActionListener{
 			playerinsert=true;
 			play1.start();
 			frame.repaint();
-		}
-		if(e.getSource()==Play_automatic) {
 			Shortestfruitalg algo=new Shortestfruitalg(game);
-			while(play1.isRuning()) {
-				Fruit f=algo.algowithoutboxes();
-				angle=mycords.azimuth_elevation_dist(game.getPlayer().getOrinet(),f.getOrient())[0];
-				game.getPlayer().setAzimuth(angle);
-				play1.rotate(game.getPlayer().getAzimuth());
-				// 7.2) get the current score of the game
-				info = play1.getStatistics();
-				System.out.println(info);
-				// 7.3) get the game-board current state
-				board_data = play1.getBoard();
-				for(int a=0;a<board_data.size();a++) {
-					System.out.println(board_data.get(a));
+			Thread t = new Thread()
+			{
+				public void run() 
+				{
+					while(play1.isRuning()) {
+						Fruit f=algo.algowithoutboxes();
+						angle=mycords.azimuth_elevation_dist(game.getPlayer().getOrinet(),f.getOrient())[0];
+						game.getPlayer().setAzimuth(angle);
+						play1.rotate(game.getPlayer().getAzimuth());
+						// 7.2) get the current score of the game
+						info = play1.getStatistics();
+						System.out.println(info);
+						// 7.3) get the game-board current state
+						board_data = play1.getBoard();
+						for(int a=0;a<board_data.size();a++) {
+							System.out.println(board_data.get(a));
+						}
+						System.out.println();
+						game=game.loadstring(board_data);
+						algo.setGame(game);
+						System.out.println(play1.getStatistics());
+						frame.repaint();
+						try {
+							Thread.sleep(10);
+						} catch (InterruptedException e) {
+							e.printStackTrace();
+						}
+					}
+					// 9) print the data & save to the course DB
+					String info = play1.getStatistics();
+					System.out.println(info);
+					System.out.println("end");
 				}
-				System.out.println();
-				game=game.loadstring(board_data);
-				algo.setGame(game);
-				System.out.println(play1.getStatistics());
-			}
-			//		}
-			//	}
-			// 9) print the data & save to the course DB
-			String info = play1.getStatistics();
-			System.out.println(info);
+			};
+			t.start();
 		}
 		panel.repaint();
 	}

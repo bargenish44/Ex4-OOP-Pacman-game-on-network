@@ -38,7 +38,7 @@ public class boxesonthewaycheack {
 					return true;
 			}
 		}
-		
+		//לבדוק אם הוא נמצא כשהאיקס והווי שונים
 		return false;
 	}
 	private boolean between(int xstart,int xend,int xmiddle) {
