@@ -1,10 +1,10 @@
-package Packman_Game;
+package Algorithm;
 
 import java.util.ArrayList;
 
 import Geom.Circle;
 import Geom.Point3D;
-import Packman_Game.Map;
+import Packman_Game.*;
 public class ShortestPathAlg {
 	/**
 	 * A class that calculates the shortest path so that all the fruits to eat as soon as possible.

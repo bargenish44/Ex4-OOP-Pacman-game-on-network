@@ -6,8 +6,8 @@ import java.util.ArrayList;
 import javax.imageio.ImageIO;
 import java.awt.event.*;
 import javax.swing.*;
-
-import Algorithm.algocalc;
+import Algorithm.ShortestPathAlg;
+import Algorithm.Shortestfruitalg;
 import Algorithm.findbestpoint;
 import Robot.Play;
 import Coords.MyCoords;
@@ -615,7 +615,7 @@ public class MyFrame implements ActionListener{
 			frame.repaint();
 		}
 		if(e.getSource()==Play_automatic) {
-			algocalc algo=new algocalc(game);
+			Shortestfruitalg algo=new Shortestfruitalg(game);
 			while(play1.isRuning()) {
 				Fruit f=algo.algowithoutboxes();
 				angle=mycords.azimuth_elevation_dist(game.getPlayer().getOrinet(),f.getOrient())[0];

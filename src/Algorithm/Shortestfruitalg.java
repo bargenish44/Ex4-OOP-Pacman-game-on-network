@@ -6,9 +6,9 @@ import Packman_Game.Game;
 import Packman_Game.Map;
 import Packman_Game.Player;
 
-public class algocalc {
+public class Shortestfruitalg {
 	private Game game;
-	public algocalc(Game g) {
+	public Shortestfruitalg(Game g) {
 		game=g;
 	}
 	public Game getGame() {
