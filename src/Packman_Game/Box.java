@@ -10,6 +10,11 @@ public class Box {
 		setLeftDown(ld);
 		setRightUp(ru);
 	}
+	public Box(Box box) {
+		setID(box.ID);
+		setLeftDown(box.LeftDown);
+		setRightUp(box.RightUp);
+	}
 	public Point3D getLeftDown() {
 		return LeftDown;
 	}
@@ -31,5 +36,5 @@ public class Box {
 	public String toString() {
 		return ID+","+RightUp.toString()+","+LeftDown.toString()+","+1;	
 	}
-	
+
 }

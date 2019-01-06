@@ -6,6 +6,9 @@ import java.util.ArrayList;
 import javax.imageio.ImageIO;
 import java.awt.event.*;
 import javax.swing.*;
+
+import Algorithm.algocalc;
+import Algorithm.findbestpoint;
 import Robot.Play;
 import Coords.MyCoords;
 import Geom.Point3D;
@@ -38,6 +41,7 @@ public class MyFrame implements ActionListener{
 	private ArrayList<String> board_data;
 	private MyCoords mycords;
 	private boolean gameruns=false;
+	private JMenuItem cheak;
 
 	public static void main(String[] args) {
 		new MyFrame();
@@ -85,6 +89,9 @@ public class MyFrame implements ActionListener{
 			Play_alone.addActionListener(this);
 			Play_automatic=new JMenuItem("Play automatic");
 			Play_automatic.addActionListener(this);
+			cheak=new JMenuItem("cheack");
+			cheak.addActionListener(this);
+			menu2.add(cheak);
 			menu2.add(run);
 			menu2.add(Play_alone);
 			menu2.add(Play_automatic);
@@ -592,6 +599,46 @@ public class MyFrame implements ActionListener{
 			choose="packman";
 		if(e.getSource()==Play_alone) { 
 			choose="Play_alone";
+		}
+		if(e.getSource()==cheak) {
+			findbestpoint find=new findbestpoint(game);
+			Point3D p=find.findspot(width, hight);
+			play1.setInitLocation(p.y(),p.x());
+			game.setPlayer(new Player(0,p.x(),p.y(),0, 20, 1));
+			board_data = play1.getBoard();
+			for(int a=0;a<board_data.size();a++) {
+				System.out.println(board_data.get(a));
+			}
+			System.out.println();
+			playerinsert=true;
+			play1.start();
+			frame.repaint();
+		}
+		if(e.getSource()==Play_automatic) {
+			algocalc algo=new algocalc(game);
+			while(play1.isRuning()) {
+				Fruit f=algo.algowithoutboxes();
+				angle=mycords.azimuth_elevation_dist(game.getPlayer().getOrinet(),f.getOrient())[0];
+				game.getPlayer().setAzimuth(angle);
+				play1.rotate(game.getPlayer().getAzimuth());
+				// 7.2) get the current score of the game
+				info = play1.getStatistics();
+				System.out.println(info);
+				// 7.3) get the game-board current state
+				board_data = play1.getBoard();
+				for(int a=0;a<board_data.size();a++) {
+					System.out.println(board_data.get(a));
+				}
+				System.out.println();
+				game=game.loadstring(board_data);
+				algo.setGame(game);
+				System.out.println(play1.getStatistics());
+			}
+			//		}
+			//	}
+			// 9) print the data & save to the course DB
+			String info = play1.getStatistics();
+			System.out.println(info);
 		}
 		panel.repaint();
 	}
