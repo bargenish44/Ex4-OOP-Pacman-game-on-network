@@ -8,6 +8,7 @@ import java.awt.event.*;
 import javax.swing.*;
 import Algorithm.ShortestPathAlg;
 import Algorithm.Shortestfruitalg;
+import Algorithm.boxesonthewaycheack;
 import Algorithm.findbestpoint;
 import Robot.Play;
 import Coords.MyCoords;
@@ -25,10 +26,9 @@ public class MyFrame implements ActionListener{
 	private boolean ans=false;
 	private boolean playerinsert=false;;
 	private double angle=0;
-	private ImageIcon packmanimage,cherryimage,ghostimage,playerimage;
 	private int counter=0,count=0,boxcounter=0,ghostcounter=0,azimuthcount=-1;
 	private String choose="";
-	private JMenuItem load,save,run,how_to_run,about_the_game,reload,Save_as_kml,addpackman,addfruit,addghost,addbox,addplayer,Play_alone,StartGame,Play_automatic;
+	private JMenuItem clear,load,save,run,how_to_run,about_the_game,reload,Save_as_kml,addpackman,addfruit,addghost,addbox,addplayer,Play_alone,StartGame,Play_automatic;
 	private JMenuBar menubar;
 	private JMenu menu2,menu,menu3;
 	private Image img;
@@ -39,25 +39,19 @@ public class MyFrame implements ActionListener{
 	private Play play1;
 	private String map_data,info,file_name;
 	private ArrayList<String> board_data;
-	private MyCoords mycords;
 	private boolean gameruns=false;
-	//	private JMenuItem cheak;
+	private JMenuItem cheak,betweencheck,betweencheck2;
 
 	public static void main(String[] args) {
 		new MyFrame();
 	}
 	public MyFrame(){//constractor
 		try {
-			mycords=new MyCoords();
-			file_name = "data/Ex4_OOP_example1.csv";
+			file_name = "data/Ex4_OOP_example9.csv";
 			play1 = new Play(file_name);
 			play1.setIDs(3131,745,83);
 			map=new Map();
 			img = ImageIO.read(new File(map.getMap()));
-			packmanimage=new ImageIcon("pacman.jpg");
-			cherryimage=new ImageIcon("cherry.png");
-			ghostimage=new ImageIcon("ghost.png");
-			playerimage=new ImageIcon("player.png");
 			frame = new JFrame("OOP-EX4");
 			menubar = new JMenuBar();
 			menu = new JMenu("Help");
@@ -71,7 +65,10 @@ public class MyFrame implements ActionListener{
 			menu2=new JMenu("Option");
 			reload=new JMenuItem("Reload");
 			reload.addActionListener(this);
+			clear=new JMenuItem("Clear");
+			clear.addActionListener(this);
 			menu2.add(reload);
+			menu2.add(clear);
 			Save_as_kml=new JMenuItem("Save as kml");
 			Save_as_kml.addActionListener(this);
 			menu2.add(Save_as_kml);
@@ -89,9 +86,15 @@ public class MyFrame implements ActionListener{
 			Play_alone.addActionListener(this);
 			Play_automatic=new JMenuItem("Play automatic");
 			Play_automatic.addActionListener(this);
-			//			cheak=new JMenuItem("cheack");
-			//			cheak.addActionListener(this);
-			//			menu2.add(cheak);
+			cheak=new JMenuItem("cheak");
+			cheak.addActionListener(this);
+			betweencheck=new JMenuItem("betweencheck");
+			betweencheck.addActionListener(this);
+			betweencheck2=new JMenuItem("betweencheck2");
+			betweencheck2.addActionListener(this);
+			menu2.add(betweencheck);
+			menu2.add(betweencheck2);
+			menu2.add(cheak);
 			menu2.add(run);
 			menu2.add(Play_alone);
 			menu2.add(Play_automatic);
@@ -166,21 +169,19 @@ public class MyFrame implements ActionListener{
 			g.drawImage(img, 0, 0,this.getWidth(),this.getHeight(),null);
 			for(int i=0;i<game.getPackmanArr().size();i++) {
 				Point3D p=map.CoordsToPixel(game.getPackmanArr().get(i).getOrinet(),width,hight);
-				g.drawImage(packmanimage.getImage(), p.ix()-15, p.iy()-15,30,30,null);
+				g.drawImage(game.getPackmanArr().get(i).getPackmanimage().getImage(), p.ix()-15, p.iy()-15,30,30,null);
 			}
 			for(int i=0;i<game.getFruitArr().size();i++) {
 				Point3D p=map.CoordsToPixel(game.getFruitArr().get(i).getOrient(),width,hight);
-				g.drawImage(cherryimage.getImage(), p.ix()-15, p.iy()-15,30,30,null);
+				g.drawImage(game.getFruitArr().get(i).getFruitimage().getImage(), p.ix()-15, p.iy()-15,30,30,null);
 			}
-
-
 			for(int i=0;i<game.getGhostarr().size();i++) {
 				Point3D p=map.CoordsToPixel(game.getGhostarr().get(i).getPos(),width,hight);
-				g.drawImage(ghostimage.getImage(), p.ix()-15, p.iy()-15,30,30,null);
+				g.drawImage(game.getGhostarr().get(i).getGhostimage().getImage(), p.ix()-15, p.iy()-15,30,30,null);
 			}
 			try {
 				Point3D p=map.CoordsToPixel(game.getPlayer().getOrinet(),width,hight);
-				g.drawImage(playerimage.getImage(), p.ix()-15, p.iy()-15,30,30,null);
+				g.drawImage(game.getPlayer().getPlayerimage().getImage(), p.ix()-15, p.iy()-15,30,30,null);
 			}
 			catch(NullPointerException e) {}
 			Graphics2D g2=(Graphics2D)g;
@@ -439,10 +440,14 @@ public class MyFrame implements ActionListener{
 					else if(azimuthcount<10) {
 						int x=e.getX();
 						int y=e.getY();
+						Shortestfruitalg alg=new Shortestfruitalg(game);
 						Point3D p=new Point3D(x,y,0);
 						p=map.PixelToCoords(x, y, 0, width, hight);
-						angle=mycords.azimuth_elevation_dist(game.getPlayer().getOrinet(),p)[0];
+						angle=map.azimuth_elevation_dist(game.getPlayer().getOrinet(),p)[0];
 						System.out.println(angle);
+						double tmp=alg.Go2Fruit();
+						if(tmp!=-1)
+							angle=tmp;
 						game.getPlayer().setAzimuth(angle);
 						play1.rotate(game.getPlayer().getAzimuth());
 						System.out.println("***** "+game.getPlayer().getAzimuth()+"******");
@@ -597,20 +602,24 @@ public class MyFrame implements ActionListener{
 		if(e.getSource()==Play_alone) { 
 			choose="Play_alone";
 		}
-		//		if(e.getSource()==cheak) {
-		//			findbestpoint find=new findbestpoint(game);
-		//			Point3D p=find.findspot(width, hight);
-		//			play1.setInitLocation(p.y(),p.x());
-		//			game.setPlayer(new Player(0,p.x(),p.y(),0, 20, 1));
-		//			board_data = play1.getBoard();
-		//			for(int a=0;a<board_data.size();a++) {
-		//				System.out.println(board_data.get(a));
-		//			}
-		//			System.out.println();
-		//			playerinsert=true;
-		//			play1.start();
-		//			frame.repaint();
-		//		}
+		if(e.getSource()==clear) {
+			game=new Game();
+			gameruns=false;	
+		}
+		if(e.getSource()==cheak) {
+			findbestpoint find=new findbestpoint(game);
+			Point3D p=find.findspot(width, hight);
+			play1.setInitLocation(p.y(),p.x());
+			game.setPlayer(new Player(0,p.x(),p.y(),0, 20, 1));
+			board_data = play1.getBoard();
+			for(int a=0;a<board_data.size();a++) {
+				System.out.println(board_data.get(a));
+			}
+			System.out.println();
+			playerinsert=true;
+			play1.start();
+			frame.repaint();
+		}
 		if(e.getSource()==Play_automatic) {
 			findbestpoint find=new findbestpoint(game);
 			Point3D p=find.findspot(width, hight);
@@ -631,7 +640,7 @@ public class MyFrame implements ActionListener{
 				{
 					while(play1.isRuning()) {
 						Fruit f=algo.algowithoutboxes();
-						angle=mycords.azimuth_elevation_dist(game.getPlayer().getOrinet(),f.getOrient())[0];
+						angle=map.azimuth_elevation_dist(game.getPlayer().getOrinet(),f.getOrient())[0];
 						game.getPlayer().setAzimuth(angle);
 						play1.rotate(game.getPlayer().getAzimuth());
 						// 7.2) get the current score of the game
@@ -661,6 +670,12 @@ public class MyFrame implements ActionListener{
 			};
 			t.start();
 		}
+		if(e.getSource()==betweencheck) {
+			boxesonthewaycheack boxs=new boxesonthewaycheack(game); 
+			System.out.println(boxs.cheak(game.getFruitArr().get(0), width, hight));
+		}
+		if(e.getSource()==betweencheck2)
+			game=game.load("C:\\Users\\barge\\eclipse-workspace\\Ex4-OOP\\data\\cheacks.csv");
 		panel.repaint();
 	}
 	public int getmathpath(ArrayList<Packman>arr) {

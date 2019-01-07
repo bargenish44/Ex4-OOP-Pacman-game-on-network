@@ -1,5 +1,7 @@
 package Packman_Game;
 
+import javax.swing.ImageIcon;
+
 import Geom.Path;
 import Geom.Point3D;
 
@@ -16,7 +18,8 @@ public class Packman {
 	private double Radius;
 	private Path path;
 	private double score=0;
-	private Time time; 
+	private Time time;
+	private ImageIcon packmanimage;
 
 	public Packman(int ID,double x,double y,double z, double speed, double Radius) {//constractors
 		setOrinet(new Point3D(x, y, z));
@@ -25,6 +28,7 @@ public class Packman {
 		setID(ID);
 		setPath(new Path());
 		time=new Time();
+		setPackmanimage(new ImageIcon("pacman.jpg"));
 	}
 	public Packman(int ID,Point3D p,double spped,double Raduis) {
 		setID(ID);
@@ -33,6 +37,7 @@ public class Packman {
 		setRadius(Raduis);
 		setPath(new Path());
 		time=new Time();
+		setPackmanimage(new ImageIcon("pacman.jpg"));
 	}
 	public Packman(Packman ot) {
 		setID(ot.getID());
@@ -42,6 +47,7 @@ public class Packman {
 		setPath(ot.getPath());
 		setTime(ot.getTime());
 		setScore(ot.getScore());
+		setPackmanimage(ot.getPackmanimage());
 	}
 	public Point3D getOrinet() {//getters and setters
 		return orinet;
@@ -86,6 +92,12 @@ public class Packman {
 	}
 	public void setTime(Time time) {
 		this.time = time;
+	}
+	public ImageIcon getPackmanimage() {
+		return packmanimage;
+	}
+	public void setPackmanimage(ImageIcon packmanimage) {
+		this.packmanimage = packmanimage;
 	}
 	/**
 	 * write the Packman as string.

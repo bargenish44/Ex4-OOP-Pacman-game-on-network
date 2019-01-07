@@ -5,6 +5,7 @@ import Geom.Path;
 import Geom.Point3D;
 import Packman_Game.Fruit;
 import Packman_Game.Game;
+import Packman_Game.Ghost;
 import Packman_Game.Map;
 import Packman_Game.Player;
 import graph.Node;
@@ -71,8 +72,30 @@ public class Shortestfruitalg {
 			Point3D rightdown=new Point3D(rightup.ix(),leftdown.iy());
 			Point3D leftup=new Point3D(leftdown.ix(),rightup.iy());
 			Node box1leftdown=new Node("box1leftdown");
-
+			
 		}
 		return p;
+	}
+	public double escapefroomguest(Point3D p,Fruit f) {//יחזיר את הזוית שבא לנו לברוח אליה
+		Map map=new Map();
+		//		boolean ans=false;
+		for(int i=0;i<game.getGhostarr().size();i++) {
+			if(map.distance3d(p, game.getGhostarr().get(i).getPos())<5)
+				if(map.azimuth_elevation_dist(p, f.getOrient())[0]==map.azimuth_elevation_dist(p, game.getGhostarr().get(i).getPos())[0]) {
+					return searchangle(p,f,game.getGhostarr().get(i));
+				}
+		}
+		return -1;
+	}
+	private double searchangle(Point3D p,Fruit f,Ghost g) {//לחפש את הזוית שצריך ללכת אליה
+		
+	}
+	public double Go2Fruit() {
+		Map map=new Map();
+		for(int i=0;i<game.getFruitArr().size();i++) {
+			if(map.distance3d(game.getPlayer().getOrinet(), game.getFruitArr().get(i).getOrient())<10)
+				return map.azimuth_elevation_dist(game.getPlayer().getOrinet(),game.getFruitArr().get(i).getOrient())[0];
+		}
+		return -1;
 	}
 }

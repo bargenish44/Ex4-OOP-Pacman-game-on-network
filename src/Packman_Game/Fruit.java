@@ -1,6 +1,8 @@
 package Packman_Game;
 
 
+import javax.swing.ImageIcon;
+
 import Geom.Point3D;
 
 public class Fruit {
@@ -12,24 +14,34 @@ public class Fruit {
 	private int ID;
 	private Point3D orient;
 	private double Weight;
+	private ImageIcon fruitimage;
 	private Time time;
 	public Fruit(int ID,double x,double y,double z, double weight) {//constractors
 		setID(ID);
 		setOrient(new Point3D(x, y,z));
 		setWeight(weight);
 		time=new Time();
+		setFruitimage(new ImageIcon("cherry.png"));
 	}
 	public Fruit(int ID,Point3D P,double weight) {
 		setID(ID);
 		setOrient(P);
 		setWeight(weight);
 		time=new Time();
+		setFruitimage(new ImageIcon("cherry.png"));
 	}
 	public Fruit(Fruit ot) {
 		setID(ot.getID());
 		setOrient(ot.getOrient());
 		setWeight(ot.getWeight());
 		setTime(ot.getTime());
+		setFruitimage(ot.getFruitimage());
+	}
+	public ImageIcon getFruitimage() {
+		return fruitimage;
+	}
+	public void setFruitimage(ImageIcon fruitimage) {
+		this.fruitimage = fruitimage;
 	}
 	public int getID() {//getters and setters
 		return ID;
