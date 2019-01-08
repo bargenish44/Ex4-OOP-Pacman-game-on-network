@@ -641,6 +641,12 @@ public class MyFrame implements ActionListener{
 					while(play1.isRuning()) {
 						Fruit f=algo.algowithoutboxes();
 						angle=map.azimuth_elevation_dist(game.getPlayer().getOrinet(),f.getOrient())[0];
+						Shortestfruitalg alg=new Shortestfruitalg(game);
+						double tmp=alg.escapefroomguest(game.getPlayer().getOrinet(),f);
+						if(tmp!=-1)
+							angle=tmp;
+						game.getPlayer().setAzimuth(angle);
+						play1.rotate(game.getPlayer().getAzimuth());
 						game.getPlayer().setAzimuth(angle);
 						play1.rotate(game.getPlayer().getAzimuth());
 						// 7.2) get the current score of the game
@@ -671,8 +677,8 @@ public class MyFrame implements ActionListener{
 			t.start();
 		}
 		if(e.getSource()==betweencheck) {
-			boxesonthewaycheack boxs=new boxesonthewaycheack(game); 
-			System.out.println(boxs.cheak(game.getFruitArr().get(0), width, hight));
+			Shortestfruitalg boxs=new Shortestfruitalg(game); 
+			System.out.println(boxs.LineofSight(game.getFruitArr().get(0), width, hight));
 		}
 		if(e.getSource()==betweencheck2)
 			game=game.load("C:\\Users\\barge\\eclipse-workspace\\Ex4-OOP\\data\\cheacks.csv");
