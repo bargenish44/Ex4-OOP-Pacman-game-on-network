@@ -50,12 +50,14 @@ public class Shortestfruitalg {
 			dist += map.distance3d(c.get_cen(), path.getArr().get(0));
 		return dist;
 	}
+
 	public Fruit shortpathalgo(Game game) {
 		setGame(game);
-		if(game.getBoxarr().isEmpty())
+		if (game.getBoxarr().isEmpty())
 			return algowithoutboxes();
 		return algowithboxs();
 	}
+
 	private Fruit algowithoutboxes() {// לחפש קודם מה שאין לנו מכשול בדרך אליו ורק אז ללכת לכיוון הכי קרוב במכשול
 		double min = Double.MAX_VALUE;// לבדוק זמן ודאי לכל פרי אם יש מכשול להפעיל אלגוריתם שיגיד כמה זמן יקח ואז ללכת
 										// להכי קרוב בהכרח
@@ -85,20 +87,64 @@ public class Shortestfruitalg {
 		return fruittemp;
 	}
 
+	public boolean isIn(Point3D point) {
+		boolean ans = true;
+		double x = point.x();
+		double y = point.y();
+		for (Box box : game.getBoxarr()) {
+			if (x > box.getRightUp().x() || x < box.getLeftDown().x() || y > box.getLeftDown().y()
+					|| y < box.getRightUp().y()) {
+				ans = false;
+			}
+		}
+		return ans;
+	}
+
+	public ArrayList<Point3D> getOuters() {
+		ArrayList<Point3D> ans = new ArrayList<Point3D>();
+		for (Box box : game.getBoxarr()) {
+			if (!isIn(box.getRightUp())) {
+				box.getRightUp().set_y(box.getRightUp().y() + 0.001);
+				ans.add(box.getRightUp());
+			} else if (!isIn(box.getLeftDown())) {
+				box.getLeftDown().set_x(box.getLeftDown().x() - 0.001);
+				ans.add(box.getLeftDown());
+			}
+		}
+		return ans;
+	}
+
+	public ArrayList<Point3D> cleanShot(Player player) {
+		ArrayList<Point3D> ans = new ArrayList<Point3D>();
+		Point3D player_p = player.getOrinet();
+		ArrayList<Point3D> outers = getOuters();
+		for (int i = 0; i < outers.size(); i++) {
+			if (!LineofSight(player_p, outers.get(i))) {
+				ans.add(outers.get(i));
+			}
+
+		}
+		return ans;
+	}
+
 	private Path calcpath(Fruit fruit, Game game) {// לבנות גרף ואז להשתמש בקוד של בועז להוסיף
 		Path p = new Path();
 		Graph graph = new Graph();
 		graph.add(new Node("player"));
 		graph.add(new Node("fruit"));
-		for (int i = 0; i < game.getBoxarr().size(); i++) {
-			Point3D leftdown = game.getBoxarr().get(i).getLeftDown();
-			Point3D rightup = game.getBoxarr().get(i).getRightUp();
+		for (Box box : game.getBoxarr()) {
+			Point3D leftdown = box.getLeftDown();
+			Point3D rightup = box.getRightUp();
 			Point3D rightdown = new Point3D(rightup.ix(), leftdown.iy());
 			Point3D leftup = new Point3D(leftdown.ix(), rightup.iy());
 			graph.add(new Node("leftdown"));
 			graph.add(new Node("rightup"));
 			graph.add(new Node("rightdown"));
 			graph.add(new Node("leftup"));
+		}
+		for (int i = 0; i < graph.size(); i++) {
+			Node node = graph.getNodeByIndex(i);
+
 		}
 		return p;
 	}
@@ -137,6 +183,24 @@ public class Shortestfruitalg {
 			return line2.intersects(rect1);
 		}
 		return false;
+	}
+
+	public boolean LineofSight(Point3D point1, Point3D point2) {
+		Map map = new Map();
+		Player player = new Player(game.getPlayer());
+		Line2D line = new Line2D.Double(point1.x(), point1.y(), point2.x(), point2.y());
+		ArrayList<Box> boxs = new ArrayList<>();
+		for (int i = 0; i < game.getBoxarr().size(); i++) {
+			boxs.add(new Box(game.getBoxarr().get(i)));
+			double minx = Math.min(boxs.get(i).getLeftDown().x(), boxs.get(i).getRightUp().x());
+			double miny = Math.min(boxs.get(i).getLeftDown().y(), boxs.get(i).getRightUp().y());
+			double xwidth = Math.abs(boxs.get(i).getLeftDown().x() - boxs.get(i).getRightUp().x());
+			double yhight = Math.abs(boxs.get(i).getLeftDown().y() - boxs.get(i).getRightUp().y());
+			Rectangle2D r = new Rectangle2D.Double(minx, miny, xwidth, yhight);
+			if (isColliding(r, line) == true)
+				return false;
+		}
+		return true;
 	}
 
 	public boolean LineofSight(Fruit fruit, int width, int hight) {
