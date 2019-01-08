@@ -13,6 +13,7 @@ import Packman_Game.Game;
 import Packman_Game.Ghost;
 import Packman_Game.Map;
 import Packman_Game.Player;
+import graph.Graph;
 import graph.Node;
 
 public class Shortestfruitalg {
@@ -71,13 +72,18 @@ public class Shortestfruitalg {
 	}
 	private Path calcpath(Player player,Fruit fruit,Game game) {//לבנות גרף ואז להשתמש בקוד של בועז להוסיף
 		Path p=new Path();
+		Graph graph=new Graph();
+		graph.add(new Node("player"));
+		graph.add(new Node("fruit"));
 		for(int i=0;i<game.getBoxarr().size();i++) {
 			Point3D leftdown=game.getBoxarr().get(i).getLeftDown();
 			Point3D rightup=game.getBoxarr().get(i).getRightUp();
 			Point3D rightdown=new Point3D(rightup.ix(),leftdown.iy());
 			Point3D leftup=new Point3D(leftdown.ix(),rightup.iy());
-			Node box1leftdown=new Node("box1leftdown");
-			
+			graph.add(new Node("leftdown"));
+			graph.add(new Node("rightup"));
+			graph.add(new Node("rightdown"));
+			graph.add(new Node("leftup"));
 		}
 		return p;
 	}

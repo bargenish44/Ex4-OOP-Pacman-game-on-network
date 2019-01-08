@@ -36,5 +36,4 @@ public class Box {
 	public String toString() {
 		return ID+","+RightUp.toString()+","+LeftDown.toString()+","+1;	
 	}
-
 }

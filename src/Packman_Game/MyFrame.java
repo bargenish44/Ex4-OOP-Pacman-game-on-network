@@ -3,12 +3,13 @@ import java.awt.*;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.TimerTask;
+
 import javax.imageio.ImageIO;
 import java.awt.event.*;
 import javax.swing.*;
 import Algorithm.ShortestPathAlg;
 import Algorithm.Shortestfruitalg;
-import Algorithm.boxesonthewaycheack;
 import Algorithm.findbestpoint;
 import Robot.Play;
 import Coords.MyCoords;
@@ -40,6 +41,7 @@ public class MyFrame implements ActionListener{
 	private String map_data,info,file_name;
 	private ArrayList<String> board_data;
 	private boolean gameruns=false;
+	private GameTimer timer;
 	private JMenuItem cheak,betweencheck,betweencheck2;
 
 	public static void main(String[] args) {
@@ -47,6 +49,7 @@ public class MyFrame implements ActionListener{
 	}
 	public MyFrame(){//constractor
 		try {
+			timer=new GameTimer();
 			file_name = "data/Ex4_OOP_example9.csv";
 			play1 = new Play(file_name);
 			play1.setIDs(3131,745,83);
@@ -235,7 +238,6 @@ public class MyFrame implements ActionListener{
 						ans = false;
 					}
 				};
-
 				t.start();
 			}
 		}
@@ -250,8 +252,6 @@ public class MyFrame implements ActionListener{
 		int x1,x2,y1,y2=-1;
 		@Override
 		public void mouseClicked(MouseEvent e) {
-			System.out.println(width+","+hight);
-
 			if(choose.equals("packman")) {
 				int x=e.getX();
 				int y=e.getY();
@@ -438,6 +438,9 @@ public class MyFrame implements ActionListener{
 						System.out.println("You should insert player first");
 					}
 					else if(azimuthcount<10) {
+						try {
+							timer.endTimer();
+						} catch(Exception ex) {}
 						int x=e.getX();
 						int y=e.getY();
 						Shortestfruitalg alg=new Shortestfruitalg(game);
@@ -465,6 +468,7 @@ public class MyFrame implements ActionListener{
 						azimuthcount++;
 						System.out.println(play1.getStatistics());
 						frame.repaint();
+						timer.startTimer(task);
 					}
 					while(azimuthcount>=10&&play1.isRuning()) 
 						azimuthcount-=10;
@@ -492,6 +496,52 @@ public class MyFrame implements ActionListener{
 		public void mouseReleased(MouseEvent e) {
 		}
 	}
+	TimerTask task=new TimerTask() {
+		@Override
+		public void run() {
+			if(!gameruns)
+				System.out.println("You should start game first");
+			else {
+				if(!playerinsert) {
+					System.out.println("You should insert player first");
+				}
+				else if(azimuthcount<10) {
+					Shortestfruitalg alg=new Shortestfruitalg(game);
+					angle=game.getPlayer().getAzimuth();
+					double tmp=alg.Go2Fruit();
+					if(tmp!=-1)
+						angle=tmp;
+					game.getPlayer().setAzimuth(angle);
+					play1.rotate(game.getPlayer().getAzimuth());
+					System.out.println("***** "+game.getPlayer().getAzimuth()+"******");
+
+					// 7.2) get the current score of the game
+					info = play1.getStatistics();
+					System.out.println(info);
+					// 7.3) get the game-board current state
+					board_data = play1.getBoard();
+					for(int a=0;a<board_data.size();a++) {
+						System.out.println(board_data.get(a));
+					}
+					System.out.println();
+					game=game.loadstring(board_data);
+					azimuthcount++;
+					System.out.println(play1.getStatistics());
+					frame.repaint();
+				}
+				while(azimuthcount>=10&&play1.isRuning()) 
+					azimuthcount-=10;
+				if(!play1.isRuning()&&azimuthcount!=-1) {
+					play1.stop();
+					System.out.println("**** Done Game (user stop) ****");
+
+					// 9) print the data & save to the course DB
+					String info = play1.getStatistics();
+					System.out.println(info);
+				}
+			}
+		}
+	};
 	/**
 	 * This is the actionPerformed func.
 	 * this func can save game,load game,run game,reload the game,save as kml the game and have 2 helps actions how to play and about the game.
