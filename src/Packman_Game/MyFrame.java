@@ -518,12 +518,14 @@ public class MyFrame implements ActionListener {
 
 		@Override
 		public void mouseReleased(MouseEvent e) {
-			x2 = e.getX();
-			y2 = e.getY();
-			Point3D p2 = map.PixelToCoords(x2, y2, 0, width, hight);
-			game.getBoxarr().add(new Box(boxcounter, new Point3D(p.x(), p2.y(), 0), new Point3D(p2.x(), p.y(), 0)));
-			repaint();
-			isBoxPress = false;
+			if (isBoxPress) {
+				x2 = e.getX();
+				y2 = e.getY();
+				Point3D p2 = map.PixelToCoords(x2, y2, 0, width, hight);
+				game.getBoxarr().add(new Box(boxcounter, new Point3D(p.x(), p2.y(), 0), new Point3D(p2.x(), p.y(), 0)));
+				repaint();
+				isBoxPress = false;
+			}
 		}
 
 	}
@@ -697,7 +699,7 @@ public class MyFrame implements ActionListener {
 		}
 		if (e.getSource() == cheak) {
 			findbestpoint find = new findbestpoint(game);
-			Point3D p = find.findspot(width, hight);
+			Point3D p = find.bestStart(width, hight);
 			play1.setInitLocation(p.y(), p.x());
 			game.setPlayer(new Player(0, p.x(), p.y(), 0, 20, 1));
 			board_data = play1.getBoard();
@@ -711,7 +713,7 @@ public class MyFrame implements ActionListener {
 		}
 		if (e.getSource() == Play_automatic) {
 			findbestpoint find = new findbestpoint(game);
-			Point3D p = find.findspot(width, hight);
+			Point3D p = find.bestStart(width, hight);
 			play1.setInitLocation(p.y(), p.x());
 			game.setPlayer(new Player(0, p.x(), p.y(), 0, 20, 1));
 			board_data = play1.getBoard();
