@@ -25,6 +25,7 @@ public class Game {
 	private ArrayList<Box>Boxarr=new ArrayList<>();
 	private Player player;
 	public String GameName;//for the test.
+	
 	public Game(ArrayList<Packman>arr,ArrayList<Fruit> array,ArrayList<Ghost>ghostarray,ArrayList<Box>boxarr,Player player) {//constracors
 		setFruitArr(array);
 		setBoxarr(boxarr);
@@ -131,6 +132,11 @@ public class Game {
 		}
 		return g;
 	}
+	/**
+	 * This function make a new game from arraylist of strings. 
+	 * @param str arraylist of string that we want to read from him.
+	 * @return Game g with all data from the arraylist of strings.
+	 */
 	public Game loadstring(ArrayList<String>str) 
 	{
 		Game g=new Game();

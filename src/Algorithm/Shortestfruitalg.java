@@ -50,8 +50,13 @@ public class Shortestfruitalg {
 			dist += map.distance3d(c.get_cen(), path.getArr().get(0));
 		return dist;
 	}
-
-	public Fruit algowithoutboxes() {// לחפש קודם מה שאין לנו מכשול בדרך אליו ורק אז ללכת לכיוון הכי קרוב במכשול
+	public Fruit shortpathalgo(Game game) {
+		setGame(game);
+		if(game.getBoxarr().isEmpty())
+			return algowithoutboxes();
+		return algowithboxs();
+	}
+	private Fruit algowithoutboxes() {// לחפש קודם מה שאין לנו מכשול בדרך אליו ורק אז ללכת לכיוון הכי קרוב במכשול
 		double min = Double.MAX_VALUE;// לבדוק זמן ודאי לכל פרי אם יש מכשול להפעיל אלגוריתם שיגיד כמה זמן יקח ואז ללכת
 										// להכי קרוב בהכרח
 		double tmp = 0;
@@ -66,7 +71,7 @@ public class Shortestfruitalg {
 		return fruittemp;
 	}
 
-	public Fruit algowithboxs() {
+	private Fruit algowithboxs() {
 		double min = Double.MAX_VALUE;
 		double tmp = 0;
 		Fruit fruittemp = game.getFruitArr().get(0);

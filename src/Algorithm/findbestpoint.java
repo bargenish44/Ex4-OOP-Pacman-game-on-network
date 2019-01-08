@@ -85,20 +85,20 @@ public class findbestpoint {
 		int count1 = countfruits(arr, leftup1, rightdown1);
 		int count2 = countfruits(arr, leftup2, rightdown2);
 		int count3 = countfruits(arr, leftup3, rightdown3);
-		Point3D[] array = new Point3D[2];
+		Point3D[] bestside = new Point3D[2];
 		if (count0 > count1 && count0 > count2 && count0 > count3) {
-			array[0] = leftup0;
-			array[1] = rightdown0;
+			bestside[0] = leftup0;
+			bestside[1] = rightdown0;
 		} else if (count1 > count0 && count1 > count2 && count1 > count3) {
-			array[0] = leftup1;
-			array[1] = rightdown1;
+			bestside[0] = leftup1;
+			bestside[1] = rightdown1;
 		} else if (count2 > count0 && count2 > count1 && count2 > count3) {
-			array[0] = leftup2;
-			array[1] = rightdown2;
+			bestside[0] = leftup2;
+			bestside[1] = rightdown2;
 		} else {
-			array[0] = leftup3;
-			array[1] = rightdown3;
+			bestside[0] = leftup3;
+			bestside[1] = rightdown3;
 		}
-		return array;
+		return bestside;
 	}
 }

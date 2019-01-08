@@ -10,12 +10,14 @@ public class Fruit {
 	 * This class represents Fruit- target on space every fruit have id, point3D,weight and time(the time that he were eaten in).
 	 * @author Bar Genish
 	 * @author Elyashiv Deri
+	 * @author lioz elmalem
 	 */
 	private int ID;
 	private Point3D orient;
 	private double Weight;
 	private ImageIcon fruitimage;
 	private Time time;
+	
 	public Fruit(int ID,double x,double y,double z, double weight) {//constractors
 		setID(ID);
 		setOrient(new Point3D(x, y,z));
