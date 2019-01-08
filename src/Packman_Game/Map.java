@@ -8,15 +8,25 @@ public class Map {
 	 * This class have severl func as: find distance in meters between 2 pixels and 2 coordinations and find the azimuth between 2 Point3D.
 	 * @author Bar Genish
 	 * @author Elyashiv Deri
+	 * @author lioz elmalem
 	 */
 	private Point3D leftUp;
 	private Point3D RightDown;
 	private String map;
-	public Map() {//constractors
+	/**
+	 * Defult constractor.
+	 */
+	public Map() {
 		RightDown = new Point3D(35.212416,32.101898,0);
 		leftUp = new Point3D(35.202369,32.105728,0);
 		this.setMap("Ariel1.png");
 	}
+	/**
+	 * regular constractor.
+	 * @param leftup the leftup point of the map.
+	 * @param rightDown the rightdown point of the map.
+	 * @param map get a string file of the map.
+	 */
 	public Map(Point3D leftUp,Point3D rightDown,String map) {
 		this.leftUp=leftUp;
 		this.RightDown=rightDown;

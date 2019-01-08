@@ -11,6 +11,7 @@ public class Packman {
 	 * every Packman have id, point3D , speed , radius, score, path and time(the time that he stay in the same spot).
 	 * @author Bar Genish
 	 * @author Elyashiv Deri
+	 * @author lioz elmalem
 	 */
 	private int ID;
 	private Point3D orinet;
@@ -20,8 +21,16 @@ public class Packman {
 	private double score=0;
 	private Time time;
 	private ImageIcon packmanimage;
-
-	public Packman(int ID,double x,double y,double z, double speed, double Radius) {//constractors
+	/**
+	 * defult constractor.
+	 * @param ID the count of the packman.
+	 * @param x the x point of the packman.
+	 * @param y the y point of the packman.
+	 * @param z the z point of the packman.
+	 * @param speed the packman speed.
+	 * @param Raduis the raduis of the packman.
+	 */
+	public Packman(int ID,double x,double y,double z, double speed, double Radius) {
 		setOrinet(new Point3D(x, y, z));
 		setSpeed(speed);
 		setRadius(Radius);
@@ -30,15 +39,26 @@ public class Packman {
 		time=new Time();
 		setPackmanimage(new ImageIcon("pacman.jpg"));
 	}
-	public Packman(int ID,Point3D p,double spped,double Raduis) {
+	/**
+	 * defult constractor.
+	 * @param ID the count of the packman.
+	 * @param p the point of the packman.
+	 * @param speed the packman speed.
+	 * @param Raduis the raduis of the packman.
+	 */
+	public Packman(int ID,Point3D p,double speed,double Raduis) {
 		setID(ID);
 		setOrinet(p);
-		setSpeed(spped);
+		setSpeed(speed);
 		setRadius(Raduis);
 		setPath(new Path());
 		time=new Time();
 		setPackmanimage(new ImageIcon("pacman.jpg"));
 	}
+	/**
+	 * Copy constractor.
+	 * @param ot other packman that we want to copy.
+	 */
 	public Packman(Packman ot) {
 		setID(ot.getID());
 		setOrinet(ot.getOrinet());

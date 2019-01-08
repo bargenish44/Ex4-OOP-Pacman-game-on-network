@@ -7,6 +7,7 @@ import Coords.coords_converter;
  *  This class implements coords_converter.
  * @author Bar Genish
  * @author Elyashiv Deri
+ * @author lioz elmalem
  */
 
 public class MyCoords implements coords_converter {
