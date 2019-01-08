@@ -24,8 +24,7 @@ public class MyFrame implements ActionListener{
 	private Game game;
 	private ArrayList<Packman>Packmanarrtemp=new ArrayList<>();
 	private ArrayList<Fruit>Fruitarrtemp=new ArrayList<>();
-	private boolean ans=false;
-	private boolean playerinsert=false;;
+	private boolean ans=false,isBoxPress=false,playerinsert=false;
 	private double angle=0;
 	private int counter=0,count=0,boxcounter=0,ghostcounter=0,azimuthcount=-1;
 	private String choose="";
@@ -404,32 +403,6 @@ public class MyFrame implements ActionListener{
 						System.out.println("you quit before crete new player");
 				}
 			}
-			else if(choose.equals("box")) {//לסדר אם שמים קודם ס גדול ואז קטן כנל לגבי y.
-				//לסדר גם את זה שאם ממשיכים ללחוץ רק לחיצה אחת אז הוא שם חדש הוא לא מחייב 2.
-				System.out.println("For new Box click first the uperleft point, than the rightdown");
-				if(counterboxes==0) {
-					x1=e.getX();
-					y1=e.getY();
-					counterboxes++;
-				}
-				else if(counterboxes==1) {
-					x2=e.getX();
-					y2=e.getY();
-					counterboxes--;
-				}
-				if(counterboxes>=3)counterboxes=0;
-				if(counterboxes<0)counterboxes=1;
-				if(x1!=-1&&x2!=-1&&y1!=-1&&y2!=-1) {
-					Point3D p=map.PixelToCoords(x1, y1, 0,width,hight);
-					Point3D p2=map.PixelToCoords(x2, y2, 0,width,hight);
-					game.getBoxarr().add(new Box(boxcounter,new Point3D(p.x(),p2.y(),0),new Point3D(p2.x(),p.y(),0)));
-					x1=-1;
-					y1=-1;
-					counterboxes=0;
-					repaint();
-				}
-
-			}
 			else if(choose.equals("Play_alone")) {
 				if(!gameruns)
 					System.out.println("You should start game first");
@@ -489,11 +462,23 @@ public class MyFrame implements ActionListener{
 		@Override
 		public void mouseExited(MouseEvent e) {
 		}
+		Point3D p=null;
 		@Override
 		public void mousePressed(MouseEvent e) {
+			if (isBoxPress) {
+				x1 = e.getX();
+				y1 = e.getY();
+			}
+			p = map.PixelToCoords(x1, y1, 0, width, hight);
 		}
+
 		@Override
 		public void mouseReleased(MouseEvent e) {
+			x2 = e.getX();
+			y2 = e.getY();
+			Point3D p2 = map.PixelToCoords(x2, y2, 0, width, hight);
+			game.getBoxarr().add(new Box(boxcounter, new Point3D(p.x(), p2.y(), 0), new Point3D(p2.x(), p.y(), 0)));
+			repaint();
 		}
 	}
 	TimerTask task=new TimerTask() {
@@ -639,8 +624,10 @@ public class MyFrame implements ActionListener{
 			azimuthcount=0;
 			gameruns=true;
 		}
-		if(e.getSource()==addbox) 
+		if(e.getSource()==addbox) {
 			choose="box";
+			isBoxPress=true;
+		}
 		if(e.getSource()==addplayer) 
 			choose="player";
 		if(e.getSource()==addfruit) 
