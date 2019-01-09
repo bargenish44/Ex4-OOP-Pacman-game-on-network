@@ -19,7 +19,6 @@ import Geom.Point3D;
 public class MyFrame implements ActionListener {
 	/**
 	 * This class is the graphic class and use all the project methods.
-	 * 
 	 * @author Bar Genish
 	 * @author Elyashiv Deri
 	 * @author lioz elmalem
