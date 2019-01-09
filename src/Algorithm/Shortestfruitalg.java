@@ -164,8 +164,6 @@ public class Shortestfruitalg {
 		}
 		return p;
 	}
-
-<<<<<<< HEAD
 	public double escapefroomguest(Player p, Fruit f) {
 		Map map = new Map();
 		for (int i = 0; i < game.getGhostarr().size(); i++) {
@@ -178,7 +176,6 @@ public class Shortestfruitalg {
 		}
 		return -1;
 	}
-
 	private double searchangle(Player p, Fruit f, Ghost g) {
 		ShortestPathAlg alg=new ShortestPathAlg();
 		Map map = new Map();
@@ -212,31 +209,6 @@ public class Shortestfruitalg {
 		if (escapeposcheck(p, f)==false)return false;
 		return true;
 	}
-=======
-//	public double escapefroomguest(Point3D p, Fruit f) {// יחזיר את הזוית שבא לנו לברוח אליה
-//		Map map = new Map();
-//		for (int i = 0; i < game.getGhostarr().size(); i++) {
-//			if (map.distance3d(p, game.getGhostarr().get(i).getPos()) < 5)
-//				if (map.azimuth_elevation_dist(p, f.getPos())[0] == map.azimuth_elevation_dist(p,
-//						game.getGhostarr().get(i).getPos())[0]) {
-//					return searchangle(p, f, game.getGhostarr().get(i));
-//				}
-//		}
-//		return -1;
-//	}
-
-//	private double searchangle(Point3D p, Fruit f, Ghost g) {// לחפש את הזוית שצריך ללכת אליה
-//		Map map = new Map();
-//		double speed=20;
-//		for(int i=0;i<12;i++) {
-//			
-//		}
-//		if (map.azimuth_elevation_dist(p, f.getPos())[0] - 50 > 0)
-//			return map.azimuth_elevation_dist(p, f.getPos())[0] - 50;
-//		return map.azimuth_elevation_dist(p, f.getPos())[0] + 50;
-//	}
-
->>>>>>> 2c1b355e4de456346a90427b62ebd8a627340f14
 	public double Go2Fruit() {
 		Map map = new Map();
 		for (int i = 0; i < game.getFruitArr().size(); i++) {
