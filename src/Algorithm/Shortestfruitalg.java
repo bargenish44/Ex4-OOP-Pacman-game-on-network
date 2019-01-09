@@ -163,9 +163,13 @@ public class Shortestfruitalg {
 
 	private double searchangle(Point3D p, Fruit f, Ghost g) {// לחפש את הזוית שצריך ללכת אליה
 		Map map = new Map();
-		if (map.azimuth_elevation_dist(p, f.getPos())[0] - 50 > 0)
-			return map.azimuth_elevation_dist(p, f.getPos())[0] - 50;
-		return map.azimuth_elevation_dist(p, f.getPos())[0] + 50;
+		double speed=20;
+		for(int i=0;i<12;i++) {
+			p
+		}
+//		if (map.azimuth_elevation_dist(p, f.getPos())[0] - 50 > 0)
+//			return map.azimuth_elevation_dist(p, f.getPos())[0] - 50;
+//		return map.azimuth_elevation_dist(p, f.getPos())[0] + 50;
 	}
 
 	public double Go2Fruit() {

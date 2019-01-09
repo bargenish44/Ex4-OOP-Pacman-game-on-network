@@ -110,8 +110,12 @@ public class Player {
 	public double getAzimuth() {
 		return azimuth;
 	}
-	public void setAzimuth(double azimuth) {
-		this.azimuth = azimuth;
+	public void setAzimuth(double az) {
+		azimuth = az;
+		while(azimuth<0||azimuth>360) {
+			if(azimuth<0)azimuth+=360;
+			if(azimuth>360)azimuth-=360;
+		}
 	}
 	public ImageIcon getPlayerimage() {
 		return playerimage;

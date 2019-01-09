@@ -27,9 +27,9 @@ public class MyFrame implements ActionListener {
 	private Game game;
 	private ArrayList<Packman> Packmanarrtemp = new ArrayList<>();
 	private ArrayList<Fruit> Fruitarrtemp = new ArrayList<>();
-	private boolean ans = false, isBoxPress = false, playerinsert = false;
+	private boolean ans = false, playerinsert = false;
 	private double angle = 0;
-	private int counter = 0, count = 0, boxcounter = 0, ghostcounter = 0, azimuthcount = -1;
+	private int Fruitcounter = 0, Packmancounter = 0, boxcounter = 0, ghostcounter = 0, azimuthcount = -1;
 	private String choose = "";
 	private JMenuItem clear, load, save, run, how_to_run, about_the_game, reload, Save_as_kml, addpackman, addfruit,
 	addghost, addbox, addplayer, Play_alone, StartGame, Play_automatic;
@@ -309,8 +309,8 @@ public class MyFrame implements ActionListener {
 				}
 				if (ans) {
 					Point3D p = map.PixelToCoords(x, y, 0, width, hight);
-					game.getPackmanArr().add(new Packman(count, p.x(), p.y(), 0, speed, radius));
-					count++;
+					game.getPackmanArr().add(new Packman(Packmancounter, p.x(), p.y(), 0, speed, radius));
+					Packmancounter++;
 					repaint();
 				} else
 					System.out.println("you quit before crete new packman");
@@ -340,8 +340,8 @@ public class MyFrame implements ActionListener {
 				}
 				if (ans) {
 					Point3D p = map.PixelToCoords(x, y, 0, width, hight);
-					game.getFruitArr().add(new Fruit(counter, p.x(), p.y(), 0, weight));
-					counter++;
+					game.getFruitArr().add(new Fruit(Fruitcounter, p.x(), p.y(), 0, weight));
+					Fruitcounter++;
 					repaint();
 				} else
 					System.out.println("you quit before crete new fruit");
@@ -371,7 +371,7 @@ public class MyFrame implements ActionListener {
 				}
 				if (ans) {
 					Point3D p = map.PixelToCoords(x, y, 0, width, hight);
-					game.getGhostarr().add(new Ghost(ghostcounter, new Point3D(p.x(), p.y(), 0), speed, 1));// רדיוס 1?
+					game.getGhostarr().add(new Ghost(ghostcounter, new Point3D(p.x(), p.y(), 0), speed, 1));
 					ghostcounter++;
 					repaint();
 				} else
@@ -508,7 +508,7 @@ public class MyFrame implements ActionListener {
 
 		@Override
 		public void mousePressed(MouseEvent e) {
-			if (isBoxPress) {
+			if(choose.equals("box")) {
 				int x1 = e.getX();
 				int y1 = e.getY();
 				p = map.PixelToCoords(x1, y1, 0, width, hight);
@@ -517,16 +517,14 @@ public class MyFrame implements ActionListener {
 
 		@Override
 		public void mouseReleased(MouseEvent e) {
-			if (isBoxPress) {
+			if(choose.equals("box")) {
 				int x2 = e.getX();
 				int y2 = e.getY();
 				Point3D p2 = map.PixelToCoords(x2, y2, 0, width, hight);
 				game.getBoxarr().add(new Box(boxcounter, new Point3D(p.x(), p2.y(), 0), new Point3D(p2.x(), p.y(), 0)));
 				repaint();
-				isBoxPress = false;
 			}
 		}
-
 	}
 
 	//	TimerTask task = new TimerTask() {
@@ -679,7 +677,6 @@ public class MyFrame implements ActionListener {
 		}
 		if (e.getSource() == addbox) {
 			choose = "box";
-			isBoxPress = true;
 		}
 		if (e.getSource() == addplayer)
 			choose = "player";

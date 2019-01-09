@@ -35,14 +35,11 @@ public class findbestpoint {
 	 * @return Point3D the point of the spot that we want to puts the player on.
 	 */
 	public Point3D bestStart(int width, int hight) {
-		//		Map map = new Map();
 		Point3D leftUp = new Point3D(0, 0, 0);
 		Point3D rightDown = new Point3D(width, hight);
 		double x = (leftUp.x() - rightDown.x()) / 2;
 		double y = (leftUp.y() - rightDown.y()) / 2;
 		Point3D center = new Point3D(x, y);
-		//		Point3D rightUp = new Point3D(width, 0);
-		//		Point3D leftDown = new Point3D(0, hight);
 		Point3D[] bestBox = sidescomperator(game.getFruitArr(), leftUp, center, center, rightDown,
 				new Point3D(leftUp.x(), center.y()), new Point3D(center.x(), rightDown.y()),
 				new Point3D(center.x(), leftUp.y()), new Point3D(rightDown.x(), center.y()));
@@ -51,8 +48,6 @@ public class findbestpoint {
 		double x2 = (leftUp2.x() - rightDown2.x()) / 2;
 		double y2 = (leftUp2.y() - rightDown2.y()) / 2;
 		Point3D center2 = new Point3D(x2, y2);
-		//		Point3D rightUp2 = new Point3D(rightDown2.x(), 0);
-		//		Point3D leftDown2 = new Point3D(0, rightDown2.y());
 		Point3D[] bestBox2 = sidescomperator(game.getFruitArr(), leftUp2, center2, center2, rightDown2,
 				new Point3D(leftUp2.x(), center2.y()), new Point3D(center2.x(), rightDown2.y()),
 				new Point3D(center2.x(), leftUp2.y()), new Point3D(rightDown2.x(), center2.y()));
