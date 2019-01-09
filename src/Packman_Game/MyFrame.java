@@ -19,6 +19,7 @@ import Geom.Point3D;
 public class MyFrame implements ActionListener {
 	/**
 	 * This class is the graphic class and use all the project methods.
+	 * 
 	 * @author Bar Genish
 	 * @author Elyashiv Deri
 	 * @author lioz elmalem
@@ -31,7 +32,7 @@ public class MyFrame implements ActionListener {
 	private int Fruitcounter = 0, Packmancounter = 0, boxcounter = 0, ghostcounter = 0, azimuthcount = -1;
 	private String choose = "";
 	private JMenuItem clear, load, save, run, how_to_run, about_the_game, reload, Save_as_kml, addpackman, addfruit,
-	addghost, addbox, addplayer, Play_alone, StartGame, Play_automatic;
+			addghost, addbox, addplayer, Play_alone, StartGame, Play_automatic;
 	private JMenuBar menubar;
 	private JMenu menu2, menu, menu3;
 	private Image img;
@@ -43,18 +44,19 @@ public class MyFrame implements ActionListener {
 	private String map_data, info, file_name;
 	private ArrayList<String> board_data;
 	private boolean gameruns = false;
-	//	private GameTimer timer;
+	// private GameTimer timer;
 	private JMenuItem cheak, betweencheck, betweencheck2;
 
 	public static void main(String[] args) {
 		new MyFrame();
 	}
+
 	/**
 	 * Defult constractor.
 	 */
 	public MyFrame() {
 		try {
-			//			timer = new GameTimer();
+			// timer = new GameTimer();
 			file_name = "data/Ex4_OOP_example9.csv";
 			play1 = new Play(file_name);
 			play1.setIDs(3131, 745, 83);
@@ -227,7 +229,7 @@ public class MyFrame implements ActionListener {
 							for (int i = 0; i < game.getPackmanArr().size(); i++) {
 								try {
 									game.getPackmanArr().get(i)
-									.setPos(game.getPackmanArr().get(i).getPath().getPoints().get(j));
+											.setPos(game.getPackmanArr().get(i).getPath().getPoints().get(j));
 									for (int k = 0; k < game.getPackmanArr().size(); k++) {
 										if (mc.distance3d(game.getPackmanArr().get(i).getPos(),
 												game.getFruitArr().get(k).getPos()) < 3) {
@@ -448,10 +450,10 @@ public class MyFrame implements ActionListener {
 					if (!playerinsert) {
 						System.out.println("You should insert player first");
 					} else if (azimuthcount < 10) {
-						//						try {
-						//							timer.endTimer();
-						//						} catch (Exception ex) {
-						//						}
+						// try {
+						// timer.endTimer();
+						// } catch (Exception ex) {
+						// }
 						int x = e.getX();
 						int y = e.getY();
 						Shortestfruitalg alg = new Shortestfruitalg(game);
@@ -479,7 +481,7 @@ public class MyFrame implements ActionListener {
 						azimuthcount++;
 						System.out.println(play1.getStatistics());
 						frame.repaint();
-						//						timer.startTimer(task);
+						// timer.startTimer(task);
 					}
 					while (azimuthcount >= 10 && play1.isRuning())
 						azimuthcount -= 10;
@@ -507,7 +509,7 @@ public class MyFrame implements ActionListener {
 
 		@Override
 		public void mousePressed(MouseEvent e) {
-			if(choose.equals("box")) {
+			if (choose.equals("box")) {
 				int x1 = e.getX();
 				int y1 = e.getY();
 				p = map.PixelToCoords(x1, y1, 0, width, hight);
@@ -516,7 +518,7 @@ public class MyFrame implements ActionListener {
 
 		@Override
 		public void mouseReleased(MouseEvent e) {
-			if(choose.equals("box")) {
+			if (choose.equals("box")) {
 				int x2 = e.getX();
 				int y2 = e.getY();
 				Point3D p2 = map.PixelToCoords(x2, y2, 0, width, hight);
@@ -526,51 +528,51 @@ public class MyFrame implements ActionListener {
 		}
 	}
 
-	//	TimerTask task = new TimerTask() {
-	//		@Override
-	//		public void run() {
-	//			if (!gameruns)
-	//				System.out.println("You should start game first");
-	//			else {
-	//				if (!playerinsert) {
-	//					System.out.println("You should insert player first");
-	//				} else if (azimuthcount < 10) {
-	//					Shortestfruitalg alg = new Shortestfruitalg(game);
-	//					angle = game.getPlayer().getAzimuth();
-	//					double tmp = alg.Go2Fruit();
-	//					if (tmp != -1)
-	//						angle = tmp;
-	//					game.getPlayer().setAzimuth(angle);
-	//					play1.rotate(game.getPlayer().getAzimuth());
-	//					System.out.println("***** " + game.getPlayer().getAzimuth() + "******");
+	// TimerTask task = new TimerTask() {
+	// @Override
+	// public void run() {
+	// if (!gameruns)
+	// System.out.println("You should start game first");
+	// else {
+	// if (!playerinsert) {
+	// System.out.println("You should insert player first");
+	// } else if (azimuthcount < 10) {
+	// Shortestfruitalg alg = new Shortestfruitalg(game);
+	// angle = game.getPlayer().getAzimuth();
+	// double tmp = alg.Go2Fruit();
+	// if (tmp != -1)
+	// angle = tmp;
+	// game.getPlayer().setAzimuth(angle);
+	// play1.rotate(game.getPlayer().getAzimuth());
+	// System.out.println("***** " + game.getPlayer().getAzimuth() + "******");
 	//
-	//					// 7.2) get the current score of the game
-	//					info = play1.getStatistics();
-	//					System.out.println(info);
-	//					// 7.3) get the game-board current state
-	//					board_data = play1.getBoard();
-	//					for (int a = 0; a < board_data.size(); a++) {
-	//						System.out.println(board_data.get(a));
-	//					}
-	//					System.out.println();
-	//					game = game.loadstring(board_data);
-	//					azimuthcount++;
-	//					System.out.println(play1.getStatistics());
-	//					frame.repaint();
-	//				}
-	//				while (azimuthcount >= 10 && play1.isRuning())
-	//					azimuthcount -= 10;
-	//				if (!play1.isRuning() && azimuthcount != -1) {
-	//					play1.stop();
-	//					System.out.println("**** Done Game (user stop) ****");
+	// // 7.2) get the current score of the game
+	// info = play1.getStatistics();
+	// System.out.println(info);
+	// // 7.3) get the game-board current state
+	// board_data = play1.getBoard();
+	// for (int a = 0; a < board_data.size(); a++) {
+	// System.out.println(board_data.get(a));
+	// }
+	// System.out.println();
+	// game = game.loadstring(board_data);
+	// azimuthcount++;
+	// System.out.println(play1.getStatistics());
+	// frame.repaint();
+	// }
+	// while (azimuthcount >= 10 && play1.isRuning())
+	// azimuthcount -= 10;
+	// if (!play1.isRuning() && azimuthcount != -1) {
+	// play1.stop();
+	// System.out.println("**** Done Game (user stop) ****");
 	//
-	//					// 9) print the data & save to the course DB
-	//					String info = play1.getStatistics();
-	//					System.out.println(info);
-	//				}
-	//			}
-	//		}
-	//	};
+	// // 9) print the data & save to the course DB
+	// String info = play1.getStatistics();
+	// System.out.println(info);
+	// }
+	// }
+	// }
+	// };
 
 	/**
 	 * This is the actionPerformed func. this func can save game,load game,run
@@ -597,7 +599,8 @@ public class MyFrame implements ActionListener {
 		}
 		if (e.getSource() == save) {
 			Game g = new Game();
-			g.save(new Game(game.getPackmanArr(), game.getFruitArr(), game.getGhostarr(), game.getBoxarr()));
+			g.save(new Game(game.getPackmanArr(), game.getFruitArr(), game.getGhostarr(), game.getBoxarr(),
+					game.getPlayer()));
 		}
 		if (e.getSource() == run) {
 			Packmanarrtemp.clear();
@@ -629,7 +632,7 @@ public class MyFrame implements ActionListener {
 							+ "\nFor run the game pressed on run button on menu under option,"
 							+ "\nIf you want to go back before you run the game click reload button on menu under option,"
 							+ "\nIf you want to go create a kml and see the path of the packmans click Save as kml button on menu under option.",
-							"How to play", JOptionPane.PLAIN_MESSAGE);
+					"How to play", JOptionPane.PLAIN_MESSAGE);
 		if (e.getSource() == about_the_game) {
 			JOptionPane.showMessageDialog(null, "This is a packman game:\n" + "The purpose is to eat all the fruit \n"
 					+ "The borad game is map, while the game start you can see on kml the path of the packmans and it"
@@ -726,9 +729,9 @@ public class MyFrame implements ActionListener {
 						Fruit f = algo.shortpathalgo(game);
 						angle = map.azimuth_elevation_dist(game.getPlayer().getPos(), f.getPos())[0];
 						Shortestfruitalg alg = new Shortestfruitalg(game);
-						double tmp = alg.escapefroomguest(game.getPlayer().getPos(), f);
-						if (tmp != -1)
-							angle = tmp;
+//						double tmp = alg.escapefroomguest(game.getPlayer().getPos(), f);
+//						if (tmp != -1)
+//							angle = tmp;
 						game.getPlayer().setAzimuth(angle);
 						play1.rotate(game.getPlayer().getAzimuth());
 						game.getPlayer().setAzimuth(angle);

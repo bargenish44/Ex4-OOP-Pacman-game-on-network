@@ -62,6 +62,7 @@ public class Game {
 		Packmanarr=new ArrayList<>();
 		Boxarr=new ArrayList<>();
 		Ghostarr=new ArrayList<>();
+		player=new Player(0,new Point3D(0,0),20,1);
 	}
 	/**
 	 * Copy constractor.
