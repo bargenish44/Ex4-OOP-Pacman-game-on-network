@@ -4,6 +4,8 @@ import java.awt.geom.Line2D;
 import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 
+import Coords.Cords;
+import Coords.LatLonAlt;
 import Geom.Circle;
 import Geom.Path;
 import Geom.Point3D;
@@ -13,6 +15,7 @@ import Packman_Game.Game;
 import Packman_Game.Ghost;
 import Packman_Game.Map;
 import Packman_Game.Player;
+import Robot.Packman;
 import graph.Graph;
 import graph.Node;
 
@@ -149,29 +152,52 @@ public class Shortestfruitalg {
 		return p;
 	}
 
-	public double escapefroomguest(Point3D p, Fruit f) {// יחזיר את הזוית שבא לנו לברוח אליה
+	public double escapefroomguest(Player p, Fruit f) {
 		Map map = new Map();
 		for (int i = 0; i < game.getGhostarr().size(); i++) {
-			if (map.distance3d(p, game.getGhostarr().get(i).getPos()) < 5)
-				if (map.azimuth_elevation_dist(p, f.getPos())[0] == map.azimuth_elevation_dist(p,
-						game.getGhostarr().get(i).getPos())[0]) {
-					return searchangle(p, f, game.getGhostarr().get(i));
-				}
+			//						if (map.distance3d(p.getPos(), game.getGhostarr().get(i).getPos()) < 20)
+			if (map.azimuth_elevation_dist(p.getPos(), f.getPos())[0] == map.azimuth_elevation_dist(p.getPos(),
+					game.getGhostarr().get(i).getPos())[0]) {
+				System.out.println("yes");
+				return searchangle(p, f, game.getGhostarr().get(i));
+			}
 		}
 		return -1;
 	}
 
-	private double searchangle(Point3D p, Fruit f, Ghost g) {// לחפש את הזוית שצריך ללכת אליה
+	private double searchangle(Player p, Fruit f, Ghost g) {
+		ShortestPathAlg alg=new ShortestPathAlg();
 		Map map = new Map();
-		double speed=20;
-		for(int i=0;i<12;i++) {
-			p
+		double Pangle=p.getAzimuth();
+		double angle=Pangle;
+		Point3D temp=null;
+		for(int i=1;i<=6;i++) {
+			angle+=30*i;
+			if(move(f,angle)==true)return angle;
+			angle=Pangle-(30*i);
+			if(move(f,angle)==true)return angle;
 		}
-//		if (map.azimuth_elevation_dist(p, f.getPos())[0] - 50 > 0)
-//			return map.azimuth_elevation_dist(p, f.getPos())[0] - 50;
-//		return map.azimuth_elevation_dist(p, f.getPos())[0] + 50;
+		return -1;
 	}
-
+	private boolean escapeposcheck(Packman p,Fruit f) {
+		Point3D tmp=p.getLocation();
+		if(isIn(tmp)==true)return false;
+		Map map=new Map();
+		for(int i=0;i<game.getGhostarr().size();i++) {
+			Point3D temp=p.getLocation();
+			if(temp.equals(game.getGhostarr().get(i).getPos()))return false;
+		}
+		return true;
+	}
+	private boolean move(Fruit f,double angle)
+	{
+		Packman p = new Packman(new LatLonAlt(game.getPlayer().getPos().x(),game.getPlayer().getPos().y(),0),game.getPlayer().getSpeed());
+		p.setOrientation(angle);
+		Point3D pv = new Point3D(p.getLocation());
+		p.move(100.0D);
+		if (escapeposcheck(p, f)==false)return false;
+		return true;
+	}
 	public double Go2Fruit() {
 		Map map = new Map();
 		for (int i = 0; i < game.getFruitArr().size(); i++) {

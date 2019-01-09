@@ -713,9 +713,9 @@ public class MyFrame implements ActionListener {
 			game.setPlayer(new Player(0, p.x(), p.y(), 0, 20, 1));
 			board_data = play1.getBoard();
 			for (int a = 0; a < board_data.size(); a++) {
-				System.out.println(board_data.get(a));
+				//				System.out.println(board_data.get(a));
 			}
-			System.out.println();
+			//			System.out.println();
 			playerinsert = true;
 			play1.start();
 			frame.repaint();
@@ -726,7 +726,8 @@ public class MyFrame implements ActionListener {
 						Fruit f = algo.shortpathalgo(game);
 						angle = map.azimuth_elevation_dist(game.getPlayer().getPos(), f.getPos())[0];
 						Shortestfruitalg alg = new Shortestfruitalg(game);
-						double tmp = alg.escapefroomguest(game.getPlayer().getPos(), f);
+						double tmp = alg.escapefroomguest(game.getPlayer(), f);
+						System.out.println(tmp);
 						if (tmp != -1)
 							angle = tmp;
 						game.getPlayer().setAzimuth(angle);
@@ -735,16 +736,16 @@ public class MyFrame implements ActionListener {
 						play1.rotate(game.getPlayer().getAzimuth());
 						// 7.2) get the current score of the game
 						info = play1.getStatistics();
-						System.out.println(info);
+						//						System.out.println(info);
 						// 7.3) get the game-board current state
 						board_data = play1.getBoard();
 						for (int a = 0; a < board_data.size(); a++) {
-							System.out.println(board_data.get(a));
+							//							System.out.println(board_data.get(a));
 						}
-						System.out.println();
+						//						System.out.println();
 						game = game.loadstring(board_data);
 						algo.setGame(game);
-						System.out.println(play1.getStatistics());
+						//						System.out.println(play1.getStatistics());
 						frame.repaint();
 						try {
 							Thread.sleep(10);
@@ -753,9 +754,9 @@ public class MyFrame implements ActionListener {
 						}
 					}
 					// 9) print the data & save to the course DB
-					String info = play1.getStatistics();
-					System.out.println(info);
-					System.out.println("end");
+					//					String info = play1.getStatistics();
+					//					System.out.println(info);
+					//					System.out.println("end");
 				}
 			};
 			t.start();
