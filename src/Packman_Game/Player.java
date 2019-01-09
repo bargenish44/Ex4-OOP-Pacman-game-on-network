@@ -11,48 +11,68 @@ public class Player {
 	 * every Player have point3D , speed , radius, score and path.
 	 * @author Bar Genish
 	 * @author Elyashiv Deri
+	 * @author lioz elmalem
 	 */
 	private int ID;
-	private Point3D orinet;
+	private Point3D pos;
 	private double speed;
 	private double Radius;
 	private Path path;
 	private double score=0;
 	private double azimuth=0;
 	private ImageIcon playerimage;
-
+	/**
+	 * Regular constractor.
+	 * @param id the number of the player.
+	 * @param x the x point of the player.
+	 * @param y the y point of the player.
+	 * @param z the z point of the player.
+	 * @param speed the speed of the player.
+	 * @param Radius the radius of the player.
+	 */
 	public Player(int id,double x,double y,double z, double speed, double Radius) {
 		setID(id);
-		setOrinet(new Point3D(x, y, z));
+		setPos(new Point3D(x, y, z));
 		setSpeed(speed);
 		setRadius(Radius);
 		setPath(new Path());
 		setAzimuth(0);
 		setPlayerimage(new ImageIcon("player.png"));
 	}
+	/**
+	 * Regular constractor.
+	 * @param id the number of the player.
+	 * @param p the point of the player.
+	 * @param speed the speed of the player.
+	 * @param Raduis the raduis of the player.
+	 */
 	public Player(int id,Point3D p,double speed,double Raduis) {
 		setID(id);
-		setOrinet(p);
+		setPos(p);
 		setSpeed(speed);
 		setRadius(Raduis);
 		setPath(new Path());
 		setAzimuth(0);
 		setPlayerimage(new ImageIcon("player.png"));
 	}
+	/**
+	 * Copy constractor.
+	 * @param ot the player that we want to copy.
+	 */
 	public Player(Player ot) {
 		setID(ot.ID);
-		setOrinet(ot.getOrinet());
+		setPos(ot.getPos());
 		setSpeed(ot.getSpeed());
 		setRadius(ot.getRadius());
 		setPath(ot.getPath());
 		setScore(ot.getScore());
 		setPlayerimage(ot.getPlayerimage());
 	}
-	public Point3D getOrinet() {//getters and setters
-		return orinet;
+	public Point3D getPos() {//getters and setters
+		return pos;
 	}
-	public void setOrinet(Point3D orinet) {
-		this.orinet = orinet;
+	public void setPos(Point3D orinet) {
+		pos = orinet;
 	}
 	public double getSpeed() {
 		return speed;
@@ -104,6 +124,6 @@ public class Player {
 	 * @return string of the Player.
 	 */
 	public String toString() {
-		return ID+","+orinet.toString()+","+speed+","+Radius;
+		return ID+","+pos.toString()+","+speed+","+Radius;
 	}
 }

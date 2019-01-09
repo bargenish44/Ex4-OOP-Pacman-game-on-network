@@ -13,28 +13,28 @@ public class Fruit {
 	 * @author lioz elmalem
 	 */
 	private int ID;
-	private Point3D orient;
+	private Point3D pos;
 	private double Weight;
 	private ImageIcon fruitimage;
 	private Time time;
-	
+
 	public Fruit(int ID,double x,double y,double z, double weight) {//constractors
 		setID(ID);
-		setOrient(new Point3D(x, y,z));
+		setPos(new Point3D(x, y,z));
 		setWeight(weight);
 		time=new Time();
 		setFruitimage(new ImageIcon("cherry.png"));
 	}
 	public Fruit(int ID,Point3D P,double weight) {
 		setID(ID);
-		setOrient(P);
+		setPos(P);
 		setWeight(weight);
 		time=new Time();
 		setFruitimage(new ImageIcon("cherry.png"));
 	}
 	public Fruit(Fruit ot) {
 		setID(ot.getID());
-		setOrient(ot.getOrient());
+		setPos(ot.getPos());
 		setWeight(ot.getWeight());
 		setTime(ot.getTime());
 		setFruitimage(ot.getFruitimage());
@@ -51,11 +51,11 @@ public class Fruit {
 	public void setID(int iD) {
 		ID = iD;
 	}
-	public Point3D getOrient() {
-		return orient;
+	public Point3D getPos() {
+		return pos;
 	}
-	public void setOrient(Point3D orient) {
-		this.orient = orient;
+	public void setPos(Point3D orient) {
+		pos = orient;
 	}
 	public double getWeight() {
 		return Weight;
@@ -74,6 +74,6 @@ public class Fruit {
 	 * @return string of the Fruit.
 	 */
 	public String toString() {
-		return ID+","+orient.toString()+","+Weight;
+		return ID+","+pos.toString()+","+Weight;
 	}
 }

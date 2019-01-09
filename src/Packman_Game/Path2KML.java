@@ -11,6 +11,7 @@ public class Path2KML {
 	 * This class convert Game to kml.
 	 * @author Bar Genish
 	 * @author Elyashiv Deri
+	 * @author lioz elmalem
 	 */
 	/**
 	 * This function write all the game details in new kml.
@@ -37,9 +38,9 @@ public class Path2KML {
 				Fruit tmp=g.getFruitArr().get(i);
 				String kmlelement ="<Placemark>\n" +
 						"<name>fruit"+tmp.getID()+"</name>\n" +
-						"<description>Type: Fruit\nlat: "+tmp.getOrient().y()+"\nlon :"+tmp.getOrient().x()+"\nAlt: "+tmp.getOrient().z()+"\nWeight: "+tmp.getWeight()+ "</description>\n" +
+						"<description>Type: Fruit\nlat: "+tmp.getPos().y()+"\nlon :"+tmp.getPos().x()+"\nAlt: "+tmp.getPos().z()+"\nWeight: "+tmp.getWeight()+ "</description>\n" +
 						"<styleUrl>"+"Fruit"+"</styleUrl>"+"<Point>\n" +
-						"<coordinates>"+tmp.getOrient().y()+","+tmp.getOrient().x()+","+tmp.getOrient().z()+"</coordinates>" +
+						"<coordinates>"+tmp.getPos().y()+","+tmp.getPos().x()+","+tmp.getPos().z()+"</coordinates>" +
 						"</Point>\n" +
 						"<TimeSpan>"
 						+"<begin>"+time+"</begin>"
@@ -52,11 +53,11 @@ public class Path2KML {
 				Packman tmp=g.getPackmanArr().get(i);
 				String kmlelement ="<Placemark>\n" +
 						"<name>Packman"+tmp.getID()+"</name>\n" +
-						"<description>Type: Packman\nlat: "+tmp.getOrinet().y()+"\nlon :"+tmp.getOrinet().x()+"\nAlt: "+tmp.getOrinet().z()+"\nSpeed: "+tmp.getSpeed()+"\nRadius: "+tmp.getRadius()+"\nScore: "+tmp.getScore()+
+						"<description>Type: Packman\nlat: "+tmp.getPos().y()+"\nlon :"+tmp.getPos().x()+"\nAlt: "+tmp.getPos().z()+"\nSpeed: "+tmp.getSpeed()+"\nRadius: "+tmp.getRadius()+"\nScore: "+tmp.getScore()+
 						"</description>\n" +
 						"<styleUrl>"+"Packman"+
 						"</styleUrl>"+"<Point>\n" +
-						"<coordinates>"+tmp.getOrinet().y()+","+tmp.getOrinet().x()+","+tmp.getOrinet().z()+"</coordinates>" +
+						"<coordinates>"+tmp.getPos().y()+","+tmp.getPos().x()+","+tmp.getPos().z()+"</coordinates>" +
 						"</Point>\n" +
 						"<TimeSpan>"
 						+"<begin>"+time+"</begin>"
@@ -68,26 +69,24 @@ public class Path2KML {
 			Time start=new Time(time);
 			for(int i=0;i<g.getPackmanArr().size();i++) {
 				Packman tmp=g.getPackmanArr().get(i);
-				for(int j=0;j<g.getPackmanArr().get(i).getPath().getArr().size();j++) {
+				for(int j=0;j<g.getPackmanArr().get(i).getPath().getPoints().size();j++) {
 					if(j==0)
 						start=tmp.getTime();
 					else
-						start=tmp.getPath().getArr().get(j-1).getTime();
+						start=tmp.getPath().getPoints().get(j-1).getTime();
 				}
 			}
 			for(int i=0;i<g.getPackmanArr().size();i++) {
 				Packman tmp=g.getPackmanArr().get(i);
 				Time ends=new Time(maxtime);
-				for(int j=0;j<g.getPackmanArr().get(i).getPath().getArr().size();j++) {
-					//					try {
-					ends=tmp.getPath().getArr().get(j).getTime();
-					//					} catch(Exception e) {}
+				for(int j=0;j<g.getPackmanArr().get(i).getPath().getPoints().size();j++) {
+					ends=tmp.getPath().getPoints().get(j).getTime();
 					String kmlelement ="<Placemark>\n" +
 							"<name>Packman"+tmp.getID()+"</name>\n" +
-							"<description>Type: Packman\nlat: "+tmp.getPath().getArr().get(j).y()+"\nlon :"+tmp.getPath().getArr().get(j).x()+"\nAlt: "+tmp.getPath().getArr().get(j).z()+"\nSpeed: "+tmp.getSpeed()+"\nRadius: "+tmp.getRadius()+"\nScore: "+tmp.getScore()+
+							"<description>Type: Packman\nlat: "+tmp.getPath().getPoints().get(j).y()+"\nlon :"+tmp.getPath().getPoints().get(j).x()+"\nAlt: "+tmp.getPath().getPoints().get(j).z()+"\nSpeed: "+tmp.getSpeed()+"\nRadius: "+tmp.getRadius()+"\nScore: "+tmp.getScore()+
 							"</description>\n" +
 							"<styleUrl>"+"Packman"+"</styleUrl>"+"<Point>\n" +
-							"<coordinates>"+tmp.getPath().getArr().get(j).y()+","+tmp.getPath().getArr().get(j).x()+","+tmp.getPath().getArr().get(j).z()+"</coordinates>" +
+							"<coordinates>"+tmp.getPath().getPoints().get(j).y()+","+tmp.getPath().getPoints().get(j).x()+","+tmp.getPath().getPoints().get(j).z()+"</coordinates>" +
 							"</Point>\n" +
 							"<TimeSpan>"
 							+"<begin>"+start+"</begin>"

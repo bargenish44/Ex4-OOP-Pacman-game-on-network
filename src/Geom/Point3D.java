@@ -11,26 +11,44 @@ public class Point3D implements Geom_element, Serializable {
 	 * This class represents a 3D point in space.
 	 * @author Bar Genish
 	 * @author Elyashiv Deri
+	 * @author lioz elmalem
 	 */
 	private static final long serialVersionUID = 1L;
 	private double _x,_y,_z;
 	private Time time;
+	/**
+	 * Regular constractor.
+	 * @param x the x point.
+	 * @param y the y point.
+	 * @param z the z point.
+	 */
 	public Point3D(double x,double y,double z) {
 		_x=x;
 		_y=y;
 		_z=z;
 		time=new Time();
 	}
-
+	/**
+	 * Copy constractor.
+	 * @param p the point that we want to copy.
+	 */
 	public Point3D(Point3D p) {
 		_x=p.x();
 		_y=p.y();
 		_z=p.z();
 		time=new Time();
 	}
-
+	/**
+	 * Regular constractor.
+	 * @param x the x point.
+	 * @param y the y point.
+	 */
 	public Point3D(double x,double y) 
 	{this(x,y,0);time=new Time();}
+	/**
+	 * String constractor.
+	 * @param s string that we want to make a new point by her.
+	 */
 	public Point3D(String s) {
 		String[] a = s.split(",");
 		_x = Double.parseDouble(a[0]);
@@ -267,8 +285,8 @@ public class Point3D implements Geom_element, Serializable {
 		ans = Math.atan2((p._z+h-_z), this.distance2D(p));
 		return Math.toDegrees(ans);
 	}
-	
-	
+
+
 
 	public double get_x() {
 		return _x;

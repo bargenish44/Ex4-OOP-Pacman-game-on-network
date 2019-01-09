@@ -8,6 +8,7 @@ import Geom.Point3D;
  * 3. convert a 3D vector from meters to polar coordinates
  * @author Bar Geinsh
  * @author Elyashiv Deri
+ * @author lioz elmalem
  */
 public interface coords_converter {
 	/** computes a new point which is the gps point transformed by a 3D vector (in meters)

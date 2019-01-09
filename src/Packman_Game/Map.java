@@ -23,7 +23,7 @@ public class Map {
 	}
 	/**
 	 * regular constractor.
-	 * @param leftup the leftup point of the map.
+	 * @param leftUp the leftup point of the map.
 	 * @param rightDown the rightdown point of the map.
 	 * @param map get a string file of the map.
 	 */

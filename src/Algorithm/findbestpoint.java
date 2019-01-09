@@ -62,9 +62,9 @@ public class findbestpoint {
 		double Y_min = bestBox2[0].x();
 		Point3D ans = null;
 		for (Fruit fruit : game.getFruitArr()) {
-			if (fruit.getOrient().x() > X_min && fruit.getOrient().x() < X_max && fruit.getOrient().y() > Y_min
-					&& fruit.getOrient().y() < Y_max) {
-				ans = fruit.getOrient();
+			if (fruit.getPos().x() > X_min && fruit.getPos().x() < X_max && fruit.getPos().y() > Y_min
+					&& fruit.getPos().y() < Y_max) {
+				ans = fruit.getPos();
 			}
 		}
 		return ans;
@@ -79,7 +79,7 @@ public class findbestpoint {
 	private int countfruits(ArrayList<Fruit> arr, Point3D leftup, Point3D rightdown) {
 		int count = 0;
 		for (int i = 0; i < arr.size(); i++) {
-			Point3D tmp = arr.get(i).getOrient();
+			Point3D tmp = arr.get(i).getPos();
 			if ((tmp.x() <= rightdown.ix() && tmp.x() >= leftup.ix())
 					&& (tmp.y() <= rightdown.iy() && tmp.y() >= leftup.iy()))
 				count++;

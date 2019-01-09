@@ -5,6 +5,7 @@ public class Time {
 	 * This class represents time on TimeStamp format.
 	 * @author Bar Genish
 	 * @author Elyashiv Deri
+	 * @author lioz elmalem
 	 */
 	private int year;
 	private int mounth;
@@ -12,7 +13,9 @@ public class Time {
 	private int hour;
 	private int minute;
 	private int second;
-
+	/**
+	 * Defult constractor.
+	 */
 	public Time() {
 		setYear(2000);
 		setMounth(1);
@@ -21,6 +24,10 @@ public class Time {
 		setMinute(1);
 		setSecond(1);
 	}
+	/**
+	 * Copy constractor.
+	 * @param ot the time that we want to copy.
+	 */
 	public Time(Time ot) {
 		setYear(ot.year);
 		setMounth(ot.mounth);

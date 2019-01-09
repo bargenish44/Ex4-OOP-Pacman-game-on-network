@@ -32,22 +32,22 @@ public class Shortestfruitalg {
 	}
 
 	private double Calculatetime(Player p, Fruit f) {
-		Circle c = new Circle(p.getOrinet(), p.getRadius());
+		Circle c = new Circle(p.getPos(), p.getRadius());
 		Map m = new Map();
-		double dist = m.distance3d(c.get_cen(), f.getOrient()) - c.get_radius();
+		double dist = m.distance3d(c.get_cen(), f.getPos()) - c.get_radius();
 		if (dist <= 0)
 			return 0;
 		return dist / p.getSpeed();
 	}
 
 	private double Calculatetimewithbox(Player p, Fruit f) {
-		Circle c = new Circle(p.getOrinet(), p.getRadius());
+		Circle c = new Circle(p.getPos(), p.getRadius());
 		Map map = new Map();
 		double dist = 0;
 		Path path = (calcpath(f, game));
 		dist = path.GetDist();
-		if (!path.getArr().isEmpty())
-			dist += map.distance3d(c.get_cen(), path.getArr().get(0));
+		if (!path.getPoints().isEmpty())
+			dist += map.distance3d(c.get_cen(), path.getPoints().get(0));
 		return dist;
 	}
 
@@ -60,7 +60,7 @@ public class Shortestfruitalg {
 
 	private Fruit algowithoutboxes() {// לחפש קודם מה שאין לנו מכשול בדרך אליו ורק אז ללכת לכיוון הכי קרוב במכשול
 		double min = Double.MAX_VALUE;// לבדוק זמן ודאי לכל פרי אם יש מכשול להפעיל אלגוריתם שיגיד כמה זמן יקח ואז ללכת
-										// להכי קרוב בהכרח
+		// להכי קרוב בהכרח
 		double tmp = 0;
 		Fruit fruittemp = game.getFruitArr().get(0);
 		for (int i = 0; i < game.getFruitArr().size(); i++) {
@@ -116,7 +116,7 @@ public class Shortestfruitalg {
 
 	public ArrayList<Point3D> cleanShot(Player player) {
 		ArrayList<Point3D> ans = new ArrayList<Point3D>();
-		Point3D player_p = player.getOrinet();
+		Point3D player_p = player.getPos();
 		ArrayList<Point3D> outers = getOuters();
 		for (int i = 0; i < outers.size(); i++) {
 			if (!LineofSight(player_p, outers.get(i))) {
@@ -153,7 +153,7 @@ public class Shortestfruitalg {
 		Map map = new Map();
 		for (int i = 0; i < game.getGhostarr().size(); i++) {
 			if (map.distance3d(p, game.getGhostarr().get(i).getPos()) < 5)
-				if (map.azimuth_elevation_dist(p, f.getOrient())[0] == map.azimuth_elevation_dist(p,
+				if (map.azimuth_elevation_dist(p, f.getPos())[0] == map.azimuth_elevation_dist(p,
 						game.getGhostarr().get(i).getPos())[0]) {
 					return searchangle(p, f, game.getGhostarr().get(i));
 				}
@@ -163,17 +163,17 @@ public class Shortestfruitalg {
 
 	private double searchangle(Point3D p, Fruit f, Ghost g) {// לחפש את הזוית שצריך ללכת אליה
 		Map map = new Map();
-		if (map.azimuth_elevation_dist(p, f.getOrient())[0] - 50 > 0)
-			return map.azimuth_elevation_dist(p, f.getOrient())[0] - 50;
-		return map.azimuth_elevation_dist(p, f.getOrient())[0] + 50;
+		if (map.azimuth_elevation_dist(p, f.getPos())[0] - 50 > 0)
+			return map.azimuth_elevation_dist(p, f.getPos())[0] - 50;
+		return map.azimuth_elevation_dist(p, f.getPos())[0] + 50;
 	}
 
 	public double Go2Fruit() {
 		Map map = new Map();
 		for (int i = 0; i < game.getFruitArr().size(); i++) {
-			if (map.distance3d(game.getPlayer().getOrinet(), game.getFruitArr().get(i).getOrient()) < 10)
-				return map.azimuth_elevation_dist(game.getPlayer().getOrinet(),
-						game.getFruitArr().get(i).getOrient())[0];
+			if (map.distance3d(game.getPlayer().getPos(), game.getFruitArr().get(i).getPos()) < 10)
+				return map.azimuth_elevation_dist(game.getPlayer().getPos(),
+						game.getFruitArr().get(i).getPos())[0];
 		}
 		return -1;
 	}
@@ -207,10 +207,10 @@ public class Shortestfruitalg {
 		Map map = new Map();
 		Player player = new Player(game.getPlayer());
 		Fruit f = new Fruit(fruit);
-		player.setOrinet(map.CoordsToPixel(player.getOrinet(), width, hight));
-		f.setOrient(map.CoordsToPixel(f.getOrient(), width, hight));
-		Line2D line = new Line2D.Double(player.getOrinet().ix(), player.getOrinet().iy(), f.getOrient().ix(),
-				f.getOrient().iy());
+		player.setPos(map.CoordsToPixel(player.getPos(), width, hight));
+		f.setPos(map.CoordsToPixel(f.getPos(), width, hight));
+		Line2D line = new Line2D.Double(player.getPos().ix(), player.getPos().iy(), f.getPos().ix(),
+				f.getPos().iy());
 		ArrayList<Box> boxs = new ArrayList<>();
 		for (int i = 0; i < game.getBoxarr().size(); i++) {
 			boxs.add(new Box(game.getBoxarr().get(i)));

@@ -7,21 +7,40 @@ import Packman_Game.Map;
  * This class represents Circle.
  * @author Bar Genish
  * @author Elyashiv Deri
+ * @author lioz elmalem
  * https://en.wikipedia.org/wiki/Circle
  */
 public class Circle implements Geom_element {
 	private Point3D cen;
 	private double radius;
-	public Circle(Point3D cen, double rad) {//constractor
+	/**
+	 * Regular constractor.
+	 * @param cen the center of the circle.
+	 * @param rad the raduis of the circle.
+	 */
+	public Circle(Point3D cen, double rad) {
 		this.set_cen(cen);
 		this.set_radius(rad);
 	}
-	public Circle(double x,double y,double z,double rad) {//constractor
+	/**
+	 * Regular constractor.
+	 * @param x the x point of the center of the circle.
+	 * @param y the y point of the center of the circle.
+	 * @param z the z point of the center of the circle.
+	 * @param rad the raduis of the circle.
+	 */
+	public Circle(double x,double y,double z,double rad) {
 		Point3D p=new Point3D(x,y,z);
 		this.set_cen(p);
 		this.set_radius(rad);
 	}
-	public Circle(double x,double y,double rad) {//constractor
+	/**
+	 * Regular constractor.
+	 * @param x the x point of the center of the circle.
+	 * @param y the y point of the center of the circle.
+	 * @param rad the raduis of the circle.
+	 */
+	public Circle(double x,double y,double rad) {
 		Point3D p=new Point3D(x,y);
 		this.set_cen(p);
 		this.set_radius(rad);

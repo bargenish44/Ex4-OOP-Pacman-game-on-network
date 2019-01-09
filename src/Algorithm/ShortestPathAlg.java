@@ -10,6 +10,7 @@ public class ShortestPathAlg {
 	 * A class that calculates the shortest path so that all the fruits to eat as soon as possible.
 	 * @author Bar Genish
 	 * @author Elyashiv Deri
+	 * @author lioz elmalem
 	 */
 	/**
 	 * Calculate time between Fruit to Packman.
@@ -18,9 +19,9 @@ public class ShortestPathAlg {
 	 * @return double the time that it takes to the packman to eat the fruit based on the packman speed and raduis.
 	 */
 	private double Calculatetime(Packman p,Fruit f) {
-		Circle c=new Circle(p.getOrinet(),p.getRadius());
+		Circle c=new Circle(p.getPos(),p.getRadius());
 		Map m=new Map();
-		double dist=m.distance3d(c.get_cen(),f.getOrient())-c.get_radius();
+		double dist=m.distance3d(c.get_cen(),f.getPos())-c.get_radius();
 		if(dist<=0)return 0;
 		return dist/p.getSpeed();
 	}
@@ -48,8 +49,8 @@ public class ShortestPathAlg {
 				}
 			}
 			g.getPackmanArr().get(packmanindex).setScore(g.getFruitArr().get(fruitindex).getWeight());
-			Point3D pacP = g.getPackmanArr().get(packmanindex).getOrinet();
-			Point3D fruP = g.getFruitArr().get(fruitindex).getOrient();
+			Point3D pacP = g.getPackmanArr().get(packmanindex).getPos();
+			Point3D fruP = g.getFruitArr().get(fruitindex).getPos();
 			Map m=new Map();
 			double dist = m.distance3d(pacP, fruP)-g.getPackmanArr().get(packmanindex).getRadius();
 			if(dist<=0)dist=0;
@@ -62,9 +63,9 @@ public class ShortestPathAlg {
 					pTemp.getTime().setSecond(i+1);
 				next =new Point3D(pacP.x()+(i*step.x()),pacP.y()+(i*step.y()),pacP.z()+(i*step.z()));
 				next.getTime().setSecond(i+1);
-				pTemp.getPath().getArr().add(next);
+				pTemp.getPath().getPoints().add(next);
 			}
-			pTemp.setOrinet(next);
+			pTemp.setPos(next);
 			g.getFruitArr().get(fruitindex).setTime(next.getTime());
 			fruittmp.add(new Fruit(g.getFruitArr().get(fruitindex)));
 			g.getFruitArr().remove(fruitindex);
@@ -74,19 +75,19 @@ public class ShortestPathAlg {
 		Packman p;
 		for(int i=0;i<g.getPackmanArr().size();i++) {
 			p=g.getPackmanArr().get(i);
-			for(int j=0;j<g.getPackmanArr().get(i).getPath().getArr().size();j++) {
+			for(int j=0;j<g.getPackmanArr().get(i).getPath().getPoints().size();j++) {
 				try {
-					p.getPath().getArr().get(j).setTime(p.getPath().getArr().get(j+1).getTime());
+					p.getPath().getPoints().get(j).setTime(p.getPath().getPoints().get(j+1).getTime());
 				}catch(Exception e) {}
 			}
 		}
 		for(int i=0;i<g.getPackmanArr().size();i++) {
 			try {
-				g.getPackmanArr().get(i).setTime(g.getPackmanArr().get(i).getPath().getArr().get(0).getTime());
+				g.getPackmanArr().get(i).setTime(g.getPackmanArr().get(i).getPath().getPoints().get(0).getTime());
 			}catch(Exception e) {}
-			for(int j=0;j<g.getPackmanArr().get(i).getPath().getArr().size();j++) {
+			for(int j=0;j<g.getPackmanArr().get(i).getPath().getPoints().size();j++) {
 				try {
-					g.getPackmanArr().get(i).getPath().getArr().get(j).setTime(g.getPackmanArr().get(i).getPath().getArr().get(j+1).getTime());
+					g.getPackmanArr().get(i).getPath().getPoints().get(j).setTime(g.getPackmanArr().get(i).getPath().getPoints().get(j+1).getTime());
 				} catch(Exception e) {}
 			}
 		}

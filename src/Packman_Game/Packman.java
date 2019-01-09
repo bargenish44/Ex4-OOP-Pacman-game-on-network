@@ -14,7 +14,7 @@ public class Packman {
 	 * @author lioz elmalem
 	 */
 	private int ID;
-	private Point3D orinet;
+	private Point3D pos;
 	private double speed;
 	private double Radius;
 	private Path path;
@@ -28,10 +28,10 @@ public class Packman {
 	 * @param y the y point of the packman.
 	 * @param z the z point of the packman.
 	 * @param speed the packman speed.
-	 * @param Raduis the raduis of the packman.
+	 * @param Radius the raduis of the packman.
 	 */
 	public Packman(int ID,double x,double y,double z, double speed, double Radius) {
-		setOrinet(new Point3D(x, y, z));
+		setPos(new Point3D(x, y, z));
 		setSpeed(speed);
 		setRadius(Radius);
 		setID(ID);
@@ -48,7 +48,7 @@ public class Packman {
 	 */
 	public Packman(int ID,Point3D p,double speed,double Raduis) {
 		setID(ID);
-		setOrinet(p);
+		setPos(p);
 		setSpeed(speed);
 		setRadius(Raduis);
 		setPath(new Path());
@@ -61,7 +61,7 @@ public class Packman {
 	 */
 	public Packman(Packman ot) {
 		setID(ot.getID());
-		setOrinet(ot.getOrinet());
+		setPos(ot.getPos());
 		setSpeed(ot.getSpeed());
 		setRadius(ot.getRadius());
 		setPath(ot.getPath());
@@ -69,11 +69,11 @@ public class Packman {
 		setScore(ot.getScore());
 		setPackmanimage(ot.getPackmanimage());
 	}
-	public Point3D getOrinet() {//getters and setters
-		return orinet;
+	public Point3D getPos() {//getters and setters
+		return pos;
 	}
-	public void setOrinet(Point3D orinet) {
-		this.orinet = orinet;
+	public void setPos(Point3D orinet) {
+		pos = orinet;
 	}
 	public double getSpeed() {
 		return speed;
@@ -124,6 +124,6 @@ public class Packman {
 	 * @return string of the Packman.
 	 */
 	public String toString() {
-		return ID+","+orinet.toString()+","+speed+","+Radius;
+		return ID+","+pos.toString()+","+speed+","+Radius;
 	}
 }

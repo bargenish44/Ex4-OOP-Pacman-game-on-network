@@ -18,6 +18,7 @@ public class Game {
 	 * Game can be saved on scv file and can be read from csv file.
 	 * @author Bar Genish
 	 * @author Elyashiv Deri
+	 * @author lioz elmalem
 	 */
 	private ArrayList<Fruit> Fruitarr=new ArrayList<>();
 	private ArrayList<Packman>Packmanarr=new ArrayList<>();
@@ -25,26 +26,47 @@ public class Game {
 	private ArrayList<Box>Boxarr=new ArrayList<>();
 	private Player player;
 	public String GameName;//for the test.
-	
-	public Game(ArrayList<Packman>arr,ArrayList<Fruit> array,ArrayList<Ghost>ghostarray,ArrayList<Box>boxarr,Player player) {//constracors
-		setFruitArr(array);
-		setBoxarr(boxarr);
-		setGhostarr(ghostarray);
-		setPackmanArr(arr);
+	/**
+	 * Regular constractor.
+	 * @param Parr array list of packmans.
+	 * @param Farr array list of fruits.
+	 * @param Garr array list of ghosts.
+	 * @param Barr array list of boxs.
+	 * @param player player.
+	 */
+	public Game(ArrayList<Packman>Parr,ArrayList<Fruit> Farr,ArrayList<Ghost>Garr,ArrayList<Box>Barr,Player player) {
+		setFruitArr(Farr);
+		setBoxarr(Barr);
+		setGhostarr(Garr);
+		setPackmanArr(Parr);
 		setPlayer(player);
 	}
-	public Game(ArrayList<Packman>arr,ArrayList<Fruit> array,ArrayList<Ghost>ghostarray,ArrayList<Box>boxarr) {
-		setFruitArr(array);
-		setBoxarr(boxarr);
-		setGhostarr(ghostarray);
-		setPackmanArr(arr);
+	/**
+	 * Regular constractor.
+	 * @param Parr array list of packmans.
+	 * @param Farr array list of fruits.
+	 * @param Garr array list of ghosts.
+	 * @param Barr array list of boxs.
+	 */
+	public Game(ArrayList<Packman>Parr,ArrayList<Fruit> Farr,ArrayList<Ghost>Garr,ArrayList<Box>Barr) {
+		setFruitArr(Farr);
+		setBoxarr(Barr);
+		setGhostarr(Garr);
+		setPackmanArr(Parr);
 	}
+	/**
+	 * Defult constractor.
+	 */
 	public Game() {
 		Fruitarr=new ArrayList<>();
 		Packmanarr=new ArrayList<>();
 		Boxarr=new ArrayList<>();
 		Ghostarr=new ArrayList<>();
 	}
+	/**
+	 * Copy constractor.
+	 * @param g game that we want to copy.
+	 */
 	public Game(Game g) {
 		Fruitarr=g.getFruitArr();
 		Packmanarr=g.getPackmanArr();
@@ -74,6 +96,12 @@ public class Game {
 	}
 	public void setBoxarr(ArrayList<Box> boxarr) {
 		Boxarr = boxarr;
+	}
+	public Player getPlayer() {
+		return player;
+	}
+	public void setPlayer(Player player) {
+		this.player = player;
 	}
 	/**
 	 * write the Game as string(helps to save the game in csv file).
@@ -178,11 +206,5 @@ public class Game {
 		pw.write(g.toString());
 		pw.close();
 		System.out.println("saved: "+newfilepath);
-	}
-	public Player getPlayer() {
-		return player;
-	}
-	public void setPlayer(Player player) {
-		this.player = player;
 	}
 }
