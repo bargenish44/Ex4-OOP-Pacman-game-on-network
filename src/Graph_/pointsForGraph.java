@@ -8,11 +8,12 @@ import Algorithm.Shortestfruitalg;
 import Packman_Game.Game;
 
 public class pointsForGraph {
-	Game game = new Game();
-	Shortestfruitalg alg = new Shortestfruitalg(game);
+	private Game game = new Game();
+	Shortestfruitalg alg;
 
 	public pointsForGraph(Game game) {
 		game = new Game(game);
+		alg= new Shortestfruitalg(game);
 	}
 
 	public HashMap<Point3D, Node> getPath() {
