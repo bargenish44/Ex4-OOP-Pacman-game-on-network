@@ -62,7 +62,6 @@ public class Game {
 		Packmanarr=new ArrayList<>();
 		Boxarr=new ArrayList<>();
 		Ghostarr=new ArrayList<>();
-		player=new Player(0,new Point3D(0,0),20,1);
 	}
 	/**
 	 * Copy constractor.
@@ -73,6 +72,9 @@ public class Game {
 		Packmanarr=g.getPackmanArr();
 		Boxarr=g.getBoxarr();
 		Ghostarr=g.getGhostarr();
+		try {
+			player=g.getPlayer();
+		}catch(NullPointerException e) {}
 	}
 	public ArrayList<Packman> getPackmanArr() {//getters and setters
 		return Packmanarr;
