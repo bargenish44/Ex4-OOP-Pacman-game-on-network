@@ -763,7 +763,7 @@ public class MyFrame implements ActionListener {
 		}
 		if (e.getSource() == betweencheck) {
 			Shortestfruitalg boxs = new Shortestfruitalg(game);
-			System.out.println(boxs.LineofSight(game.getFruitArr().get(0).getPos(), width, hight));
+			System.out.println(boxs.LineofSight(game.getPlayer().getPos(),game.getFruitArr().get(0).getPos(), width, hight));
 		}
 		if (e.getSource() == betweencheck2)
 			game = game.load("C:\\Users\\barge\\eclipse-workspace\\Ex4-OOP\\data\\cheacks.csv");
