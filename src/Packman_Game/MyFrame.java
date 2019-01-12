@@ -4,8 +4,6 @@ import java.awt.*;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.TimerTask;
-
 import javax.imageio.ImageIO;
 import java.awt.event.*;
 import javax.swing.*;
@@ -44,7 +42,7 @@ public class MyFrame implements ActionListener {
 	private ArrayList<String> board_data;
 	private boolean gameruns = false;
 	//	private GameTimer timer;
-	private JMenuItem cheak, betweencheck, betweencheck2;
+	private JMenuItem betweencheck, betweencheck2;
 
 	public static void main(String[] args) {
 		new MyFrame();
@@ -94,15 +92,12 @@ public class MyFrame implements ActionListener {
 			Play_alone.addActionListener(this);
 			Play_automatic = new JMenuItem("Play automatic");
 			Play_automatic.addActionListener(this);
-			cheak = new JMenuItem("cheak");
-			cheak.addActionListener(this);
 			betweencheck = new JMenuItem("betweencheck");
 			betweencheck.addActionListener(this);
 			betweencheck2 = new JMenuItem("betweencheck2");
 			betweencheck2.addActionListener(this);
 			menu2.add(betweencheck);
 			menu2.add(betweencheck2);
-			menu2.add(cheak);
 			menu2.add(run);
 			menu2.add(Play_alone);
 			menu2.add(Play_automatic);
@@ -141,9 +136,9 @@ public class MyFrame implements ActionListener {
 
 	}
 
-	public void setGame(Game g) {
-		game = g;
-	}
+	//	public void setGame(Game g) {
+	//		game = g;
+	//	}
 
 	class ImagePanel extends JPanel implements MouseListener {
 
@@ -624,17 +619,21 @@ public class MyFrame implements ActionListener {
 		}
 		if (e.getSource() == how_to_run)
 			JOptionPane.showMessageDialog(null,
-					"For new Packman pressed left click on mouse on the place in the map that you want"
-							+ ",\nFor new Fruit pressed right click on mouse on the place in the map that you want,"
-							+ "\nFor run the game pressed on run button on menu under option,"
-							+ "\nIf you want to go back before you run the game click reload button on menu under option,"
-							+ "\nIf you want to go create a kml and see the path of the packmans click Save as kml button on menu under option.",
-							"How to play", JOptionPane.PLAIN_MESSAGE);
+					"For new Packman/fruit/box/player/ghost pressed the thing you want to add under add and click the mouse on the place in the map that you want."
+							+ "\nFor run the game(movs only the packman to the closet fruit) pressed on run button on menu under option."
+							+ "\nIf you want to go back before you run the game click reload button on menu under option."
+							+ "\nIf you want to go create a kml and see the path of the packmans click Save as kml button on menu under option."
+							+ "\nIf you want to clear the map click clear under option."
+							+ "\nIf you want to load/save the game from/as csv file click load/save under option."
+							+ "\nFor playing on the server click start game under option and than choose if you to play manually or automatically:\n"
+							+ "If you choose manually add player under add and than click play alone and the player will move to the direction where you clicked,\n"
+							+ "If you choose automatically click Play automatic under option and enjoy the show."
+							,"How to play", JOptionPane.PLAIN_MESSAGE);
 		if (e.getSource() == about_the_game) {
-			JOptionPane.showMessageDialog(null, "This is a packman game:\n" + "The purpose is to eat all the fruit \n"
+			JOptionPane.showMessageDialog(null, "This is a packman game:\n" + "The purpose is to eat all the fruit while escaping from ghost and avoiding obstacles. \n"
 					+ "The borad game is map, while the game start you can see on kml the path of the packmans and it"
 					+ " prints the min time that we make our packmans eat all the fruit on board."
-					+ " \nCreated & Designed by :\nBar Genish and Elyashiv Deri.", "About the game",
+					+ " \nCreated & Designed by :\nBar Genish, Elyashiv Deri and Lioz elmalem.", "About the game",
 					JOptionPane.PLAIN_MESSAGE);
 		}
 		if (e.getSource() == reload) {
@@ -692,7 +691,7 @@ public class MyFrame implements ActionListener {
 			game = new Game();
 			gameruns = false;
 		}
-		if (e.getSource() == cheak) {
+		if (e.getSource() == Play_automatic) {
 			findbestpoint find = new findbestpoint(game);
 			Point3D p = find.bestStart(width, hight);
 			play1.setInitLocation(p.y(), p.x());
@@ -702,20 +701,6 @@ public class MyFrame implements ActionListener {
 				System.out.println(board_data.get(a));
 			}
 			System.out.println();
-			playerinsert = true;
-			play1.start();
-			frame.repaint();
-		}
-		if (e.getSource() == Play_automatic) {
-			findbestpoint find = new findbestpoint(game);
-			Point3D p = find.bestStart(width, hight);
-			play1.setInitLocation(p.y(), p.x());
-			game.setPlayer(new Player(0, p.x(), p.y(), 0, 20, 1));
-			board_data = play1.getBoard();
-			for (int a = 0; a < board_data.size(); a++) {
-				//				System.out.println(board_data.get(a));
-			}
-			//			System.out.println();
 			playerinsert = true;
 			play1.start();
 			frame.repaint();
@@ -736,16 +721,16 @@ public class MyFrame implements ActionListener {
 						play1.rotate(game.getPlayer().getAzimuth());
 						// 7.2) get the current score of the game
 						info = play1.getStatistics();
-						//						System.out.println(info);
+						System.out.println(info);
 						// 7.3) get the game-board current state
 						board_data = play1.getBoard();
 						for (int a = 0; a < board_data.size(); a++) {
-							//							System.out.println(board_data.get(a));
+							System.out.println(board_data.get(a));
 						}
-						//						System.out.println();
+						System.out.println();
 						game = game.loadstring(board_data);
 						algo.setGame(game);
-						//						System.out.println(play1.getStatistics());
+						System.out.println(play1.getStatistics());
 						frame.repaint();
 						try {
 							Thread.sleep(10);
@@ -753,10 +738,10 @@ public class MyFrame implements ActionListener {
 							e.printStackTrace();
 						}
 					}
-					// 9) print the data & save to the course DB
-					//					String info = play1.getStatistics();
-					//					System.out.println(info);
-					//					System.out.println("end");
+					//					9) print the data & save to the course DB
+					String info = play1.getStatistics();
+					System.out.println(info);
+					System.out.println("end");
 				}
 			};
 			t.start();
