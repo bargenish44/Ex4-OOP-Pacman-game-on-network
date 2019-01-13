@@ -24,7 +24,7 @@ public class GETpath {
 		String target = "b";
 		Graph.add(new Node(source));
 		int counter = 0;
-		game = new Game(game);
+		this.game = new Game(game);
 		for (Box box : game.getBoxarr()) {
 			path.add(box.getLeftDown());
 			Graph.add(new Node("" + counter));

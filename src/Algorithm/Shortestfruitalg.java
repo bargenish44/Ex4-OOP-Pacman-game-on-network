@@ -19,13 +19,14 @@ import graph.Node;
 
 public class Shortestfruitalg {
 	private Game game;
-	private ArrayList<Box> tempboxs = new ArrayList<>();
+	//	private ArrayList<Box> tempboxs = new ArrayList<>();
 	private double eps = 10;
+	Map map=new Map();
 
 	public Shortestfruitalg(Game g) {
 		game = g;
 		for (int i = 0; i < g.getBoxarr().size(); i++) {
-			tempboxs.add(g.getBoxarr().get(i));
+			//			tempboxs.add(g.getBoxarr().get(i));
 		}
 	}
 
@@ -105,52 +106,57 @@ public class Shortestfruitalg {
 		return ans;
 	}
 
-	public ArrayList<Point3D> getOuters() {
-		ArrayList<Point3D> ans = new ArrayList<Point3D>();
-		for (Box box : game.getBoxarr()) {
-			if (!isIn(box.getRightUp())) {
-				box.getRightUp().set_y(box.getRightUp().y() + 0.000001);
-				ans.add(box.getRightUp());
-			} else if (!isIn(box.getLeftDown())) {
-				box.getLeftDown().set_x(box.getLeftDown().x() - 0.000001);
-				ans.add(box.getLeftDown());
-			}
-		}
-		return ans;
-	}
-
-	public ArrayList<Point3D> cleanShot(Point3D point) {
-		ArrayList<Point3D> ans = new ArrayList<Point3D>();
-		ArrayList<Point3D> outers = getOuters();
-		for (int i = 0; i < outers.size(); i++) {
-			if (!LineofSight(point, outers.get(i))) {
-				ans.add(outers.get(i));
-			}
-
-		}
-		return ans;
-	}
-
-	public ArrayList<Point3D> cleanShot() {
-		Player player = game.getPlayer();
-		ArrayList<Point3D> ans = new ArrayList<Point3D>();
-		Point3D player_p = player.getPos();
-		ArrayList<Point3D> outers = getOuters();
-		for (int i = 0; i < outers.size(); i++) {
-			if (!LineofSight(player_p, outers.get(i))) {
-				ans.add(outers.get(i));
-			}
-		}
-		return ans;
-	}
+	//	public ArrayList<Point3D> getOuters() {
+	//		ArrayList<Point3D> ans = new ArrayList<Point3D>();
+	//		for (Box box : game.getBoxarr()) {
+	//			if (!isIn(box.getRightUp())) {
+	//				box.getRightUp().set_y(box.getRightUp().y() + 0.000001);
+	//				ans.add(box.getRightUp());
+	//			} else if (!isIn(box.getLeftDown())) {
+	//				box.getLeftDown().set_x(box.getLeftDown().x() - 0.000001);
+	//				ans.add(box.getLeftDown());
+	//			}
+	//		}
+	//		return ans;
+	//	}
+	//
+	//	public ArrayList<Point3D> cleanShot(Point3D point) {
+	//		ArrayList<Point3D> ans = new ArrayList<Point3D>();
+	//		ArrayList<Point3D> outers = getOuters();
+	//		for (int i = 0; i < outers.size(); i++) {
+	//			if (!LineofSight(point, outers.get(i))) {
+	//				ans.add(outers.get(i));
+	//			}
+	//
+	//		}
+	//		return ans;
+	//	}
+	//
+	//	public ArrayList<Point3D> cleanShot() {
+	//		Player player = game.getPlayer();
+	//		ArrayList<Point3D> ans = new ArrayList<Point3D>();
+	//		Point3D player_p = player.getPos();
+	//		ArrayList<Point3D> outers = getOuters();
+	//		for (int i = 0; i < outers.size(); i++) {
+	//			if (!LineofSight(player_p, outers.get(i))) {
+	//				ans.add(outers.get(i));
+	//			}
+	//		}
+	//		return ans;
+	//	}
 
 	private Path calcpath(Fruit fruit, Game game) {
 		Path p = new Path();
+		if(LineofSight(game.getPlayer().getPos(), fruit.getPos())==true) {
+			p.getPoints().add(fruit.getPos());
+			return p;
+		}
 		ArrayList<Point3D> Points = new ArrayList<>();
 		Points.add(game.getPlayer().getPos());
 		Graph graph = new Graph();
 		graph.add(new Node("player"));
 		graph.add(new Node("fruit"));
+		int count=0;
 		for (Box box : game.getBoxarr()) {
 			Point3D leftdown = box.getLeftDown();
 			Point3D rightup = box.getRightUp();
@@ -160,10 +166,16 @@ public class Shortestfruitalg {
 			graph.add(new Node("rightup"));
 			graph.add(new Node("rightdown"));
 			graph.add(new Node("leftup"));
+			graph.addEdge("leftdown", "rightdown",leftdown.distance2D(rightdown));
+			graph.addEdge("leftdown", "leftup", leftdown.distance2D(leftup));
+			graph.addEdge("rightup", "rightdown", rightup.distance2D(rightdown));
+			graph.addEdge("rightup", "leftup", rightup.distance2D(leftup));
+			Points.add(leftdown);
+			Points.add(rightup);
+			Points.add(rightdown);
+			Points.add(leftup);
 		}
 		for (int i = 0; i < graph.size(); i++) {
-			Node node = graph.getNodeByIndex(i);
-
 		}
 		return p;
 	}
@@ -171,12 +183,11 @@ public class Shortestfruitalg {
 	public double escapefroomguest(Player p, Fruit f) {
 		Map map = new Map();
 		for (int i = 0; i < game.getGhostarr().size(); i++) {
-			// if (map.distance3d(p.getPos(), game.getGhostarr().get(i).getPos()) < 20)
-			if (map.azimuth_elevation_dist(p.getPos(), f.getPos())[0] == map.azimuth_elevation_dist(p.getPos(),
-					game.getGhostarr().get(i).getPos())[0]) {
-				System.out.println("yes");
-				return searchangle(p, f, game.getGhostarr().get(i));
-			}
+			if (map.distance3d(p.getPos(), game.getGhostarr().get(i).getPos()) < 10)
+				if (map.azimuth_elevation_dist(p.getPos(), f.getPos())[0] == map.azimuth_elevation_dist(p.getPos(),
+						game.getGhostarr().get(i).getPos())[0]) {
+					return searchangle(p, f, game.getGhostarr().get(i));
+				}
 		}
 		return -1;
 	}
@@ -273,47 +284,45 @@ public class Shortestfruitalg {
 		return true;
 	}
 
-	private void moveboxs() {
-		Point3D tmp;
-		Map map = new Map();
-		for (int i = 0; i < tempboxs.size(); i++) {
-			tmp = tempboxs.get(i).getLeftDown();
-			tmp = map.CoordsToPixel(tmp, 200, 200);
-			tempboxs.get(i).setLeftDown(new Point3D(tmp.x() - eps, tmp.y()));
-			tmp = tempboxs.get(i).getRightUp();
-			tmp = map.CoordsToPixel(tmp, 200, 200);
-			tempboxs.get(i).setRightUp(new Point3D(tmp.x() + eps, tmp.y()));
-		}
-	}
-
-	public static void main(String[] args) {
-		Map map = new Map();
-		Game game = new Game();
-		game = game.load("C:\\Users\\barge\\eclipse-workspace\\Ex4-OOP\\data\\cheacks.csv");
-		game.setPlayer(new Player(0, new Point3D(35.20614347700701, 32.10385349848943), 20, 1));
-		Point3D tmp = game.getPlayer().getPos();
-		tmp = map.CoordsToPixel(tmp, 200, 200);
-		game.getPlayer().setPos(tmp);
-		Shortestfruitalg alg = new Shortestfruitalg(game);
-		for (int i = 0; i < game.getBoxarr().size(); i++) {
-			if (alg.LineofSight(game.getPlayer().getPos(), game.getBoxarr().get(i).getLeftDown(), 200, 200) == true)
-				System.out.println("yay");
-			// System.out.println(game.getPlayer().getPos().toString()+" player.
-			// "+game.getBoxarr().get(i).getLeftDown()+" leftdown box.
-			// "+game.getBoxarr().get(i).getRightUp()+" rightupbox.");
-			if (alg.LineofSight(game.getPlayer().getPos(), game.getBoxarr().get(i).getRightUp(), 200, 200) == true)
-				System.out.println("yay2");
-		}
-		alg.moveboxs();
-		for (int i = 0; i < alg.tempboxs.size(); i++) {
-			// System.out.println(game.getPlayer().getPos().toString()+" player.
-			// "+alg.tempboxs.get(i).getLeftDown()+" leftdown box.
-			// "+alg.tempboxs.get(i).getRightUp()+" rightupbox.");
-			if (alg.LineofSight(game.getPlayer().getPos(), alg.tempboxs.get(i).getLeftDown(), 200, 200) == true)
-				System.out.println("yay");
-			if (alg.LineofSight(game.getPlayer().getPos(), alg.tempboxs.get(i).getRightUp(), 200, 200) == true)
-				System.out.println("yay2");
-		}
-		System.out.println("done");
-	}
+	//	private void moveboxs() {
+	//		Point3D tmp;
+	//		Map map = new Map();
+	//		for (int i = 0; i < tempboxs.size(); i++) {
+	//			tmp = tempboxs.get(i).getLeftDown();
+	//			tempboxs.get(i).setLeftDown(new Point3D(tmp.x() - eps, tmp.y()));
+	//			tmp = tempboxs.get(i).getRightUp();
+	//			tempboxs.get(i).setRightUp(new Point3D(tmp.x() + eps, tmp.y()));
+	//		}
 }
+
+//	public static void main(String[] args) {
+//		Map map = new Map();
+//		Game game = new Game();
+//		game = game.load("C:\\Users\\barge\\eclipse-workspace\\Ex4-OOP\\data\\cheacks.csv");
+//		game.setPlayer(new Player(0, new Point3D(35.20614347700701, 32.10385349848943), 20, 1));
+//		Point3D tmp = game.getPlayer().getPos();
+//		tmp = map.CoordsToPixel(tmp, 200, 200);
+//		game.getPlayer().setPos(tmp);
+//		Shortestfruitalg alg = new Shortestfruitalg(game);
+//		for (int i = 0; i < game.getBoxarr().size(); i++) {
+//			if (alg.LineofSight(game.getPlayer().getPos(), game.getBoxarr().get(i).getLeftDown(), 200, 200) == true)
+//				System.out.println("yay");
+//			// System.out.println(game.getPlayer().getPos().toString()+" player.
+//			// "+game.getBoxarr().get(i).getLeftDown()+" leftdown box.
+//			// "+game.getBoxarr().get(i).getRightUp()+" rightupbox.");
+//			if (alg.LineofSight(game.getPlayer().getPos(), game.getBoxarr().get(i).getRightUp(), 200, 200) == true)
+//				System.out.println("yay2");
+//		}
+//		alg.moveboxs();
+//		for (int i = 0; i < alg.tempboxs.size(); i++) {
+//			// System.out.println(game.getPlayer().getPos().toString()+" player.
+//			// "+alg.tempboxs.get(i).getLeftDown()+" leftdown box.
+//			// "+alg.tempboxs.get(i).getRightUp()+" rightupbox.");
+//			if (alg.LineofSight(game.getPlayer().getPos(), alg.tempboxs.get(i).getLeftDown(), 200, 200) == true)
+//				System.out.println("yay");
+//			if (alg.LineofSight(game.getPlayer().getPos(), alg.tempboxs.get(i).getRightUp(), 200, 200) == true)
+//				System.out.println("yay2");
+//		}
+//		System.out.println("done");
+//	}
+//}
