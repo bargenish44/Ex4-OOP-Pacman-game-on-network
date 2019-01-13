@@ -9,6 +9,10 @@
 
 ##  Project 4 is actually a continuation project for Project 3  
 
+## Game orgenl:
+
+![game orgenl](https://github.com/bargenish44/Ex4-OOP/blob/master/Pac-man.png)
+
 in this Exercise we Add an Addition game that you can access Through class. in this game you have one pacman in the color magenta that is your player. 
 
 beside him you have a number of "enemy" pacman on the board and a number of ghosts and offcourse fruits.
