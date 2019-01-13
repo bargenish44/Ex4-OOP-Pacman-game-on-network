@@ -10,25 +10,25 @@ public class GETdata {
 		this.dataBase = connector;
 	}
 
-	public double averageScoreForAllScenarios() {
-		return averageScore("SELECT AVG(Point) FROM logs;");
+	public double avScoreForAll() {
+		return avScore("SELECT AVG(Point) FROM logs;");
 	}
 
-	public double averageScoreForAllScenarios(long id) {
-		return averageScore(
+	public double avScoreForAll(long id) {
+		return avScore(
 				"SELECT AVG(Point) FROM logs WHERE FirstID=" + id + " OR SecondID=" + id + " OR ThirdID=" + id + ";");
 	}
 
-	public double averageScoreForScenario(int scenario) {
-		return averageScore("SELECT AVG(Point) FROM logs WHERE SomeDouble=" + scenario + ";");
+	public double avScore(int scenario) {
+		return avScore("SELECT AVG(Point) FROM logs WHERE SomeDouble=" + scenario + ";");
 	}
 
-	public double averageScoreForScenario(int scenario, long id) {
-		return averageScore("SELECT AVG(Point) FROM logs WHERE SomeDouble=" + scenario + " AND ( FirstID=" + id
+	public double avScore(int scenario, long id) {
+		return avScore("SELECT AVG(Point) FROM logs WHERE SomeDouble=" + scenario + " AND ( FirstID=" + id
 				+ " OR SecondID=" + id + " OR ThirdID=" + id + ");");
 	}
 
-	private double averageScore(String statement) {
+	private double avScore(String statement) {
 		double avg = Double.MAX_VALUE;
 		try {
 			if (dataBase.connectToDB()) {

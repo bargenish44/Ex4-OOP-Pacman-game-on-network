@@ -19,12 +19,12 @@ import graph.Node;
 
 public class Shortestfruitalg {
 	private Game game;
-	private ArrayList<Box>tempboxs=new ArrayList<>();
-	private double eps=10;
+	private ArrayList<Box> tempboxs = new ArrayList<>();
+	private double eps = 10;
 
 	public Shortestfruitalg(Game g) {
 		game = g;
-		for(int i=0;i<g.getBoxarr().size();i++) {
+		for (int i = 0; i < g.getBoxarr().size(); i++) {
 			tempboxs.add(g.getBoxarr().get(i));
 		}
 	}
@@ -109,10 +109,10 @@ public class Shortestfruitalg {
 		ArrayList<Point3D> ans = new ArrayList<Point3D>();
 		for (Box box : game.getBoxarr()) {
 			if (!isIn(box.getRightUp())) {
-				box.getRightUp().set_y(box.getRightUp().y() + 0.001);
+				box.getRightUp().set_y(box.getRightUp().y() + 0.000001);
 				ans.add(box.getRightUp());
 			} else if (!isIn(box.getLeftDown())) {
-				box.getLeftDown().set_x(box.getLeftDown().x() - 0.001);
+				box.getLeftDown().set_x(box.getLeftDown().x() - 0.000001);
 				ans.add(box.getLeftDown());
 			}
 		}
@@ -146,7 +146,7 @@ public class Shortestfruitalg {
 
 	private Path calcpath(Fruit fruit, Game game) {
 		Path p = new Path();
-		ArrayList<Point3D>Points=new ArrayList<>();
+		ArrayList<Point3D> Points = new ArrayList<>();
 		Points.add(game.getPlayer().getPos());
 		Graph graph = new Graph();
 		graph.add(new Node("player"));
@@ -167,10 +167,11 @@ public class Shortestfruitalg {
 		}
 		return p;
 	}
+
 	public double escapefroomguest(Player p, Fruit f) {
 		Map map = new Map();
 		for (int i = 0; i < game.getGhostarr().size(); i++) {
-			//						if (map.distance3d(p.getPos(), game.getGhostarr().get(i).getPos()) < 20)
+			// if (map.distance3d(p.getPos(), game.getGhostarr().get(i).getPos()) < 20)
 			if (map.azimuth_elevation_dist(p.getPos(), f.getPos())[0] == map.azimuth_elevation_dist(p.getPos(),
 					game.getGhostarr().get(i).getPos())[0]) {
 				System.out.println("yes");
@@ -179,34 +180,43 @@ public class Shortestfruitalg {
 		}
 		return -1;
 	}
+
 	private double searchangle(Player p, Fruit f, Ghost g) {
-		double Pangle=p.getAzimuth();
-		double angle=Pangle;
-		for(int i=1;i<=6;i++) {
-			angle+=30*i;
-			if(move(f,angle)==true)return angle;
-			angle=Pangle-(30*i);
-			if(move(f,angle)==true)return angle;
+		double Pangle = p.getAzimuth();
+		double angle = Pangle;
+		for (int i = 1; i <= 6; i++) {
+			angle += 30 * i;
+			if (move(f, angle) == true)
+				return angle;
+			angle = Pangle - (30 * i);
+			if (move(f, angle) == true)
+				return angle;
 		}
 		return -1;
 	}
-	private boolean escapeposcheck(Packman p,Fruit f) {
-		Point3D tmp=p.getLocation();
-		if(isIn(tmp)==true)return false;
-		for(int i=0;i<game.getGhostarr().size();i++) {
-			Point3D temp=p.getLocation();
-			if(temp.equals(game.getGhostarr().get(i).getPos()))return false;
+
+	private boolean escapeposcheck(Packman p, Fruit f) {
+		Point3D tmp = p.getLocation();
+		if (isIn(tmp) == true)
+			return false;
+		for (int i = 0; i < game.getGhostarr().size(); i++) {
+			Point3D temp = p.getLocation();
+			if (temp.equals(game.getGhostarr().get(i).getPos()))
+				return false;
 		}
 		return true;
 	}
-	private boolean move(Fruit f,double angle)
-	{
-		Packman p = new Packman(new LatLonAlt(game.getPlayer().getPos().x(),game.getPlayer().getPos().y(),0),game.getPlayer().getSpeed());
+
+	private boolean move(Fruit f, double angle) {
+		Packman p = new Packman(new LatLonAlt(game.getPlayer().getPos().x(), game.getPlayer().getPos().y(), 0),
+				game.getPlayer().getSpeed());
 		p.setOrientation(angle);
 		p.move(100.0D);
-		if (escapeposcheck(p, f)==false)return false;
+		if (escapeposcheck(p, f) == false)
+			return false;
 		return true;
 	}
+
 	public double Go2Fruit() {
 		Map map = new Map();
 		for (int i = 0; i < game.getFruitArr().size(); i++) {
@@ -224,8 +234,8 @@ public class Shortestfruitalg {
 	}
 
 	public boolean LineofSight(Point3D point1, Point3D point2) {
-		//		Map map = new Map();
-		//		Player player = new Player(game.getPlayer());
+		// Map map = new Map();
+		// Player player = new Player(game.getPlayer());
 		Line2D line = new Line2D.Double(point1.x(), point1.y(), point2.x(), point2.y());
 		ArrayList<Box> boxs = new ArrayList<>();
 		for (int i = 0; i < game.getBoxarr().size(); i++) {
@@ -241,11 +251,11 @@ public class Shortestfruitalg {
 		return true;
 	}
 
-	public boolean LineofSight(Point3D pstart,Point3D pend, int width, int hight) {
+	public boolean LineofSight(Point3D pstart, Point3D pend, int width, int hight) {
 		Map map = new Map();
 		pstart = new Point3D(game.getPlayer().getPos());
-		pstart=map.CoordsToPixel(pstart, width, hight);
-		pend=map.CoordsToPixel(pend, width, hight);
+		pstart = map.CoordsToPixel(pstart, width, hight);
+		pend = map.CoordsToPixel(pend, width, hight);
 		Line2D line = new Line2D.Double(pstart.ix(), pstart.iy(), pend.ix(), pend.iy());
 		ArrayList<Box> boxs = new ArrayList<>();
 		for (int i = 0; i < game.getBoxarr().size(); i++) {
@@ -262,37 +272,47 @@ public class Shortestfruitalg {
 		}
 		return true;
 	}
+
 	private void moveboxs() {
 		Point3D tmp;
-		Map map =new Map();
-		for(int i=0;i<tempboxs.size();i++) {
-			tmp=tempboxs.get(i).getLeftDown();
-			tmp=map.CoordsToPixel(tmp, 200, 200);
-			tempboxs.get(i).setLeftDown(new Point3D(tmp.x()-eps,tmp.y()));
-			tmp=tempboxs.get(i).getRightUp();
-			tmp=map.CoordsToPixel(tmp, 200, 200);
-			tempboxs.get(i).setRightUp(new Point3D(tmp.x()+eps,tmp.y()));
+		Map map = new Map();
+		for (int i = 0; i < tempboxs.size(); i++) {
+			tmp = tempboxs.get(i).getLeftDown();
+			tmp = map.CoordsToPixel(tmp, 200, 200);
+			tempboxs.get(i).setLeftDown(new Point3D(tmp.x() - eps, tmp.y()));
+			tmp = tempboxs.get(i).getRightUp();
+			tmp = map.CoordsToPixel(tmp, 200, 200);
+			tempboxs.get(i).setRightUp(new Point3D(tmp.x() + eps, tmp.y()));
 		}
 	}
+
 	public static void main(String[] args) {
-		Map map=new Map();
-		Game game=new Game();
+		Map map = new Map();
+		Game game = new Game();
 		game = game.load("C:\\Users\\barge\\eclipse-workspace\\Ex4-OOP\\data\\cheacks.csv");
-		game.setPlayer(new Player(0,new Point3D(35.20614347700701,32.10385349848943),20,1));
-		Point3D tmp=game.getPlayer().getPos();
-		tmp=map.CoordsToPixel(tmp,200,200);
+		game.setPlayer(new Player(0, new Point3D(35.20614347700701, 32.10385349848943), 20, 1));
+		Point3D tmp = game.getPlayer().getPos();
+		tmp = map.CoordsToPixel(tmp, 200, 200);
 		game.getPlayer().setPos(tmp);
-		Shortestfruitalg alg=new Shortestfruitalg(game);
-		for(int i=0;i<game.getBoxarr().size();i++) {
-			if(alg.LineofSight(game.getPlayer().getPos(),game.getBoxarr().get(i).getLeftDown(),200,200)==true) System.out.println("yay");
-			//			System.out.println(game.getPlayer().getPos().toString()+" player. "+game.getBoxarr().get(i).getLeftDown()+" leftdown box. "+game.getBoxarr().get(i).getRightUp()+" rightupbox.");
-			if(alg.LineofSight(game.getPlayer().getPos(),game.getBoxarr().get(i).getRightUp(),200,200)==true) System.out.println("yay2");
+		Shortestfruitalg alg = new Shortestfruitalg(game);
+		for (int i = 0; i < game.getBoxarr().size(); i++) {
+			if (alg.LineofSight(game.getPlayer().getPos(), game.getBoxarr().get(i).getLeftDown(), 200, 200) == true)
+				System.out.println("yay");
+			// System.out.println(game.getPlayer().getPos().toString()+" player.
+			// "+game.getBoxarr().get(i).getLeftDown()+" leftdown box.
+			// "+game.getBoxarr().get(i).getRightUp()+" rightupbox.");
+			if (alg.LineofSight(game.getPlayer().getPos(), game.getBoxarr().get(i).getRightUp(), 200, 200) == true)
+				System.out.println("yay2");
 		}
 		alg.moveboxs();
-		for(int i=0;i<alg.tempboxs.size();i++) {
-			//			System.out.println(game.getPlayer().getPos().toString()+" player. "+alg.tempboxs.get(i).getLeftDown()+" leftdown box. "+alg.tempboxs.get(i).getRightUp()+" rightupbox.");
-			if(alg.LineofSight(game.getPlayer().getPos(),alg.tempboxs.get(i).getLeftDown(),200,200)==true) System.out.println("yay");
-			if(alg.LineofSight(game.getPlayer().getPos(),alg.tempboxs.get(i).getRightUp(),200,200)==true) System.out.println("yay2");
+		for (int i = 0; i < alg.tempboxs.size(); i++) {
+			// System.out.println(game.getPlayer().getPos().toString()+" player.
+			// "+alg.tempboxs.get(i).getLeftDown()+" leftdown box.
+			// "+alg.tempboxs.get(i).getRightUp()+" rightupbox.");
+			if (alg.LineofSight(game.getPlayer().getPos(), alg.tempboxs.get(i).getLeftDown(), 200, 200) == true)
+				System.out.println("yay");
+			if (alg.LineofSight(game.getPlayer().getPos(), alg.tempboxs.get(i).getRightUp(), 200, 200) == true)
+				System.out.println("yay2");
 		}
 		System.out.println("done");
 	}

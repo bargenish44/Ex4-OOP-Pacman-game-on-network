@@ -13,6 +13,7 @@ import Algorithm.findbestpoint;
 import Robot.Play;
 import Coords.MyCoords;
 import Geom.Point3D;
+import Graph_.GETpath;
 
 public class MyFrame implements ActionListener {
 	/**
@@ -747,8 +748,8 @@ public class MyFrame implements ActionListener {
 			t.start();
 		}
 		if (e.getSource() == betweencheck) {
-			Shortestfruitalg boxs = new Shortestfruitalg(game);
-			System.out.println(boxs.LineofSight(game.getPlayer().getPos(),game.getFruitArr().get(0).getPos(), width, hight));
+			GETpath j = new GETpath(game, game.getFruitArr().get(0));
+			System.out.println(j.getGraph().toString());
 		}
 		if (e.getSource() == betweencheck2)
 			game = game.load("C:\\Users\\barge\\eclipse-workspace\\Ex4-OOP\\data\\cheacks.csv");
