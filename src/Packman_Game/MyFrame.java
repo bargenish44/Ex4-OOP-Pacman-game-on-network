@@ -12,7 +12,6 @@ import Algorithm.Shortestfruitalg;
 import Algorithm.findbestpoint;
 import Robot.Play;
 import Coords.MyCoords;
-import Geom.Path;
 import Geom.Point3D;
 
 public class MyFrame implements ActionListener {
@@ -632,24 +631,12 @@ public class MyFrame implements ActionListener {
 			play1.start();
 			frame.repaint();
 			Shortestfruitalg algo = new Shortestfruitalg(game,width,hight);
-			int count=0;
 			Thread t = new Thread() {
 				public void run() {
 					while (play1.isRuning()) {
 						Fruit f = algo.shortpathalgo(game);
-						angle=map.azimuth_elevation_dist(game.getPlayer().getPos(),p.getPoints().get(count))[0];
-						double tmp=alg.escapefroomguest(game.getPlayer(), p.getPoints().get(count));
-						if (tmp != -1)
-							angle = tmp;
-						game.getPlayer().setAzimuth(angle);
-						play1.rotate(game.getPlayer().getAzimuth());
-						game.getPlayer().setAzimuth(angle);
-						play1.rotate(game.getPlayer().getAzimuth());
-						if(game.getPlayer().getPos()==p.getPoints().get(count))
-							count++;
 						angle = map.azimuth_elevation_dist(game.getPlayer().getPos(), f.getPos())[0];
-						Shortestfruitalg alg = new Shortestfruitalg(game,width,hight);
-						double tmp = alg.escapefroomguest(game.getPlayer(), f);
+						double tmp = algo.escapefroomguest(game.getPlayer(), f);
 						if (tmp != -1)
 							angle = tmp;
 						game.getPlayer().setAzimuth(angle);

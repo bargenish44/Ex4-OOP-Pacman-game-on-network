@@ -83,7 +83,7 @@ public class Shortestfruitalg {
 		game=g;
 		if (game.getBoxarr().isEmpty())
 			return algowithoutboxes();
-		return algowithboxs();
+		return algowithoutboxes();
 	}
 
 	private Fruit algowithoutboxes() {
