@@ -20,7 +20,7 @@ import graph.Node;
  */
 public class Algorithem 
 {
-	ArrayList<Point3D> PixelList ;
+	ArrayList<Point3D> PointsList ;
 	ArrayList<Line2D> Lines ; 
 	public ArrayList<Point3D> PixelInclude ;
 	public ArrayList<String> shortestPath;
@@ -35,10 +35,10 @@ public class Algorithem
 	public Algorithem(Game game , Map map)
 	{ 
 		point3DInclude = new ArrayList<Point3D>();
-		PixelList = PF.getPixels(game, map) ;
+		PointsList = PF.getPixels(game, map) ;
 		PixelInclude = new ArrayList<Point3D>();
 		Lines = new ArrayList<Line2D>();
-		UpdateLines(PixelList);
+		UpdateLines(PointsList);
 		shortestPath = new ArrayList<String>();
 		this.map = map;
 		RemovePoints();
@@ -52,10 +52,10 @@ public class Algorithem
 	{
 		PointFinder  PF = new PointFinder() ; 
 		point3DInclude.clear();
-		PixelList = PF.getPixels(game, map) ;
+		PointsList = PF.getPixels(game, map) ;
 		PixelInclude.clear();
 		Lines.clear();
-		UpdateLines(PixelList);
+		UpdateLines(PointsList);
 		shortestPath.clear();
 		this.map = map;
 		RemovePoints();
@@ -73,7 +73,7 @@ public class Algorithem
 	
 
 		PixelInclude.add(myLocation);
-		PixelInclude.addAll(PixelList);
+		PixelInclude.addAll(PointsList);
 		PixelInclude.add(destLocation);
 		int size = PixelInclude.size() ;
 
@@ -209,12 +209,12 @@ public class Algorithem
 	 *  this function responsible of removing the points that we don't need anymore.
 	 */
 	private void RemovePoints() {
-		ArrayList<Point3D> RemoveList = new ArrayList<Point3D>(PixelList);
+		ArrayList<Point3D> RemoveList = new ArrayList<Point3D>(PointsList);
 		for (int i = RemoveList.size()-1; 0 < i; i--) {
-			for (int j = 0; j < PixelList.size(); j =j+4) 
+			for (int j = 0; j < PointsList.size(); j =j+4) 
 			{
 				try {
-					if(RemoveList.get(i).get_Point3DX() > PixelList.get(j).get_Point3DX() && RemoveList.get(i).get_Point3DX() < PixelList.get(j+1).get_Point3DX() && RemoveList.get(i).get_Point3DY() < PixelList.get(j).get_Point3DY() && RemoveList.get(i).get_Point3DY() > PixelList.get(j+1).get_Point3DY())
+					if(RemoveList.get(i).get_Point3DX() > PointsList.get(j).get_Point3DX() && RemoveList.get(i).get_Point3DX() < PointsList.get(j+1).get_Point3DX() && RemoveList.get(i).get_Point3DY() < PointsList.get(j).get_Point3DY() && RemoveList.get(i).get_Point3DY() > PointsList.get(j+1).get_Point3DY())
 					{
 						RemoveList.remove(i);
 						break;
@@ -224,7 +224,7 @@ public class Algorithem
 				}
 			}
 		}
-		PixelList = RemoveList ;
+		PointsList = RemoveList ;
 	}
 
 

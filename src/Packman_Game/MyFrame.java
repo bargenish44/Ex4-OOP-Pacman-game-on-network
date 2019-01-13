@@ -12,6 +12,7 @@ import Algorithm.Shortestfruitalg;
 import Algorithm.findbestpoint;
 import Robot.Play;
 import Coords.MyCoords;
+import Geom.Path;
 import Geom.Point3D;
 
 public class MyFrame implements ActionListener {
@@ -41,7 +42,6 @@ public class MyFrame implements ActionListener {
 	private String map_data, info, file_name;
 	private ArrayList<String> board_data;
 	private boolean gameruns = false;
-	private JMenuItem betweencheck;
 
 	public static void main(String[] args) {
 		new MyFrame();
@@ -90,9 +90,6 @@ public class MyFrame implements ActionListener {
 			Play_alone.addActionListener(this);
 			Play_automatic = new JMenuItem("Play automatic");
 			Play_automatic.addActionListener(this);
-			betweencheck = new JMenuItem("betweencheck");
-			betweencheck.addActionListener(this);
-			menu2.add(betweencheck);
 			menu2.add(run);
 			menu2.add(Play_alone);
 			menu2.add(Play_automatic);
@@ -605,9 +602,8 @@ public class MyFrame implements ActionListener {
 			azimuthcount = 0;
 			gameruns = true;
 		}
-		if (e.getSource() == addbox) {
+		if (e.getSource() == addbox)
 			choose = "box";
-		}
 		if (e.getSource() == addplayer)
 			choose = "player";
 		if (e.getSource() == addfruit)
@@ -616,9 +612,8 @@ public class MyFrame implements ActionListener {
 			choose = "ghost";
 		if (e.getSource() == addpackman)
 			choose = "packman";
-		if (e.getSource() == Play_alone) {
+		if (e.getSource() == Play_alone) 
 			choose = "Play_alone";
-		}
 		if (e.getSource() == clear) {
 			game = new Game();
 			gameruns = false;
@@ -637,10 +632,21 @@ public class MyFrame implements ActionListener {
 			play1.start();
 			frame.repaint();
 			Shortestfruitalg algo = new Shortestfruitalg(game,width,hight);
+			int count=0;
 			Thread t = new Thread() {
 				public void run() {
 					while (play1.isRuning()) {
 						Fruit f = algo.shortpathalgo(game);
+						angle=map.azimuth_elevation_dist(game.getPlayer().getPos(),p.getPoints().get(count))[0];
+						double tmp=alg.escapefroomguest(game.getPlayer(), p.getPoints().get(count));
+						if (tmp != -1)
+							angle = tmp;
+						game.getPlayer().setAzimuth(angle);
+						play1.rotate(game.getPlayer().getAzimuth());
+						game.getPlayer().setAzimuth(angle);
+						play1.rotate(game.getPlayer().getAzimuth());
+						if(game.getPlayer().getPos()==p.getPoints().get(count))
+							count++;
 						angle = map.azimuth_elevation_dist(game.getPlayer().getPos(), f.getPos())[0];
 						Shortestfruitalg alg = new Shortestfruitalg(game,width,hight);
 						double tmp = alg.escapefroomguest(game.getPlayer(), f);
@@ -676,10 +682,6 @@ public class MyFrame implements ActionListener {
 				}
 			};
 			t.start();
-		}
-		if (e.getSource() == betweencheck) {
-//			GETpath j = new GETpath(game, game.getFruitArr().get(0));
-//			System.out.println(j.getGraph().toString());
 		}
 		panel.repaint();
 	}

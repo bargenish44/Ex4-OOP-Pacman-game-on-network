@@ -44,7 +44,6 @@ public class Shortestfruitalg {
 			p.set_x(p.x()-eps);
 			p.set_y(p.y()+eps);
 			p1.set_x(p1.x()+eps);
-			p1.set_y(p1.y()-eps);
 			tempgame.getBoxarr().get(i).setLeftDown(p);
 			tempgame.getBoxarr().get(i).setRightUp(p1);
 		}
@@ -134,46 +133,53 @@ public class Shortestfruitalg {
 			return p;
 		}
 		initforpixels();
-		game=new Game(tempgame);
 		ArrayList<Point3D> Points = new ArrayList<>();
-		Points.add(game.getPlayer().getPos());
+		Points.add(tempgame.getPlayer().getPos());
 		Graph graph = new Graph();
-		graph.add(new Node("a"));
-		graph.add(new Node("10"));
 		graph.add(new Node("source"));
-//		int count=0;
-//		for (Box box : game.getBoxarr()) {
-//			Point3D leftdown = box.getLeftDown();
-//			Point3D rightup = box.getRightUp();
-//			Point3D rightdown = new Point3D(rightup.ix(), leftdown.iy());
-//			Point3D leftup = new Point3D(leftdown.ix(), rightup.iy());
-//			
-//			graph.add(new Node(""+count++));
-//			graph.add(new Node(""+count++));
-//			graph.add(new Node(""+count++));
-//			graph.add(new Node(""+count++));
-//			Points.add(leftdown);
-//			Points.add(rightup);
-//			Points.add(rightdown);
-//			Points.add(leftup);
-	//}
-
-//		for (int i = 1; i < graph.size()-1; i++) {
-//			if(LineofSight(Points.get(0),Points.get(i)))
-//				graph.addEdge("a", ""+i, Points.get(0).distance2D(Points.get(i)));
-//				System.out.println("a >>  " + i );
-//		}
-//		for(int i=1;i<graph.size()-1;i++) {
-//			for(int j=i+1;j<graph.size()-1;j++) {
-//				if(LineofSight(Points.get(i), Points.get(j)))
-//					graph.addEdge(""+i,""+j,Points.get(i).distance2D(Points.get(j)));
-//				System.out.println( i+ "   >>  " + j );
-//			}
-//		}
-		graph.addEdge("a", "" + 10, 10);
-		graph.addEdge("" +10, "source", 10);
-//		graph.addEdge("source", "" + 10, 10);
-		Graph_Algo.dijkstra(graph,"a");
+		graph.add(new Node("target"));
+		int count=0;
+		for (Box box : tempgame.getBoxarr()) {
+			Point3D leftdown = box.getLeftDown();
+			Point3D rightup = box.getRightUp();
+			Point3D rightdown = new Point3D(rightup.ix(), leftdown.iy());
+			Point3D leftup = new Point3D(leftdown.ix(), rightup.iy());
+			graph.add(new Node(""+count++));
+			graph.add(new Node(""+count++));
+			graph.add(new Node(""+count++));
+			graph.add(new Node(""+count++));
+			Points.add(leftdown);
+			Points.add(rightup);
+			Points.add(rightdown);
+			Points.add(leftup);
+		}
+		for (int i = 1; i < graph.size()-1; i++) {
+			if(LineofSight(Points.get(0),Points.get(i))==true)
+				graph.addEdge("source", ""+i, Points.get(0).distance2D(Points.get(i)));
+			System.out.println("source >>  " + i );
+		}
+		for(int i=1;i<graph.size()-1;i++) {
+			for(int j=i+1;j<graph.size()-1;j++) {
+				if(LineofSight(Points.get(i), Points.get(j))==true)
+					graph.addEdge(""+i,""+j,Points.get(i).distance2D(Points.get(j)));
+				System.out.println( i+ "   >>  " + j );
+			}
+		}
+		for(int i=0;i<tempgame.getBoxarr().size();i++) {
+			Point3D leftdown = tempgame.getBoxarr().get(i).getLeftDown();
+			Point3D rightup = tempgame.getBoxarr().get(i).getRightUp();
+			Point3D rightdown = new Point3D(rightup.ix(), leftdown.iy());
+			Point3D leftup = new Point3D(leftdown.ix(), rightup.iy());
+			if(LineofSight(leftdown, fruit.getPos())==true) 
+				graph.addEdge(""+i+1, "target", leftdown.distance2D(fruit.getPos()));
+			if(LineofSight(rightup, fruit.getPos())==true) 
+				graph.addEdge(""+i+1, "target", rightup.distance2D(fruit.getPos()));
+			if(LineofSight(rightdown, fruit.getPos())==true) 
+				graph.addEdge(""+i+1, "target", rightdown.distance2D(fruit.getPos()));
+			if(LineofSight(leftup, fruit.getPos())==true) 
+				graph.addEdge(""+i+1, "target", leftup.distance2D(fruit.getPos()));
+		}
+		Graph_Algo.dijkstra(graph,"source");
 		return p;
 	}
 
