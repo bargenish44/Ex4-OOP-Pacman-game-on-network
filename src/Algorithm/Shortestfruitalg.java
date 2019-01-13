@@ -83,12 +83,12 @@ public class Shortestfruitalg {
 			return 0;
 		return dist / p.getSpeed();
 	}
-/**
- * Help func that calculate time till the player eat the fruit with obstacle.
- * @param p the player
- * @param f the fruit
- * @return the time till the player will eat the fruit.
- */
+	/**
+	 * Help func that calculate time till the player eat the fruit with obstacle.
+	 * @param p the player
+	 * @param f the fruit
+	 * @return the time till the player will eat the fruit.
+	 */
 	private double Calculatetimewithbox(Player p, Fruit f) {
 		Circle c = new Circle(p.getPos(), p.getRadius());
 		Map map = new Map();
@@ -99,21 +99,21 @@ public class Shortestfruitalg {
 			dist += map.distance3d(c.get_cen(), path.getPoints().get(0));
 		return dist;
 	}
-/**
- * The main func that choose which algo to use and return the cloest fruit.
- * @param g game
- * @return fruit the closest fruit.
- */
+	/**
+	 * The main func that choose which algo to use and return the cloest fruit.
+	 * @param g game
+	 * @return fruit the closest fruit.
+	 */
 	public Fruit shortpathalgo(Game g) {
 		game=g;
 		if (game.getBoxarr().isEmpty())
 			return algowithoutboxes();
 		return algowithoutboxes();
 	}
-/**
- * Func that calculate the shortest fruit without obstacle.
- * @return Fruit - the cloest fruit.
- */
+	/**
+	 * Func that calculate the shortest fruit without obstacle.
+	 * @return Fruit - the cloest fruit.
+	 */
 	private Fruit algowithoutboxes() {
 		double min = Double.MAX_VALUE;
 		double tmp = 0;
@@ -127,10 +127,10 @@ public class Shortestfruitalg {
 		}
 		return fruittemp;
 	}
-/**
- * Func that calculate the cloest fruit with obstacle.
- * @return the cloest fruit.
- */
+	/**
+	 * Func that calculate the cloest fruit with obstacle.
+	 * @return the cloest fruit.
+	 */
 	private Fruit algowithboxs() {
 		double min = Double.MAX_VALUE;
 		double tmp = 0;
@@ -144,11 +144,11 @@ public class Shortestfruitalg {
 		}
 		return fruittemp;
 	}
-/**
- * Helps func that check if the 
- * @param point
- * @return
- */
+	/**
+	 * Helps func that check if the point is in obstacle. 
+	 * @param point point that we want to check.
+	 * @return boolean if yes or no.
+	 */
 	private boolean isIn(Point3D point) {
 		boolean ans = true;
 		double x = point.x();
@@ -161,6 +161,12 @@ public class Shortestfruitalg {
 		}
 		return ans;
 	}
+	/**
+	 * Help func that calc the path to the fruit with obstacle.
+	 * @param fruit that we want to check the player path to him.
+	 * @param game our game.
+	 * @return path the path to the fruit.
+	 */
 	private Path calcpath(Fruit fruit, Game game) {
 		Path p = new Path();
 		if(LineofSight(game.getPlayer().getPos(), fruit.getPos())==true) {
@@ -217,7 +223,12 @@ public class Shortestfruitalg {
 		Graph_Algo.dijkstra(graph,"source");
 		return p;
 	}
-
+	/**
+	 * Func that escape from ghost.
+	 * @param p the player
+	 * @param f the fruit that we want to eat
+	 * @return the angle that we want to for escape ghosts.
+	 */
 	public double escapefroomguest(Player p, Fruit f) {
 		Map map = new Map();
 		for (int i = 0; i < game.getGhostarr().size(); i++) {
@@ -229,7 +240,13 @@ public class Shortestfruitalg {
 		}
 		return -1;
 	}
-
+	/**
+	 * Help func that search the best angle to escape the ghost.
+	 * @param p our player.
+	 * @param f the fruit that we want to eat.
+	 * @param g our game.
+	 * @return the angle that we want to escape to.
+	 */
 	private double searchangle(Player p, Fruit f, Ghost g) {
 		double Pangle = p.getAzimuth();
 		double angle = Pangle;
@@ -243,7 +260,12 @@ public class Shortestfruitalg {
 		}
 		return -1;
 	}
-
+	/**
+	 * Help func that check if the angle that we want to go to her is good or not,
+	 * @param p our packman
+	 * @param f the fruit we want to eat,
+	 * @return boolean if it good or not.
+	 */
 	private boolean escapeposcheck(Packman p, Fruit f) {
 		Point3D tmp = p.getLocation();
 		if (isIn(tmp) == true)
@@ -255,7 +277,12 @@ public class Shortestfruitalg {
 		}
 		return true;
 	}
-
+	/**
+	 * Help func that move the player and than check if his next pos is good enogth or not.
+	 * @param f the fruit.
+	 * @param angle the angle that we want to escape to.
+	 * @return bollean if its good or not.
+	 */
 	private boolean move(Fruit f, double angle) {
 		Packman p = new Packman(new LatLonAlt(game.getPlayer().getPos().x(), game.getPlayer().getPos().y(), 0),
 				game.getPlayer().getSpeed());
@@ -265,7 +292,10 @@ public class Shortestfruitalg {
 			return false;
 		return true;
 	}
-
+	/**
+	 * Help func for play alone that go autumaticlly to the fruit if ur 10 meters from him.
+	 * @return the angle that we want to go to.
+	 */
 	public double Go2Fruit() {
 		Map map = new Map();
 		for (int i = 0; i < game.getFruitArr().size(); i++) {
@@ -274,14 +304,24 @@ public class Shortestfruitalg {
 		}
 		return -1;
 	}
-
+	/**
+	 * Helps func that check if thier is box between our player and fruit.
+	 * @param rect1 the box.
+	 * @param line2 the line between the player and the fruit.
+	 * @return if there is box or not.
+	 */
 	private boolean isColliding(Rectangle2D rect1, Line2D line2) {
 		if (line2 != null) {
 			return line2.intersects(rect1);
 		}
 		return false;
 	}
-
+	/**
+	 * Func that cheack if there is obstacle between 2 points.
+	 * @param point1 the first point to check.
+	 * @param point2 the second point to check.
+	 * @return if there is obstacle or not.
+	 */
 	public boolean LineofSight(Point3D point1, Point3D point2) {
 		Line2D line = new Line2D.Double(point1.x(), point1.y(), point2.x(), point2.y());
 		ArrayList<Box> boxs = new ArrayList<>();
