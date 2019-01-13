@@ -31,13 +31,22 @@ public class Shortestfruitalg {
 	public void setGame(Game g) {
 		this.game=g;
 	}
+	/**
+	 * Regular constractor.
+	 * @param g Game
+	 * @param w width
+	 * @param h hight
+	 */
 	public Shortestfruitalg(Game g,int w,int h) {
 		game = new Game(g);
 		width=w;
 		hight=h;
 		tempgame=new Game(game);
 	}
-	public void initforpixels() {
+	/**
+	 * Helps func that convert all the points to pixels and move the boxs in eps.
+	 */
+	private void initforpixels() {
 		Point3D p;
 		Point3D p1;
 		for(int i=0;i<tempgame.getBoxarr().size();i++) {
@@ -60,7 +69,12 @@ public class Shortestfruitalg {
 		}
 		tempgame.getPlayer().setPos(map.CoordsToPixel(tempgame.getPlayer().getPos(), width, hight));
 	}
-
+	/**
+	 * Help func that calculaet time to the specifi fruit.
+	 * @param p the player
+	 * @param f the fruit
+	 * @return double the time it will take to eat the fruit.
+	 */
 	private double Calculatetime(Player p, Fruit f) {
 		Circle c = new Circle(p.getPos(), p.getRadius());
 		Map m = new Map();
@@ -69,7 +83,12 @@ public class Shortestfruitalg {
 			return 0;
 		return dist / p.getSpeed();
 	}
-
+/**
+ * Help func that calculate time till the player eat the fruit with obstacle.
+ * @param p the player
+ * @param f the fruit
+ * @return the time till the player will eat the fruit.
+ */
 	private double Calculatetimewithbox(Player p, Fruit f) {
 		Circle c = new Circle(p.getPos(), p.getRadius());
 		Map map = new Map();
@@ -80,14 +99,21 @@ public class Shortestfruitalg {
 			dist += map.distance3d(c.get_cen(), path.getPoints().get(0));
 		return dist;
 	}
-
+/**
+ * The main func that choose which algo to use and return the cloest fruit.
+ * @param g game
+ * @return fruit the closest fruit.
+ */
 	public Fruit shortpathalgo(Game g) {
 		game=g;
 		if (game.getBoxarr().isEmpty())
 			return algowithoutboxes();
 		return algowithoutboxes();
 	}
-
+/**
+ * Func that calculate the shortest fruit without obstacle.
+ * @return Fruit - the cloest fruit.
+ */
 	private Fruit algowithoutboxes() {
 		double min = Double.MAX_VALUE;
 		double tmp = 0;
@@ -101,7 +127,10 @@ public class Shortestfruitalg {
 		}
 		return fruittemp;
 	}
-
+/**
+ * Func that calculate the cloest fruit with obstacle.
+ * @return the cloest fruit.
+ */
 	private Fruit algowithboxs() {
 		double min = Double.MAX_VALUE;
 		double tmp = 0;
@@ -115,8 +144,12 @@ public class Shortestfruitalg {
 		}
 		return fruittemp;
 	}
-
-	public boolean isIn(Point3D point) {
+/**
+ * Helps func that check if the 
+ * @param point
+ * @return
+ */
+	private boolean isIn(Point3D point) {
 		boolean ans = true;
 		double x = point.x();
 		double y = point.y();
