@@ -11,7 +11,7 @@
 
 ## Game orgenl:
 
-![game orgenl](i.imgur.com/Tc7yBRp.gif)
+![game orgenl](https://upload.wikimedia.org/wikipedia/he/5/59/Pac-man.png)
 
 
 in this Exercise we Add an Addition game that you can access Through class. in this game you have one pacman in the color magenta that is your player. 
