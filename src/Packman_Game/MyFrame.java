@@ -42,7 +42,6 @@ public class MyFrame implements ActionListener {
 	private String map_data, info, file_name;
 	private ArrayList<String> board_data;
 	private boolean gameruns = false;
-	//	private GameTimer timer;
 	private JMenuItem betweencheck, betweencheck2;
 
 	public static void main(String[] args) {
@@ -53,7 +52,6 @@ public class MyFrame implements ActionListener {
 	 */
 	public MyFrame() {
 		try {
-			//			timer = new GameTimer();
 			file_name = "data/Ex4_OOP_example9.csv";
 			play1 = new Play(file_name);
 			play1.setIDs(3131, 745, 83);
@@ -137,10 +135,6 @@ public class MyFrame implements ActionListener {
 
 	}
 
-	//	public void setGame(Game g) {
-	//		game = g;
-	//	}
-
 	class ImagePanel extends JPanel implements MouseListener {
 
 		private static final long serialVersionUID = 1L;
@@ -169,8 +163,7 @@ public class MyFrame implements ActionListener {
 		}
 
 		/**
-		 * This is the paint func it paints the image.
-		 * 
+		 * This is the paint func it paints the image. 
 		 * @param g - Graphics that we want to paint.
 		 */
 		@Override
@@ -249,13 +242,9 @@ public class MyFrame implements ActionListener {
 		}
 
 		/**
-		 * This is the mouseClicked func. You can add new Packmans if you use mouse left
-		 * click on screen. You can add new Fruit if you use mouse right click on
-		 * screen.
-		 * 
-		 * @param e - MouseEvent by the button that you use it create new Packman/fruit.
+		 * This is the mouseClicked func. You can add new Packmans, fruits, ghosts, boxs and player.
+		 * @param e - MouseEvent by the button that you use it create new Packman/fruit/box/player/ghost.
 		 */
-
 		@Override
 		public void mouseClicked(MouseEvent e) {
 			if (choose.equals("packman")) {
@@ -344,7 +333,7 @@ public class MyFrame implements ActionListener {
 				int x = e.getX();
 				int y = e.getY();
 				System.out.println("You create new ghost X: " + x + " Y: " + y);
-				String test1 = JOptionPane.showInputDialog("Please input ghost speed : ");// לברר על מהירות ורדיוס
+				String test1 = JOptionPane.showInputDialog("Please input ghost speed : ");
 				double speed = -1;
 				boolean ans = true;
 				try {
@@ -444,10 +433,6 @@ public class MyFrame implements ActionListener {
 					if (!playerinsert) {
 						System.out.println("You should insert player first");
 					} else if (azimuthcount < 10) {
-						//						try {
-						//							timer.endTimer();
-						//						} catch (Exception ex) {
-						//						}
 						int x = e.getX();
 						int y = e.getY();
 						Shortestfruitalg alg = new Shortestfruitalg(game);
@@ -475,7 +460,6 @@ public class MyFrame implements ActionListener {
 						azimuthcount++;
 						System.out.println(play1.getStatistics());
 						frame.repaint();
-						//						timer.startTimer(task);
 					}
 					while (azimuthcount >= 10 && play1.isRuning())
 						azimuthcount -= 10;
@@ -522,59 +506,10 @@ public class MyFrame implements ActionListener {
 		}
 	}
 
-	//	TimerTask task = new TimerTask() {
-	//		@Override
-	//		public void run() {
-	//			if (!gameruns)
-	//				System.out.println("You should start game first");
-	//			else {
-	//				if (!playerinsert) {
-	//					System.out.println("You should insert player first");
-	//				} else if (azimuthcount < 10) {
-	//					Shortestfruitalg alg = new Shortestfruitalg(game);
-	//					angle = game.getPlayer().getAzimuth();
-	//					double tmp = alg.Go2Fruit();
-	//					if (tmp != -1)
-	//						angle = tmp;
-	//					game.getPlayer().setAzimuth(angle);
-	//					play1.rotate(game.getPlayer().getAzimuth());
-	//					System.out.println("***** " + game.getPlayer().getAzimuth() + "******");
-	//
-	//					// 7.2) get the current score of the game
-	//					info = play1.getStatistics();
-	//					System.out.println(info);
-	//					// 7.3) get the game-board current state
-	//					board_data = play1.getBoard();
-	//					for (int a = 0; a < board_data.size(); a++) {
-	//						System.out.println(board_data.get(a));
-	//					}
-	//					System.out.println();
-	//					game = game.loadstring(board_data);
-	//					azimuthcount++;
-	//					System.out.println(play1.getStatistics());
-	//					frame.repaint();
-	//				}
-	//				while (azimuthcount >= 10 && play1.isRuning())
-	//					azimuthcount -= 10;
-	//				if (!play1.isRuning() && azimuthcount != -1) {
-	//					play1.stop();
-	//					System.out.println("**** Done Game (user stop) ****");
-	//
-	//					// 9) print the data & save to the course DB
-	//					String info = play1.getStatistics();
-	//					System.out.println(info);
-	//				}
-	//			}
-	//		}
-	//	};
-
 	/**
-	 * This is the actionPerformed func. this func can save game,load game,run
-	 * game,reload the game,save as kml the game and have 2 helps actions how to
-	 * play and about the game.
-	 * 
-	 * @param e - ActionEvent Open you what you want depending on the button you
-	 *          clicked on.
+	 * This is the actionPerformed func. this func can save,load,run,reload,clear,save as kml and start a game. 
+	 * And have 2 helps actions how to play and about the game.
+	 * @param e - ActionEvent Open you what you want depending on the button you clicked on.
 	 */
 	@Override
 	public void actionPerformed(ActionEvent e) {
@@ -657,9 +592,9 @@ public class MyFrame implements ActionListener {
 			Path2KML p2k = new Path2KML();
 			ans = p2k.path2kml(g);
 			if (ans)
-				System.out.println("saved int data folder under name:mygamekml.kml");
+				System.out.println("saved in data folder under name:mygamekml.kml");
 			else
-				System.out.println("Ops something went weong");
+				System.out.println("Ops something went wrong");
 		}
 		if (e.getSource() == StartGame) {
 			map_data = play1.getBoundingBox();
@@ -752,11 +687,15 @@ public class MyFrame implements ActionListener {
 			System.out.println(j.getGraph().toString());
 		}
 		if (e.getSource() == betweencheck2)
-			game = game.load("C:\\Users\\barge\\eclipse-workspace\\Ex4-OOP\\data\\cheacks.csv");
+			game = game.load("C:\\Users\\barge\\eclipse-workspace\\Ex4-OOP\\data\\Ex4_OOP_example9.csv");
 		panel.repaint();
 	}
-
-	public int getmathpath(ArrayList<Packman> arr) {
+	/**
+	 * Helps func that return the max size path.
+	 * @param arr arraylist of packmans that we want to compare their paths.
+	 * @return the size of the biggest path.
+	 */
+	private int getmathpath(ArrayList<Packman> arr) {
 		int count = 0;
 		for (int i = 0; i < arr.size(); i++) {
 			if (arr.get(i).getPath().getPoints().size() > count)

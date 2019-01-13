@@ -13,10 +13,9 @@ import Graph_.Node;
 
 public class GETpath {
 	private Game game = new Game();
-	Graph Graph = new Graph();
-	ArrayList<Point3D> path;
-
-	Shortestfruitalg sf = new Shortestfruitalg(game);
+	private Graph Graph = new Graph();
+	private ArrayList<Point3D> path;
+	private Shortestfruitalg sf = new Shortestfruitalg(game);
 
 	public GETpath(Game game, Fruit fruit) {
 		path = new ArrayList<Point3D>();
@@ -29,11 +28,11 @@ public class GETpath {
 		for (Box box : game.getBoxarr()) {
 			path.add(box.getLeftDown());
 			Graph.add(new Node("" + counter));
-			Graph.addEdge("a", "" + counter, game.getPlayer().getPos().distance3D(box.getLeftDown()));
+			Graph.addEdge("a", "" + counter, game.getPlayer().getPos().distance2D(box.getLeftDown()));
 			counter++;
 			path.add(box.getRightUp());
 			Graph.add(new Node("" + counter));
-			Graph.addEdge("a", "" + counter, game.getPlayer().getPos().distance3D(box.getRightUp()));
+			Graph.addEdge("a", "" + counter, game.getPlayer().getPos().distance2D(box.getRightUp()));
 			counter++;
 		}
 		path.add(fruit.getPos());
