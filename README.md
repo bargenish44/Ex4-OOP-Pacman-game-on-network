@@ -31,6 +31,8 @@ in Manual mode you can control your player using the mouse button. you can push 
 
 in The Autmate game your player move on it own using The algorithm to choose the path to the fruits.
 
+https://raw.githubusercontent.com/bargenish44/Ex4-OOP/master/Ariel1.png
+
 ## The Manual Shake - 
 In Project 4 there is a possibility for the player to play manually in a separate player whose step can accurately simulate the original game by eating "pecans" 
 and eating fruits to accumulate the maximum points.
