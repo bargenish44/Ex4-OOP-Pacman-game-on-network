@@ -17,7 +17,9 @@ import Robot.Packman;
 import graph.Graph;
 import graph.Graph_Algo;
 import graph.Node;
-
+/**
+ * This class is the main algorithem class, it calculates the path and return the cloest fruit. 
+ */
 public class Shortestfruitalg {
 	private Game game;
 	private Game tempgame;
